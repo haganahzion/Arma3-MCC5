@@ -1,0 +1,14 @@
+{
+  "extraKnownMarketplaces": {
+    "thedotmack": {
+      "source": { "source": "github", "repo": "thedotmack/claude-mem" }
+    },
+    "ecc": {
+      "source": { "source": "git", "url": "https://github.com/affaan-m/everything-claude-code.git" }
+    }
+  },
+  "enabledPlugins": {
+    "claude-mem@thedotmack": true,
+    "ecc@ecc": true
+  }
+}
