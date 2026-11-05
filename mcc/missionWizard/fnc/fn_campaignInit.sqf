@@ -39,7 +39,7 @@ _loadDb = param [11, false,[false]];
 _playMusic = param [12, 1,[0]];
 
 _totalPlayers = ((playersNumber _sidePlayer)+1);
-_AOSize = (missionNamespace getVariable ["MCC_campaignAOSize",300]) max 100;		//CBA setting (Phase C)
+_AOSize = (missionNamespace getVariable ["MCC_campaignAOSize",300]) max 100;		//CBA setting
 
 if (!isServer) exitWith {diag_log "MCC_fnc_campaignInit : Error not running on server"};
 
@@ -178,7 +178,7 @@ if (_missionMax == 0) exitWith {
 ["MCC_campaign",1200,true] spawn MCC_fnc_saveServer;
 
 
-/*-------------------------------------------------------- Campaign AOs (Phase C) ------------------------------------------------------------
+/*-------------------------------------------------------- Campaign AOs ------------------------------------------------------------------
 	Up to MCC_campaignMaxAOs AOs run at the same time. Every AO is its own MW mission (own zones/objectives) with a mission id;
 	its objective modules carry MCC_MWmissionId and MCC_fnc_MWinitMission publishes MCC_MWMissionRuning_<id>.
 	The campaign progresses (rewards, borders, difficulty, new AO) whenever any AO is done.
@@ -189,7 +189,7 @@ private _activeAOs = [];
 private _missionsStarted = 0;
 private _campaignWon = false;
 
-//Pick the next AO location - [] if none. Locations too close to a running AO are kept for later.
+//Pick the next AO location, [] if none. Locations too close to a running AO are kept for later.
 private _fnc_pickLocation = {
 	private _picked = [];
 	private _deferred = [];
@@ -238,7 +238,7 @@ private _fnc_startAO = {
 	private _sideObjectives = ["Destroy Vehicle","Destroy AA","Destroy Artillery","Destroy Weapon Cahce","Destroy Fuel Depot","Secure HVT","Kill HVT","Acquire Intel","Disarm IED"];
 	private _objectivesList = [_obj1, _obj2];
 
-	//3rd objective and, when MCC_MWmaxObjectives > 3, extra ones - each with a difficulty based chance
+	//3rd objective and, when MCC_MWmaxObjectives > 3, extra ones, each with a difficulty based chance
 	private _maxObjectives = (round (missionNamespace getVariable ["MCC_MWmaxObjectives",3])) max 3 min 8;
 	for "_i" from 3 to _maxObjectives do {
 		_objectivesList pushBack (if (random 80 < _difficulty) then {selectRandom _sideObjectives} else {"None"});
@@ -396,7 +396,7 @@ while {true} do {
 			if (_running) then {
 				[_ao] call _fnc_AOrunning;
 			} else {
-				//Generation never came up (should not happen) - drop the AO
+				//Generation never came up (should not happen), drop the AO
 				if (diag_tickTime > ((_ao select 7) + 1800)) then {
 					diag_log format ["MCC campaign: AO %1 did not start in time, dropped", _aoId];
 					_activeAOs deleteAt (_activeAOs find _ao);

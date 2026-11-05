@@ -83,7 +83,7 @@ switch (lbCurSel MCC_MWCQBIDC) do
 		};
 	};
 
-//Objectives - the dialog sets the first 3; the server pads/cuts the list to the CBA setting MCC_MWmaxObjectives
+//Objectives: the dialog sets the first 3; the server pads/cuts the list to the CBA setting MCC_MWmaxObjectives
 //(extra objectives are "Random" = random picks from the enabled objective types)
 private _objectivesList = [];
 {

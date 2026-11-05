@@ -15,8 +15,8 @@ if (count _key > 4) then {
 
 _screen = missionNamespace getvariable ["MCC_mcc_screen",0];
 
-// Index 0 used to open the old MCC main menu. MCC5 replaced it with Zeus: MCC users get a curator
-// (MCC_fnc_curatorAutoAssign) and every old menu feature is an MCC Zeus or Eden module.
+// Index 0 opens Zeus. MCC users get a curator from MCC_fnc_curatorAutoAssign; the menu features live in the
+// MCC Zeus and Eden modules.
 if (_index == 0) exitWith {
 	if (!isNull (getAssignedCuratorLogic player)) then {
 		if (isNull curatorCamera) then {openCuratorInterface};
