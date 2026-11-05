@@ -31,7 +31,7 @@
 //				Array 2 - Objectives (any length, max 8)
 //	_objN						String, an objective defined in _objArray or "None" or "Random"
 //								For non-campaign missions the array is padded with "Random" (or cut) to the
-//								CBA setting MCC_MWmaxObjectives (default 3 = old behaviour).
+//								CBA setting MCC_MWmaxObjectives (default 3).
 //
 //				Array 3 - Missions' Defines
 //	_isCQB:					Boolean, true - isCQB false- isn't CQB
@@ -120,7 +120,7 @@ _objArray			 	= missionNamespace getVariable ["MCC_MWMissionType",["Secure HVT",
 	_objArray = _objArray - [_x];
 } forEach ["None","Random"];
 
-//------------------------------------------------- Objectives count / mission size (Phase C) -------------------------------------------------
+//------------------------------------------------- Objectives count / mission size -------------------------------------------------------
 private _isCampaignCall = !(_wholeMap isEqualType true);
 private _maxObjectives = (round (missionNamespace getVariable ["MCC_MWmaxObjectives",3])) max 1 min 8;
 
@@ -435,7 +435,7 @@ private _usedObjTypes = [];
 
 		MCC_MWObjectivesNames = nil;
 
-		//Random Mission - prefer a type that is not used yet in this mission
+		//Random Mission: prefer a type that is not used yet in this mission
 		if (_objType == "Random") then {
 			private _freeTypes = _objArray - _usedObjTypes;
 			_objType = selectRandom ([_freeTypes, _objArray] select (count _freeTypes == 0));
@@ -965,7 +965,7 @@ MCC_MWunitBudget = nil;
 [_missionCenter,_maxObjectivesDistance,_markerName,_missionId] spawn {
 	params ["_missionCenter","_maxObjectivesDistance","_markerName",["_missionId","",[""]]];
 
-	//Count open MW objectives of a mission id ("" = every MW objective, the old behaviour)
+	//Count open MW objectives of a mission id ("" = every MW objective)
 	private _fnc_openTasks = {
 		params [["_id","",[""]]];
 		{
