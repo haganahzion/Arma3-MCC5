@@ -1,6 +1,6 @@
 //==================================================================MCC_fnc_rxUndoLastSpawn===============================================================================
 // Delete the last entry of MCC_lastSpawn (an object, or [object, [objects]]) and remove it from the list. Runs on every machine.
-// Replaces remote code previously sent through MCC_fnc_globalExecute in mcc\general_scripts\delete\undo.sqf.
+// Called by mcc\general_scripts\delete\undo.sqf.
 // Example: [] remoteExec ["MCC_fnc_rxUndoLastSpawn", 0];
 // <IN>
 //		Nothing

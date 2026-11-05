@@ -7,8 +7,8 @@ Description:
 		key   = str side of the group ("WEST","EAST","GUER","CIV")
 		value = array of groups
 	Groups that get a GAIA_ZONE_INTEND anywhere else are picked up by the
-	registry sweep (GAIA_fnc_registrySweep) within ~10 seconds, so calling this
-	is an optimisation, not a requirement. Calling it on a client does nothing.
+	registry sweep (GAIA_fnc_registrySweep) within ~10 seconds; calling this
+	only makes it immediate. Calling it on a client does nothing.
 	Set GAIA_ZONE_INTEND on the group before (or right after) registering it:
 	the sweep drops registered groups that have no units or no GAIA_ZONE_INTEND.
 	Groups registered for the first time after mission time GAIA_HC_MIN_TIME (30)

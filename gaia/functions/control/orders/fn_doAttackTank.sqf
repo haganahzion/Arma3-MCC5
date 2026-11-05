@@ -6,7 +6,7 @@ Description:
 	overwatch position with line of sight on the target, 300-700 m out on their
 	side (GAIA_fnc_findOverwatch, flat ground), engage from there and then
 	push in with a SAD waypoint. Without a usable overwatch position, or when
-	already within 700 m: MOVE + SAD on the target as before.
+	already within 700 m: MOVE + SAD on the target.
 
 Parameters:
 	0: GROUP

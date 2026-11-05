@@ -182,7 +182,7 @@
     }
 ] call CBA_fnc_addSetting;
 
-//==================================================== Phase C: bigger missions ====================================================
+//==================================================== Mission size / campaign ====================================================
 //Mission Wizard: number of objectives per mission (dialog sends 3, extra ones are random picks)
 [
     "MCC_MWmaxObjectives",

@@ -4,8 +4,7 @@ Function: GAIA_fnc_assignRoles
 Description:
 	Coordinated attack on one conflict area (called by GAIA_fnc_issueOrders,
 	scheduled, once per CA per cycle with the groups it selected for that CA).
-	Instead of every group running GAIA_fnc_doAttack on its own, one pass gives
-	each NEW responder a role, taking the roles of groups already on this CA
+	One pass gives each NEW responder a role, taking the roles of groups already on this CA
 	(GAIA_Order "DoAttack", GAIA_OrderPosition = CA, GAIA_Role) into account:
 		attack - GAIA_fnc_doAttack (main effort, direct approach). Groups already
 		         in combat close to the CA, air and ships always attack.
@@ -16,8 +15,8 @@ Description:
 		         bearing than the main attack.
 		hold   - GAIA_fnc_doHold (max 1, with 4+ ground groups): reserve, committed
 		         when no attack-role group is left on the CA.
-	A single responder (and the CBA setting MCC_GAIA_COORDINATION off) keeps the
-	old behaviour: GAIA_fnc_doAttack. Groups already on this CA are not re-ordered.
+	A single responder (or the CBA setting MCC_GAIA_COORDINATION off) gets a
+	plain GAIA_fnc_doAttack. Groups already on this CA are not re-ordered.
 
 Parameters:
 	0: SIDE
@@ -34,7 +33,7 @@ if (_responders isEqualTo [] || {count _caPos < 2}) exitWith {0};
 
 private _fnc_pause = {if (canSuspend) then {sleep 0.05}};
 
-//Old behaviour
+//No coordination: plain doAttack
 if (!(missionNamespace getVariable ["MCC_GAIA_COORDINATION", true]) || {count _responders == 1}) exitWith {
 	{
 		//A group already on this CA keeps its order and role (doAttack is a no-op for it)
@@ -82,7 +81,7 @@ private _issued = 0;
 	private _role	= "attack";
 
 	switch (true) do {
-		//Air, ships and groups already fighting there: attack, as before
+		//Air, ships and groups already fighting there: attack
 		case (!(_class in _ground) || _engaged): {_role = "attack"};
 		//Nobody leads the assault yet
 		case (_mainBearing < 0): {_role = "attack"};

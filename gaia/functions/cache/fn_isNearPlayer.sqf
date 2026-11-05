@@ -3,8 +3,8 @@
 // ====================================================================================
 // In:  [position, distance]
 // Out: true when a player is closer than distance to position
-// On the server the player list is taken from GAIA_PLAYER_LIST (refreshed every
-// second by the GAIA per-frame handler) instead of being rebuilt on every call.
+// On the server the player list comes from GAIA_PLAYER_LIST (refreshed every
+// second by the GAIA per-frame handler).
 // ====================================================================================
 
 params ["_pos", "_distance"];

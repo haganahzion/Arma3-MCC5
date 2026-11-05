@@ -170,7 +170,7 @@
     true
 ] call CBA_fnc_addSetting;
 
-//------------------------------ GAIA coordination (Phase B) ------------------------------
+//------------------------------ GAIA coordination ------------------------------
 //Per conflict area roles: attack / flank / support-by-fire / reserve
 [
     "MCC_GAIA_COORDINATION",

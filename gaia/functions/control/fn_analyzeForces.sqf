@@ -120,7 +120,7 @@ switch (_side) do
 //Update ZONE status
 _zone							= "";
 _TempTargets			= (_Targets select 0)+(_Targets select 1)+(_Targets select 2)+(_Targets select 3);
-//Target positions once, zone checks with the engine (inAreaArray) instead of GAIA_fnc_isPositionInMarker per target per zone
+//Target positions once, zone checks with the engine (inAreaArray)
 private _TempTargetPos = _TempTargets apply {position _x};
 {
 	//For anything we have not cleared yet, we keep the zone alarm ringing "ALL ON BOARD!"
@@ -236,7 +236,7 @@ private _ZoneCenters = createHashMap;
    					 	if ([_x] call GAIA_fnc_unstick) then {_x setVariable ["GAIA_LeadPosition", [(position leader _x),1], false];};
    					 };
 
-   					 //Infantry: the old leader teleport stays off
+   					 //Infantry: no leader teleport
    					 /*
    					 if ((_class in ["Infantry","ReconInfantry"]) and (behaviour leader _x	!="COMBAT") and ((_gaia_LeadPos select 1)>7)) then
    						{(leader _x) setpos (position(([((units _x)-[leader _x])] call BIS_fnc_selectRandom)select 0))};

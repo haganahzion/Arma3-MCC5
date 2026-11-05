@@ -16,9 +16,9 @@ The full MCC 5 overhaul: a new Eden and Zeus interface, a rewritten GAIA AI comm
 
 ## Where things are
 - **Eden editor:** the **MCC 5** menu in the top menu bar
-  - **MCC 5 Mission Settings...** — every MCC setting in one window (each defaults to "Use addon setting")
-  - **Mission Wizard... / Generate Mission** — set the options, then the whole mission is built in the editor so you can see and edit it before playing (Ctrl+Z undoes it)
-  - **Place MCC Module / Place Settings Module** — quick placement of MCC modules
+  - **MCC 5 Mission Settings...**: every MCC setting in one window (each defaults to "Use addon setting")
+  - **Mission Wizard... / Generate Mission**: set the options, then the whole mission is built in the editor so you can see and edit it before playing (Ctrl+Z undoes it)
+  - **Place MCC Module / Place Settings Module**: quick placement of MCC modules
 - **In game:** MCC users get **Zeus** (Ctrl+Delete or Y). The **MCC 5** button at the top lists every MCC tool.
 
 ## What's new
@@ -26,7 +26,7 @@ The full MCC 5 overhaul: a new Eden and Zeus interface, a rewritten GAIA AI comm
 ### New interface
 - The old MCC menu is replaced by Zeus and Eden. MCC users get Zeus automatically (limit it with the Access Rights module).
 - Zeus modules for every old menu feature: Mission Wizard, Artillery, Convoy, Air Drop, CAS Console, Reinforcements, Paradrop, Delete Brush, Jukebox, Hostage, Briefing, Broadcast, Save/Load, Start Location, Mission Start, Arsenal.
-- **GAIA: Control Group** — drop it on any AI group (e.g. your BLUFOR squad with you as a member): GAIA takes over, uses vehicles, works through the side's tasks and then patrols its area.
+- **GAIA: Control Group**: drop it on any AI group (e.g. your BLUFOR squad with you as a member): GAIA takes over, uses vehicles, works through the side's tasks and then patrols its area.
 - Eden modules: Mission Wizard, Convoy, Fire Mission, Music/Sound; group attribute for GAIA control; object attribute for Zeus editable.
 
 ### Mission Wizard in Eden
@@ -52,4 +52,4 @@ The full MCC 5 overhaul: a new Eden and Zeus interface, a rewritten GAIA AI comm
 
 Full details: `MCC_changelog.txt` (R34, R35).
 
-**Usage rules:** personal, non-commercial use only — no selling, reuploading or monetized servers. See `LICENSE.md` (also inside the zip). Permission requests: @z1on_8200 on Discord.
+**Usage rules:** personal, non-commercial use only. No selling, reuploading or monetized servers. See `LICENSE.md` (also inside the zip). Permission requests: @z1on_8200 on Discord.

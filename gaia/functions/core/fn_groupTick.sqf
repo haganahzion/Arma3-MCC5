@@ -5,7 +5,6 @@ Description:
 	Cheap per group work, called by the GAIA per-frame handler (server,
 	unscheduled) for a fixed budget of groups per frame, round robin over the
 	GAIA registry plus all groups flagged "mcc_gaia_cache".
-	Replaces the old GAIA cache loop (fn_startGaiaCache: sleep 0.1 + spawn per group).
 
 	Caching (only groups with "mcc_gaia_cache" = true):
 		Stage 1: engine Dynamic Simulation for the whole group. Enabled when the

@@ -7,8 +7,8 @@ Description:
 	- Every 10 s: refreshes the list of connected headless clients
 	  (GAIA_HC_OWNERS, owner ids, from allUsers + getUserInfo isHC). When the
 	  legacy single HC target MCC_ownerHC is gone (HC disconnected), it is
-	  pointed at another connected HC and broadcast, so old spawn code keeps
-	  working.
+	  pointed at another connected HC and broadcast, so spawn code that reads
+	  it keeps working.
 	- Moves newly spawned GAIA groups to the headless clients, round robin:
 	  GAIA_fnc_registerGroup queues every group it registers for the first time
 	  after mission time 30 (GAIA_HC_QUEUE, [group, ready time]). After 5 s

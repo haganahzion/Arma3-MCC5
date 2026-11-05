@@ -7,7 +7,7 @@
 		2. Close to objective  -> whole group gets out, leader included (GAIA_fnc_dismount).
 		3. After a fight       -> if the objective is still far, get back in the same vehicle (GAIA_fnc_remount).
 		4. Vehicle not 100 m closer to the objective in 90 s -> re-path; after 3 tries, continue on foot.
-		   (Off when HBQ Advanced Driving AI is loaded - it does its own unstuck/route recovery.)
+		   (Off when HBQ Advanced Driving AI is loaded: it does its own unstuck/route recovery.)
 		LAMBS Danger: groups on LAMBS task waypoints are left alone; contact dismounts are LAMBS's call,
 		GAIA only re-mounts after the fight.
 		5. Vehicle lost        -> forget it (a new ride may be found later).

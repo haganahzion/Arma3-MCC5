@@ -7,7 +7,7 @@ Description:
 	owned by a headless client the server forwards the call to that machine
 	(remoteExecCall to groupOwner). Only the server may remote execute it.
 
-	Mortar mode (default, same as the old GAIA_fnc_doMortar loop): every alive
+	Mortar mode (default): every alive
 	unit gets the magazine added to its vehicle and commandArtilleryFire.
 	Vehicle mode: every artillery vehicle of the group (artilleryScanner = 1)
 	fires with doArtilleryFire, using the given magazine when that vehicle can

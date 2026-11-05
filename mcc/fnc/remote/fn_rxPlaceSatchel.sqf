@@ -1,6 +1,6 @@
 //==================================================================MCC_fnc_rxPlaceSatchel=====================================================================================
 // Order a unit to move to a position, place a satchel charge there, return to its previous position; the charge detonates after 30 seconds.
-// Replaces remote code previously sent through BIS_fnc_spawn in MCC_fnc_rtsOrderPlaceSatchel. Must run where _leader is local.
+// Called by MCC_fnc_rtsOrderPlaceSatchel. Must run where _leader is local.
 // Example: [_pos, _leader] remoteExec ["MCC_fnc_rxPlaceSatchel", _leader];
 // <IN>
 //	_pos:						ARRAY - position to place the satchel

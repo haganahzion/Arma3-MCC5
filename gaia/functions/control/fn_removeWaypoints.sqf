@@ -42,7 +42,7 @@ while {(count (waypoints _group)) > 0} do
 
 
 
-//Clear the WP array also (the old in-loop removal skipped entries)
+//Clear the WP array too (removing inside the loop would skip entries)
 _TempArray = _TempArray select {(_x select 1) != _group};
 
 

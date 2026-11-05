@@ -61,7 +61,7 @@ _limit = [2,3,4] select _size;
 _counter = 1;
 _vehiclesArray = [];
 
-//Give up after 50 picks when the faction has no vehicle with seats or turrets (used to loop forever)
+//Give up after 50 picks when the faction has no vehicle with seats or turrets
 private _attempts = 0;
 while {_counter <=_limit && {_attempts < 50}} do
 {

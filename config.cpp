@@ -17,7 +17,7 @@ class CfgPatches
 		author = "shay_gman";
 		name = "MCC Sandbox";
 		versionDesc = "MCC Sandbox 5";
-		version = "5.35.0";
+		version = "5.35.1";
 	};
 
 	class mcc_sandbox_curatorExp
@@ -49,7 +49,7 @@ class CfgMods
 };
 
 //CBA
-// NOTE: CBA recommends registering settings in PreInit. MCC still registers them in PostInit because
+// CBA recommends registering settings in PreInit. MCC still registers them in PostInit because
 // several setting callbacks touch the player, UI layers and remoteExec, which are not ready in PreInit.
 // Moving this needs in-game testing first.
 class Extended_PostInit_EventHandlers {

@@ -100,7 +100,7 @@ class CfgFunctions
 
 class cfgRemoteExec {
 	class Functions {
-		// 0 = off, 1 = whitelist enforced, 2 = whitelist ignored (old default).
+		// 0 = off, 1 = whitelist enforced, 2 = whitelist ignored (engine default).
 		// Set to 1 for public servers; MCC's own calls are all listed below.
 		mode = 2;
 		jip = 1;

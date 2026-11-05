@@ -112,8 +112,8 @@ for [{_i = 0}, {((_i<50) and (_best<_minimum))or (_i<10)}, {_i = _i + 1}] do
 			if ((_goal == "VEH_HILLS_ROAD_FLAT" or _goal == "VEH_HILLS_FOREST_FLAT" or _goal == "ARM_HILLS_FLAT" ) and (_found>_best ) ) then
 				//Make sure the vehicle actualy fits (NOT within 3 meter of objects)
 				{
-						//Findsafepos returns the map center when it fails, which sent vehicles driving across the map.
-						//GAIA_fnc_safePos falls back to the old position instead. Also reject blacklisted results.
+						//Findsafepos returns the map center when it fails; GAIA_fnc_safePos falls back
+						//to the old position. Also reject blacklisted results.
 						_oldpos 	 = _pos;
 						_pos = [_pos, 0,40, 12, 0, 60 * (pi / 180), 0, _oldpos] call GAIA_fnc_safePos;
 						if ([_pos,_side] call GAIA_fnc_isBlacklisted) then
