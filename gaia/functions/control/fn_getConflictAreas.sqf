@@ -39,7 +39,7 @@ switch (_HQ_side) do
 // Removed spots from selection (we leave that up to clear patrols, no longer attacks
 //SPOTS (so fully cleared)
 
-//Target positions are read once (instead of once per CA)
+//Target positions are read once
 private _TargetPositions = [];
 {
 	_TargetInfo = (_x getVariable ["GAIA_TargetInfo",[]]);

@@ -77,7 +77,7 @@ _ArtCount			=0;
 					//Is this a real gun (no horn, smoke, flare or searchlight)? Cached per weapon class.
 					private _isGun = GAIA_WEAPON_FILTER_CACHE get _x;
 					if (isNil "_isGun") then {
-						//Same case sensitive test as the former BIS_fnc_inString calls
+						//Case sensitive, same as BIS_fnc_inString
 						_isGun = !("Horn" in _x) && {!("Smoke" in _x)} && {!("Flare" in _x)} && {!("SEARCHLIGHT" in _x)};
 						GAIA_WEAPON_FILTER_CACHE set [_x, _isGun];
 					};

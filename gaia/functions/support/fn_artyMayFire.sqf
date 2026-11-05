@@ -5,7 +5,7 @@ Description:
 	Zone rule for GAIA mortar / artillery groups: may this group fire on a
 	position? MOVE groups fire anywhere. NOFOLLOW groups fire only inside their
 	own zone, unless the CBA setting MCC_GAIA_ARTY_OUTSIDE_ZONE is on.
-	Other intends (DEFEND, FORTIFY, ...) do not fire, as before.
+	Other intends (DEFEND, FORTIFY, ...) do not fire.
 
 Parameters:
 	0: GROUP

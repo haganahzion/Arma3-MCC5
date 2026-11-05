@@ -2,10 +2,10 @@
 Function: GAIA_fnc_inZone
 
 Description:
-	Fast replacement of GAIA_fnc_isPositionInMarker for GAIA zones.
+	Faster GAIA_fnc_isPositionInMarker for GAIA zones.
 	Area markers (RECTANGLE / ELLIPSE) are tested with the engine command
 	inArea; any other marker shape falls back to GAIA_fnc_isPositionInMarker
-	so the result stays the same as before.
+	so results match.
 
 Parameters:
 	0: ARRAY - position

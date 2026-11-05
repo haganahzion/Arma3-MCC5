@@ -1,8 +1,8 @@
 /*
 	GAIA_fnc_isValidPos
 	Checks that a computed position is safe to send a group to.
-	BIS_fnc_findSafePos returns the world's center position when it fails, and some GAIA functions return [] —
-	both used to send AI driving across the map. This rejects those.
+	Rejects [] and the world center (BIS_fnc_findSafePos failure value), either of which would send AI
+	driving across the map.
 	Params:
 		0: ARRAY - position to check
 	Returns: BOOL

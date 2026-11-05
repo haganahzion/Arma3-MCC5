@@ -2,9 +2,8 @@
 Function: GAIA_fnc_startGaia
 
 Description:
-	The GAIA strategic scheduler. ONE scheduled server loop for all sides
-	(it used to be one loop per side). Idempotent: extra calls do nothing, the
-	(legacy) side parameter is ignored.
+	The GAIA strategic scheduler. ONE scheduled server loop for all sides.
+	Idempotent: extra calls do nothing, the (legacy) side parameter is ignored.
 
 	Every round, for each side (west, east, independent, civilian):
 		- a side wakes up when the registry holds a live GAIA group of that side
@@ -13,15 +12,14 @@ Description:
 		- an awake side runs one GAIA cycle (GAIA_fnc_sideCycle: analyzeTargets,
 		  getConflictAreas, analyzeForces, classifySide, issueOrders) and sets
 		  MCC_GAIA_OPERATIONAL_<SIDE>.
-	A round lasts (5 + MCC_GAIA_SHARETARGET_DELAY) seconds (same per side period
-	as before: 5 x 1 s phase sleeps + the share target delay), never less than
+	A round lasts (5 + MCC_GAIA_SHARETARGET_DELAY) seconds, never less than
 	1 s of sleep between rounds. Nothing in here sleeps per group.
 
 	Per group cheap work (caching, vehicle tick, empty group deletion, respawn)
 	is done by the CBA per-frame handler, see GAIA_fnc_startGaiaCache.
 
 Parameters:
-	none (old: [side], ignored)
+	none ([side] is accepted and ignored)
 
 Returns:
 	nothing
@@ -51,7 +49,7 @@ while {true} do
 	private _roundStart = time;
 	private _roundTick = diag_tickTime;
 
-	//Local counter only (it is no longer broadcast, nobody reads it on clients)
+	//Local counter only, clients don't read it
 	MCC_GAIA_CYCLE = MCC_GAIA_CYCLE + 1;
 
 	GAIA_CACHE_STAGE_2 = (2*(missionNamespace getVariable ["GAIA_CACHE_STAGE_1",1000]));

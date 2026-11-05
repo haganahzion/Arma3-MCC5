@@ -85,7 +85,7 @@ MCC_GAIA_FACTIONS_EAST		= [];
 MCC_GAIA_FACTIONS_INDEP		= [];
 MCC_GAIA_FACTIONS_CIV 		= [];
 //Zone status per zone number (index = parseNumber zone). These arrays grow on demand
-//(GAIA_fnc_analyzeForces pads them with 0), there is no 91 zone limit anymore.
+//(GAIA_fnc_analyzeForces pads them with 0), no zone count limit.
 MCC_GAIA_ZONESTATUS_WEST	=	[]; for "_i" from 0 to 90 do  { MCC_GAIA_ZONESTATUS_WEST set [_i,0];};
 MCC_GAIA_ZONESTATUS_EAST	=	[]; for "_i" from 0 to 90 do  { MCC_GAIA_ZONESTATUS_EAST set [_i,0];};
 MCC_GAIA_ZONESTATUS_INDEP	=	[]; for "_i" from 0 to 90 do  { MCC_GAIA_ZONESTATUS_INDEP set [_i,0];};
@@ -101,7 +101,7 @@ MCC_GAIA_TARGETS_CIV			= [[],[],[],[]];
 if (isNil "GAIA_REGISTRY") then {GAIA_REGISTRY = createHashMap;};
 //Groups flagged "mcc_gaia_cache" (rebuilt by GAIA_fnc_registrySweep)
 if (isNil "GAIA_CACHE_GROUPS") then {GAIA_CACHE_GROUPS = [];};
-//Objects that hold a GAIA_TargetInfo (replaces the allUnits+vehicles scan in GAIA_fnc_analyzeTargets)
+//Objects that hold a GAIA_TargetInfo (read by GAIA_fnc_analyzeTargets)
 if (isNil "GAIA_KNOWN_TARGETS") then {GAIA_KNOWN_TARGETS = [];};
 //Breadcrumb spatial grid (GAIA_fnc_breadcrumbAdd / breadcrumbPrune / breadcrumbNear)
 if (isNil "GAIA_BC_GRID") then {GAIA_BC_GRID = createHashMap;};
@@ -118,7 +118,7 @@ GAIA_EMPTY_GRACE			= 10;
 //Orders that keep a cached group out of dynamic simulation (they have to move while no player is around)
 GAIA_DS_EXCLUDED_ORDERS	= ["DoAttack","DoClear","DoTransport","DoSupport"];
 
-//------------------------------ Phase B tunables (CBA settings are in mcc/settings/gaiaSettings.sqf) ------------------------------
+//------------------------------ Support / coordination / HC tunables (CBA settings are in mcc/settings/gaiaSettings.sqf) ------------------------------
 //Support requests (GAIA_fnc_requestSupport): max new support responses per side per cycle
 GAIA_SUPPORT_PER_CYCLE	= 1;
 if (isNil "GAIA_SUPPORT_STATE") then {GAIA_SUPPORT_STATE = createHashMap;};
@@ -138,7 +138,7 @@ if (isNil "GAIA_HC_OWNERS") then {GAIA_HC_OWNERS = [];};
 
 //GAIA only becomes active for a side when that side has GAIA groups.
 
-//One scheduler for all sides now (it only runs on the server, see GAIA_fnc_startGaia)
+//One scheduler for all sides (it only runs on the server, see GAIA_fnc_startGaia)
 [] spawn GAIA_fnc_startGaia;
 
 //Per frame handler for the per group work (server) and empty group deletion (server and HC)

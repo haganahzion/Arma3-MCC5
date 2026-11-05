@@ -3,7 +3,7 @@
 	Server-authoritative change of a side's resources MCC_res<SIDE> = [ammo, repair, fuel, food, meds].
 	Can be called anywhere: on a client it forwards itself to the server with remoteExecCall.
 	The server applies the change atomically, clamps every value at 0 and broadcasts MCC_res<SIDE>
-	(setVariable with publish), so every existing reader keeps working.
+	(setVariable with publish).
 	Do NOT mutate the array you got from missionNamespace before calling this (it is shared by reference
 	on the hosting machine and the change would be applied twice).
 

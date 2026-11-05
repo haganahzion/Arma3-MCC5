@@ -47,7 +47,7 @@ private ["_side"
 				,"_HQ_side"];
 
 _side 										= _this select 0;
-//_HQ_side used to leak in from the caller (startGaia): it is the same side, define it here
+//_HQ_side = the side being processed (do not rely on the caller's variable)
 _HQ_side									= _side;
 _CA												=	[];
 _grp											= [];
@@ -108,7 +108,7 @@ switch (_side) do
 //Note the time, as this is the time where THIS round is running the show.
 _StartTimeIssueOrders = time;
 
-//Groups of this side: all of them (same set as the former allGroups + side check) and the GAIA registered ones
+//Groups of this side: all of them and the GAIA registered ones
 //(groups with a GAIA_ZONE_INTEND, used in every loop that required one anyway)
 private _allSideGroups	= groups _side;
 private _sideGroups		= [_side] call GAIA_fnc_getGroups;
@@ -116,7 +116,7 @@ private _sideGroups		= [_side] call GAIA_fnc_getGroups;
 //Groups running LAMBS Danger task waypoints are left alone (treated like FORTIFY)
 private _lambsGroups	= _allSideGroups select {[_x] call GAIA_fnc_hasLambsWaypoint};
 
-//Conflict Area cost, computed once per CA per cycle (it used to be computed per group per CA)
+//Conflict Area cost, computed once per CA per cycle
 private _caCostCache = createHashMap;
 private _fnc_caCost = {
 	params ["_caPos"];
@@ -513,11 +513,11 @@ private _fnc_caCost = {
 
 
 		 };
-		 //Next group (no sleep per group anymore)
+		 //Next group
 	}forEach 	([_sideGroups,[_SelectCA],{_input0 distance (leader _x)},"ASCEND",{alive (leader _x)}] call BIS_fnc_sortBy);
 
-	//One pass for the whole CA: roles instead of every group attacking on its own
-	//(one responder, or MCC_GAIA_COORDINATION off: plain GAIA_fnc_doAttack as before)
+	//One pass for the whole CA: roles per group
+	//(one responder, or MCC_GAIA_COORDINATION off: plain GAIA_fnc_doAttack)
 	[_side, _SelectCA, _responders, _sideGroups] call GAIA_fnc_assignRoles;
 
 
@@ -538,7 +538,7 @@ private _clearCandidates = _sideGroups select {("DoClear" in (_x getVariable  ["
 	if (count(_SpotInfo)>0) then
 		{
 		 _SpotPos = _SpotInfo select 1;
-		 //The dude should be hiding outside a CA (or we will already attack it) - same for every group
+		 //The dude should be hiding outside a CA (or we will already attack it), same for every group
 		 private _SpotOutsideCA = ((_CA findIf {(_x distance (_SpotPos)<MCC_GAIA_CA_SIZE)}) < 0);
 				{
 				 if (

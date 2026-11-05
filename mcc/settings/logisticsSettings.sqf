@@ -1,4 +1,4 @@
-//Limited logistics: ammo and fuel run out and supply trucks/bases matter. Off = no change from older MCC versions.
+//Limited logistics: ammo and fuel run out and supply trucks/bases matter. Off = unlimited supply (engine default).
 [
     "MCC_logisticsMode",
     "LIST",

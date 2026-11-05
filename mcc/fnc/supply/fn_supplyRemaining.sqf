@@ -2,7 +2,7 @@
 	MCC_fnc_supplyRemaining
 	How full a supply object still is, for refunds when a crate is returned at base.
 	Limited logistics tracks this type (fuel in mode 1, all in mode 2) and the object is registered: stock / capacity from ammoLeft/supplyLeft/fuelLeft.
-	Otherwise the old behaviour: the engine cargo (getAmmoCargo/getRepairCargo/getFuelCargo) when
+	Otherwise: the engine cargo (getAmmoCargo/getRepairCargo/getFuelCargo) when
 	MCC runs as a mod, else 1.
 	Params:
 		0: OBJECT - supply object

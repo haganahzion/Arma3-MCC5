@@ -176,7 +176,7 @@ class GAIA
         class doWait {};
     };
 
-    //Phase B: support requests, coordinated roles, unstick, headless client balancing
+    //Support requests, coordinated roles, unstick, headless client balancing
     class Support
     {
         #ifdef MCCMODE

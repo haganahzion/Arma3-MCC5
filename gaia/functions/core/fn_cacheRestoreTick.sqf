@@ -2,7 +2,7 @@
 Function: GAIA_fnc_cacheRestoreTick
 
 Description:
-	World level part of the old GAIA cache loop, called about once per second by
+	World level cache work, called about once per second by
 	the GAIA per-frame handler (server, unscheduled):
 		- restores far cached (stage 2) groups when a player comes within
 		  GAIA_CACHE_STAGE_2 of their stored position (GAIA_fnc_uncacheFar)

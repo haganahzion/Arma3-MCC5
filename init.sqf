@@ -261,7 +261,7 @@ if (isNil "MCC_isLocalHC" ) then {
 // Several headless clients are supported: the server finds every connected HC itself
 // (allUsers + getUserInfo) and GAIA moves newly spawned GAIA groups to them round robin
 // (GAIA_fnc_hcBalance). Each HC runs the GAIA vehicle logic for its own groups (GAIA_fnc_perFrame).
-// MCC_ownerHC stays the single target of the old "spawn on HC" code: the first HC to connect keeps it,
+// MCC_ownerHC is the target of the "spawn on HC" code: the first HC to connect keeps it,
 // the server re-points it when that HC disconnects.
 if (!hasInterface && !isServer) then {
 	0 spawn {
@@ -1066,7 +1066,7 @@ if (hasInterface) then {
 };
 
 //===============Delete Groups (server and HC client only)====================
-//Respawn bookkeeping and deletion of dead/empty groups now run in the GAIA CBA per-frame handler
+//Respawn bookkeeping and deletion of dead/empty groups run in the GAIA CBA per-frame handler
 //(GAIA_fnc_groupMaintenance, a few groups per frame, starts at mission time 120).
 //Server: all groups (respawn) and deletion of its local groups. HC: deletion of its local groups only.
 //GAIA_fnc_startGaiaCache is idempotent (gaia_init.sqf already starts it).

@@ -1,7 +1,7 @@
 //  In: [side,position,(optional) exclude ambient zones (zone number >= 1000)]
 // Out: Distance to Closest Zone (99999 when there is none or the closest zone marker no longer exists)
 // Spirit 19-1-2014
-// Single pass minimum search instead of sorting all zones on every call.
+// Single pass minimum search, no sort.
 
 params ["_side", "_pos", ["_ExcludeAmbientZone", false]];
 

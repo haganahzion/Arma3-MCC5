@@ -3,8 +3,7 @@ Function: GAIA_fnc_doAttackMotorizeInfantry
 
 Description:
 	Attack order for motorized and mechanized infantry (GAIA_fnc_doAttack).
-	Instead of driving the whole group onto the target, the vehicles drive to a
-	staging point on the approach, inside the dismount distance
+	The vehicles drive to a staging point on the approach, inside the dismount distance
 	(MCC_GAIA_dismountDistance x 0.8): a road segment close to it when there is
 	one, else open, fairly flat ground (GAIA_fnc_safePos). There the infantry
 	gets out (GAIA_fnc_vehicleTick dismounts passengers and leader, the crew

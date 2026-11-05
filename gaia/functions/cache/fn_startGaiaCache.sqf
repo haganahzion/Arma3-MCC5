@@ -5,11 +5,8 @@ Description:
 	Installs the GAIA CBA per-frame handler (GAIA_fnc_perFrame). Idempotent.
 	Runs on the server (per group tick: caching, vehicle tick, respawn
 	bookkeeping, empty group deletion, registry sweep) and on headless clients
-	(empty group deletion of their local groups only).
-
-	This used to be a scheduled loop over allGroups (sleep 0.1 and a spawn per
-	group) plus the "Delete Groups" loop in init.sqf; both are replaced by the
-	per-frame handler which processes a fixed budget of groups per frame.
+	(empty group deletion of their local groups only). Works through a fixed
+	budget of groups per frame.
 
 Parameters:
 	none

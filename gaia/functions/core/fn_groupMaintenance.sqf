@@ -2,8 +2,7 @@
 Function: GAIA_fnc_groupMaintenance
 
 Description:
-	Respawn bookkeeping and empty group deletion for ONE group. Replaces the
-	"Delete Groups" loop of init.sqf (sleep 0.1 per group over allGroups).
+	Respawn bookkeeping and empty group deletion for ONE group.
 	Called by the GAIA per-frame handler for a fixed budget of groups per frame.
 
 	Server (all groups):
