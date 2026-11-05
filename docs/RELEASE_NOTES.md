@@ -51,3 +51,5 @@ The full MCC 5 overhaul: a new Eden and Zeus interface, a rewritten GAIA AI comm
 - New MCC 5 artwork (logo and loading screen).
 
 Full details: `MCC_changelog.txt` (R34, R35).
+
+**Usage rules:** personal, non-commercial use only — no selling, reuploading or monetized servers. See `LICENSE.md` (also inside the zip). Permission requests: @z1on_8200 on Discord.
