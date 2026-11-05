@@ -141,7 +141,7 @@ if (((getNumber(configFile >> "CfgVehicles" >> typeOf player >> "canDeactivateMi
 	};
 };
 
-//Delete if done (a limited-logistics vehicle just runs empty)
+//Delete if done (a limited-logistics vehicle runs empty instead)
 if (_objectAmmo <= 0) exitWith {
 	if (_keepObject) then {_object setVariable ["ammoLeft",0,true]} else {deleteVehicle _object};
 };

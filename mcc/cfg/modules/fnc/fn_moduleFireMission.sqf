@@ -67,7 +67,7 @@ _logic setVariable ["MCC_fireMissionBusy", true];
 	private _types = missionNamespace getVariable ["MCC_artilleryTypeArray", [["HE 120mm","Sh_120mm_HE_Tracer_Red",1,30]]];
 	private _type = _types select ((_shellIndex max 0) min ((count _types) - 1));
 	_type params ["_shellName", "_shellClass", "_simulate"];
-	//3 = laser guided: needs a laser target and the old menu missile script - drop it as a plain shell instead
+	//3 = laser guided: needs a laser target and the console missile script, so fire it as a plain shell
 	if (_simulate == 3) then {_simulate = 1};
 
 	for "_s" from 1 to _salvos do {

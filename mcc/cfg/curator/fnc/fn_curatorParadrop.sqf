@@ -1,7 +1,6 @@
 /*=================================================================MCC_fnc_curatorParadrop==========================================================================
 	Zeus module "Paradrop Units": flies a group (the unit the module was placed on) or all players of a side to the module
-	position and drops them by parachute, drop pods or HALO (MCC_fnc_realParadrop). Replaces the old MCC menu
-	Unit Management "Parachute" / "H.A.L.O" buttons.
+	position and drops them by parachute, drop pods or HALO (MCC_fnc_realParadrop).
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing

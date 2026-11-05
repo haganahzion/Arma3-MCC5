@@ -1,7 +1,7 @@
 /*=================================================== MCC_fnc_edenWizardBuild ===================================================
 	Editor-time Mission Wizard: builds the whole mission from the prepared context MCC5MW_ctx (see
 	MCC_fnc_edenWizardGenerate, which runs this inside collect3DENHistory so one Ctrl+Z removes everything).
-	Order: optional clear of the old wizard layers, layers, operation marker, main MCC zone, objectives, main zone forces,
+	Order: optional clear of the previous wizard layers, layers, operation marker, main MCC zone, objectives, main zone forces,
 	operation task, briefing, intro, weather, GAIA support settings, player start, end trigger.
 	Each objective and each part runs on its own; a failure is logged and the rest is still built.
 
@@ -164,7 +164,7 @@ if (_weather > 0) then {
 		["Intel", "IntelDate", [_date select 0, _month, 1 + floor random 28]],
 		["Intel", "IntelTime", _hourValue]
 	];
-	//Wetter in winter, like the old wizard
+	//Wetter in winter, like the Zeus Mission Wizard
 	private _monthFactor = [1,1,0.8,0.8,0.6,0.4,0.2,0.2,0.4,0.6,0.8,1] select (_month - 1);
 	switch (_weather) do {
 		case 1: {

@@ -21,7 +21,7 @@
 #include "MCC_Module_createIntel.hpp"
 #include "MCC_Module_addValor.hpp"
 #include "MCC_Module_settingsMissionWizard.hpp"
-//Phase D - Eden modules
+//Eden modules
 #include "MCC_Module_missionWizard.hpp"
 #include "MCC_Module_convoy.hpp"
 #include "MCC_Module_fireMission.hpp"

@@ -1,6 +1,6 @@
 //==================================================================================================================================================================
-// Zeus modules that replace the old MCC main menu (mcc_groupGen / Mission Wizard dialogs). All run their dialog on the Zeus
-// player's machine (MCC_fnc_initDynamicDialog) and delete themselves.
+// MCC Zeus modules (group spawn, Mission Wizard, support, etc). Each opens its dialog on the Zeus
+// player's machine (MCC_fnc_initDynamicDialog) and then deletes itself.
 //==================================================================================================================================================================
 class MCC_Module_missionWizardCurator : MCC_Module_Base
 {

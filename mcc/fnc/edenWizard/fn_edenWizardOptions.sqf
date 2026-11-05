@@ -1,6 +1,6 @@
 /*=================================================== MCC_fnc_edenWizardOptions ===================================================
 	Reads the "MCC 5 Mission Wizard" scenario attributes (Cfg3DEN >> Mission >> MCC5_MW, get3DENMissionAttribute) and
-	resolves every "Random" choice, the same way the old Mission Wizard dialog did (mcc\missionWizard\scripts\
+	resolves every "Random" choice, the same way the Zeus Mission Wizard does (mcc\missionWizard\scripts\
 	missionWizardInit.sqf), so the generated mission is fixed and can be inspected in the editor.
 	Editor only.
 
@@ -81,7 +81,7 @@ private _used = [];
 _opts set ["objectives", _objectives];
 
 //------------------------------------------------ Forces ------------------------------------------------
-//CQB: same table as the old dialog
+//CQB: same table as the Zeus Mission Wizard
 private _isCQB = false;
 private _isCiv = false;
 switch (round (["MCC5MW_cqb", 3] call _fnc_get)) do {

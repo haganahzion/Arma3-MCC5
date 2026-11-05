@@ -1,6 +1,5 @@
 /*=================================================================MCC_fnc_curatorBriefing==========================================================================
 	Zeus module "Briefing": adds a briefing (diary) entry for everyone or one side, also for players joining later.
-	Replaces the old MCC menu Briefing tab.
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing

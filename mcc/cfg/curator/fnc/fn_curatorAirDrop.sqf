@@ -1,6 +1,6 @@
 /*=================================================================MCC_fnc_curatorAirDrop===========================================================================
 	Zeus module "Air Drop": drops supply crates or vehicles at the module position with MCC_fnc_airDrop
-	(parachute from a helicopter, slingload, or parachute without an aircraft). Replaces the old MCC menu Air Drop tab.
+	(parachute from a helicopter, slingload, or parachute without an aircraft).
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing
@@ -71,7 +71,7 @@ if (_isParachute == 1) then {_amount = 1};
 private _cargo = [];
 for "_i" from 1 to _amount do {_cargo pushBack _class};
 
-//Add to the commander console (same entry format as the old "Add" button)
+//Add to the commander console (same entry format as the console expects)
 if (_toConsole) exitWith {
 	private _arrayName = format ["MCC_ConsoleAirdropArray%1", _faction select 1];
 	private _array = missionNamespace getVariable [_arrayName, []];

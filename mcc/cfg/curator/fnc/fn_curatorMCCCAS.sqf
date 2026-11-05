@@ -15,7 +15,7 @@ _casTypes = missionNamespace getVariable ["MCC_CASBombs",[]];
 
 _unitsArray = (missionNamespace getVariable ["MCC_vehicles_airplanes",[]]) + (missionNamespace getVariable ["MCC_vehicles_helicopters",[]]);
 
-//These arrays are only filled by the old MCC login - fall back to every public aircraft
+//These arrays are only filled by the MCC login, fall back to every public aircraft
 if (_unitsArray isEqualTo []) then {
 	_unitsArray = (["", ["Plane","Helicopter"]] call MCC_fnc_curatorFactionClasses) apply {[_x select 1, _x select 0]};
 };

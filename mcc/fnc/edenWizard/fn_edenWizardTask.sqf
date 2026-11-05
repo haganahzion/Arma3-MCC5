@@ -40,7 +40,7 @@ private _parent = _ctx getOrDefault ["parentTask", ""];
 //Task id: child of the operation task when there is one
 private _idCode = if (_parent == "") then {str _id} else {str [_id, _parent]};
 
-//Destination: the object itself (precise) or a spot up to 300 m away (old wizard behaviour)
+//Destination: the object itself (precise) or a spot up to 300 m away
 private _destCode = if (_precise) then {
 	if (_objVar != "") then {
 		format ["[missionNamespace getVariable [%1, objNull], true]", str _objVar]

@@ -1,6 +1,6 @@
 /*=================================================================MCC_fnc_curatorClientInit========================================================================
-	CLIENT postInit: Zeus access without the old MCC menu.
-	- CBA keybind "Open Zeus (MCC)" (default Ctrl+Delete, the old "Open MCC" key) opens the Zeus interface when the player
+	CLIENT postInit: Zeus access for MCC users.
+	- CBA keybind "Open Zeus (MCC)" (default Ctrl+Delete) opens the Zeus interface when the player
 	  has a curator.
 	- Tells the server the client is ready (MCC_curatorClientReady) so MCC_fnc_curatorAutoAssign can give it a curator.
 	- Adds MCC's curator event handlers (MCC_curatorMouseOver used by MCC modules, init line on double click) to curators

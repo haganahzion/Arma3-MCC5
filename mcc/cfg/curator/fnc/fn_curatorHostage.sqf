@@ -1,6 +1,6 @@
 /*=================================================================MCC_fnc_curatorHostage===========================================================================
 	Zeus module "Make Hostage": turns the unit the module was placed on into a tied up hostage that players can untie
-	(same as the old MCC hostage / Mission Wizard HVT). Place a unit with Zeus first, then drop this module on it.
+	(same as the Mission Wizard HVT). Place a unit with Zeus first, then drop this module on it.
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing

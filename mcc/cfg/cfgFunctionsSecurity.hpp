@@ -1,4 +1,4 @@
-// Network security helpers and small named functions that replaced code sent over the network.
+// Network security helpers, plus small named functions so clients never send raw code over the network.
 class security
 {
 	#ifdef MCCMODE

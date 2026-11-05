@@ -1,6 +1,6 @@
 /*=================================================================MCC_fnc_curatorAutoAssign========================================================================
 	SERVER postInit: gives Zeus to every player allowed to use MCC while the CBA setting MCC_zeusForMCCUsers is on.
-	Allowed = MCC_fnc_isAuthorizedOwner (same rule as the old MCC menu: MCC_allowedPlayers UIDs or "all", logged in
+	Allowed = MCC_fnc_isAuthorizedOwner (MCC_allowedPlayers UIDs or "all", logged in
 	admins / host when MCC_allowAdmin, or the MCC Access Rights module). Players that are not allowed get nothing, and
 	lose the curator MCC gave them when they stop being allowed or the setting is turned off.
 	- The first player gets MCC_curator (so MCC save/load keeps working), every other player gets an own ModuleCurator_F

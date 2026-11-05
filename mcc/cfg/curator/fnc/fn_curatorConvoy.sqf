@@ -1,7 +1,6 @@
 /*=================================================================MCC_fnc_curatorConvoy============================================================================
 	Zeus module "Convoy - Spawn": spawns an MCC convoy (up to 5 vehicles, optional HVT in the middle vehicle) at the module
 	position, facing the chosen heading. Use the "Convoy - Drive To" module (MCC_fnc_curatorConvoyStart) to send it.
-	Replaces the old MCC menu Convoy tab (place convoy).
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing
