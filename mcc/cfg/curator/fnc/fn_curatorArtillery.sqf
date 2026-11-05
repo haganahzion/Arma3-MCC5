@@ -1,6 +1,6 @@
 /*=================================================================MCC_fnc_curatorArtillery=========================================================================
 	Zeus module "Artillery Fire Mission": fires MCC artillery (HE, smoke, flares, cluster, mines, DPICM, laser guided...)
-	at the module position, or adds the shells to a side's artillery console. Replaces the old MCC menu Artillery tab.
+	at the module position, or adds the shells to a side's artillery console.
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing
@@ -43,11 +43,11 @@ private _nShell = _rounds select (_result select 2);
 private _delay = _delays select (_result select 3);
 
 if ((_result select 4) == 0) then {
-	//Fire mission (same call as the old Artillery tab map click)
+	//Fire mission
 	[[_pos select 0, _pos select 1, 0], _shellType, _spread, _nShell, _simulate, _delay] remoteExec ["MCC_fnc_artillery", 2];
 	[objNull, format ["%1 x%2 inbound", _shellName, _nShell]] call BIS_fnc_showCuratorFeedbackMessage;
 } else {
-	//Add to the artillery console (same as the old "Add" button)
+	//Add to the side's artillery console
 	private _sideName = ["WEST", "EAST", "GUER"] select (_result select 5);
 	private _artiTypes = missionNamespace getVariable ["HW_arti_types", []];
 	if !([_shellName, _shellType] in _artiTypes) then {

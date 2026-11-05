@@ -1,6 +1,5 @@
 /*=================================================================MCC_fnc_curatorArsenal===========================================================================
 	Zeus module "Arsenal (Zeus player)": closes Zeus and opens the full Virtual Arsenal for the Zeus player's own unit.
-	Replaces the old MCC menu Arsenal button.
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing

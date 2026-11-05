@@ -1,6 +1,6 @@
 /*=================================================================MCC_fnc_curatorConvoyStart=======================================================================
 	Zeus module "Convoy - Drive To": fills the last spawned MCC convoy with cargo and drives it to the module position
-	(MCC_fnc_startConvoy). Replaces the old MCC menu Convoy tab "Start convoy" button.
+	(MCC_fnc_startConvoy).
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing

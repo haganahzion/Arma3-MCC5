@@ -1,6 +1,6 @@
 /*=================================================================MCC_fnc_curatorSaveLoad==========================================================================
 	Zeus module "Save / Load Mission": opens the MCC save/load screen (save to profile slots or clipboard, load, export
-	to SQM / composition, activate or clear the persistent database). Replaces the old MCC menu Save/Load button.
+	to SQM / composition, activate or clear the persistent database).
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing

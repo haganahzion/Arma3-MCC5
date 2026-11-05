@@ -1,6 +1,6 @@
 /*=================================================================MCC_fnc_curatorCASConsole========================================================================
-	Zeus module "CAS for Commander Console": gives a side's commander console a CAS / AC-130 / UAV call (plane + CAS type),
-	like the old MCC menu CAS tab "Add" button. To fire CAS right away use the "CAS - MCC" module.
+	Zeus module "CAS for Commander Console": gives a side's commander console a CAS / AC-130 / UAV call (plane + CAS type).
+	To fire CAS right away use the "CAS - MCC" module.
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing

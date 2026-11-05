@@ -136,7 +136,7 @@ if (missionNamespace getvariable ["MCC_showActionKey",true]) then {
 	};
 	*/
 
-	// The "--= MCC =--" scroll action (old main menu) was removed in MCC5: MCC is used through Zeus/Eden modules.
+	// No MCC scroll action: MCC is opened through Zeus/Eden modules. Clear a leftover one.
 	if ((player getVariable ["MCC_actionMCCMain",-1]) != -1) then	{player removeAction (player getVariable ["MCC_actionMCCMain",nil]); player setVariable ["MCC_actionMCCMain",-1]};
 
 	if (!MCC_isMode && !MCC_isCBA) then {

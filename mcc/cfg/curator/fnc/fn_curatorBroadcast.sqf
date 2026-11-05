@@ -1,6 +1,5 @@
 /*=================================================================MCC_fnc_curatorBroadcast=========================================================================
 	Zeus module "Broadcast Message": shows a text to every player (small text at the bottom or big text in the middle).
-	Replaces the old MCC menu Debug tab broadcast buttons.
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing

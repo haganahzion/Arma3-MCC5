@@ -32,7 +32,7 @@ private _sizeMul = _opts get "sizeMul";
 private _objCount = count (_opts get "objectives");
 if (_objCount == 0) exitWith {["every objective slot is None - set at least one objective in MCC 5 > Mission Wizard..."] call _fnc_error};
 
-//------------------------------------------------------------ Numbers (old wizard) ------------------------------------------------------------
+//------------------------------------------------------------ Numbers (as MCC_fnc_MWinitMission) ------------------------------------------------------------
 private _difficulty = _opts get "difficulty";
 private _total = if ((_players * _difficulty) > 10) then {_players * _difficulty} else {20};
 _total = round (_total * _sizeMul);

@@ -33,7 +33,7 @@ class curator
 	class RscAttributeVehicleCargo {description = "handle the cargo RSC in curator - can't run in uinamespace";};
 	class curatorDrawLine {description = "based on the code by PabstMirror for ACE";};
 
-	//Zeus replacements for the old MCC main menu
+	//MCC Zeus modules
 	class curatorFactionClasses {description = "Zeus helper: public vehicle classes of a faction by kind";};
 	class curatorMissionWizard {description = "Zeus module: Mission Wizard";};
 	class curatorArtillery {description = "Zeus module: artillery fire mission";};

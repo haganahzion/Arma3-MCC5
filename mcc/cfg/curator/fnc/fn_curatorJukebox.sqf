@@ -1,6 +1,6 @@
 /*=================================================================MCC_fnc_curatorJukebox===========================================================================
 	Zeus module "Jukebox": play music or a sound to every player now, stop the music, or create an area trigger at the
-	module position that plays the track when activated (MCC_fnc_MusicTrigger). Replaces the old MCC menu Jukebox tab.
+	module position that plays the track when activated (MCC_fnc_MusicTrigger).
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing
@@ -35,7 +35,7 @@ if (_action == 1) exitWith {
 	deleteVehicle _module;
 };
 
-//Build the tracks list (same configs as the old jukebox)
+//Build the tracks list
 private _cfgs = if (_isMusic) then {
 	[missionConfigFile >> "CfgMusic", configFile >> "CfgMusic"]
 } else {

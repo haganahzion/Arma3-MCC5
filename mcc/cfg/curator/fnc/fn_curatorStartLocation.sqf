@@ -1,6 +1,6 @@
 /*=================================================================MCC_fnc_curatorStartLocation=====================================================================
 	Zeus module "Start Location / FOB": builds a side's HQ start location or a FOB respawn point at the module position
-	(MCC_fnc_buildSpawnPoint). Replaces the old MCC menu Start Location tab.
+	(MCC_fnc_buildSpawnPoint).
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing
@@ -34,7 +34,7 @@ private _spawnPos = [_pos select 0, _pos select 1, 0];
 
 if (_isHQ) then {
 	if (_sideIndex == 3) then {
-		//Civilians have no HQ building, only the start position (old menu behaviour)
+		//Civilians have no HQ building, only the start position
 		MCC_START_CIV = _spawnPos;
 		publicVariable "MCC_START_CIV";
 	} else {

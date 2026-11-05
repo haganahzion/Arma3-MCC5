@@ -1,6 +1,6 @@
 /*=================================================================MCC_fnc_curatorMissionWizard=====================================================================
 	Zeus module "Mission Wizard": asks the Mission Wizard options and generates a mission on the server
-	(MCC_fnc_MWinitMission) around the module position or anywhere on the map. Replaces the old MCC Mission Wizard dialog.
+	(MCC_fnc_MWinitMission) around the module position or anywhere on the map.
 	The number of objectives above 3 and the mission size come from the CBA settings MCC_MWmaxObjectives / MCC_MWmissionSize.
 	Params:
 		0: OBJECT - the placed module
@@ -119,7 +119,7 @@ private _markers = _result select 24;
 private _minObjectivesDistance = if (_isCQB) then {100} else {200};
 private _maxObjectivesDistance = (_minObjectivesDistance * 1.5) + (10 * _playersNumber);
 
-//Build the faction's unit arrays and send them to the server (same as the old wizard)
+//Build the faction's unit arrays and send them to the server
 [objNull, "Mission Wizard: preparing the faction"] call BIS_fnc_showCuratorFeedbackMessage;
 [_enemyFaction, _enemySide] call MCC_fnc_MWCreateUnitsArray;
 

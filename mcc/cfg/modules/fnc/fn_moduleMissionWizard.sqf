@@ -1,13 +1,13 @@
 /*=================================================== MCC_fnc_moduleMissionWizard ===================================================
 	Eden module "MCC Mission Wizard" (MCC_Module_missionWizard). Generates a Mission Wizard mission on the server at mission
-	start with the module's attributes - the Eden replacement of the old MCC menu Mission Wizard tab.
+	start with the module's attributes.
 
 	Mission area (attribute "areaMode"):
 		0 - Area: a random spot inside the area of a synced trigger, or the module's own area (default 1500 m)
 		1 - Exact: the objectives are spread around the module position
 		2 - Whole map
 
-	Params (module framework, server only - isGlobal = 0):
+	Params (module framework, server only, isGlobal = 0):
 		0: OBJECT - the module logic
 		1: ARRAY  - synced units (unused)
 		2: BOOL   - activated
@@ -90,7 +90,7 @@ _logic setVariable ["MCC_MWstarted", true];
 	};
 	_logic setVariable ["MCC_MWmissionId", _missionId, true];
 
-	//CQB - same table as the old dialog
+	//CQB: same table as the Zeus Mission Wizard
 	private _isCQB = false;
 	private _isCiv = false;
 	switch (round _cqbMode) do {
@@ -126,7 +126,7 @@ _logic setVariable ["MCC_MWstarted", true];
 		diag_log format ["MCC Mission Wizard module: player faction '%1' and enemy faction '%2' are on the same side", _playerFaction, _enemyFaction];
 	};
 
-	//------------------------------------------------ Numbers (same as the old dialog) ------------------------------------------------
+	//------------------------------------------------ Numbers (same as the Zeus Mission Wizard) ------------------------------------------------
 	private _totalEnemyUnits		= if ((_playersNumber * _difficulty) > 10) then {_playersNumber * _difficulty} else {20};
 	private _minObjectivesDistance	= if (_isCQB) then {100} else {200};
 	private _maxObjectivesDistance	= (_minObjectivesDistance * 1.5) + (10 * _playersNumber);
@@ -185,7 +185,7 @@ _logic setVariable ["MCC_MWstarted", true];
 
 	_logic setVariable ["MCC_MWstate", "generating", true];
 
-	//Unit arrays + group configs of the enemy faction (the client did this in the old dialog)
+	//Unit arrays + group configs of the enemy faction (the Zeus module does this on the client)
 	private _check = [_enemyFaction, _enemySide] call MCC_fnc_MWCreateUnitsArray;
 	waitUntil {!isNil "_check"};
 	if (count (missionNamespace getVariable ["MCC_MWunitsArrayMen", []]) == 0) exitWith {

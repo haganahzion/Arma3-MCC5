@@ -1,7 +1,6 @@
 /*=================================================================MCC_fnc_curatorDeleteBrush=======================================================================
 	Zeus module "Delete / Area Brush": runs MCC_fnc_deleteBrush on the server in a radius around the module
 	(delete units/vehicles/markers/bodies, lights on/off, lock doors, warzone/sandstorm/snow atmosphere, N/V, flashlights).
-	Replaces the old MCC menu Brushes/Delete tab.
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing

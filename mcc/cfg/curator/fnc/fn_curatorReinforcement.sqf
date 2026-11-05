@@ -1,7 +1,6 @@
 /*=================================================================MCC_fnc_curatorReinforcement=====================================================================
-	Zeus module "Reinforcements": calls AI reinforcements to the module position - helicopter paradrop / drop-off /
-	fast-rope (MCC_fnc_paratroops) or a motorized column (MCC_fnc_reinforcement). Replaces the old MCC menu
-	"Reinforcement" spawn type.
+	Zeus module "Reinforcements": calls AI reinforcements to the module position: helicopter paradrop / drop-off /
+	fast-rope (MCC_fnc_paratroops) or a motorized column (MCC_fnc_reinforcement).
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing

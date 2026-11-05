@@ -1,5 +1,5 @@
 /*=================================================================MCC_fnc_curatorConvoyServer======================================================================
-	SERVER: spawns a convoy for the Zeus convoy module through the old convoy script (MCC_fnc_s_place_convoy).
+	SERVER: spawns a convoy for the Zeus convoy module through the MCC convoy script (MCC_fnc_s_place_convoy).
 	That script needs unused vehicle slots to be nil, which cannot be sent over the network, so this wrapper builds the
 	argument array on the server.
 	Params:

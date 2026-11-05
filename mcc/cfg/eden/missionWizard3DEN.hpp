@@ -18,7 +18,7 @@ class MCC5_MW
 				class MCC5MW_areaMode
 				{
 					displayName = "Mission Area";
-					tooltip = "Where the mission is built when you press MCC 5 > Generate Mission.\nSelection: the area of the ONE selected trigger or area marker; if nothing is selected, the point the editor camera looks at.\nCamera: always the point in the center of the screen.\nWhole map: a random town/location of the terrain (the old 'whole map' wizard mode).";
+					tooltip = "Where the mission is built when you press MCC 5 > Generate Mission.\nSelection: the area of the ONE selected trigger or area marker; if nothing is selected, the point the editor camera looks at.\nCamera: always the point in the center of the screen.\nWhole map: a random town/location of the terrain.";
 					property = "MCC5MW_areaMode";
 					control = "Combo";
 					expression = "";
@@ -34,7 +34,7 @@ class MCC5_MW
 				class MCC5MW_areaRadius
 				{
 					displayName = "Area Radius (m)";
-					tooltip = "Radius of the mission area. 0 = automatic (from players, objectives and mission size, like the old wizard). Ignored when a selected trigger/marker gives the area.";
+					tooltip = "Radius of the mission area. 0 = automatic (from players, objectives and mission size, as in the Zeus Mission Wizard). Ignored when a selected trigger/marker gives the area.";
 					property = "MCC5MW_areaRadius";
 					control = "EditShort";
 					expression = "";

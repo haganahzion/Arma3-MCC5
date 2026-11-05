@@ -129,7 +129,7 @@ private _where = selectRandom ["in this location", "in this area", "somewhere in
 switch (true) do {
 
 	case (_type == "Secure HVT"): {
-		//Hostage: a player faction soldier or a civilian (50/50 like the old wizard)
+		//Hostage: a player faction soldier or a civilian (50/50 like the Zeus wizard)
 		private _hostageData = if (random 1 > 0.5 && {(_player get "men") isNotEqualTo []}) then {_player} else {_civ};
 		private _class = [_hostageData] call _fnc_hvtClass;
 		if (_class == "") exitWith {};
@@ -176,7 +176,7 @@ switch (true) do {
 		]] call MCC_fnc_edenWizardCreate;
 		if (isNull _unit) exitWith {_objVar = ""};
 		_unit set3DENAttribute ["position", _spot];
-		//Bodyguards in the HVT's group (old wizard: 0-4)
+		//Bodyguards in the HVT's group (0-4)
 		private _group = group _unit;
 		for "_i" from 1 to (1 + floor random 4) do {
 			if (_enemyMen isEqualTo []) exitWith {};
@@ -211,7 +211,7 @@ switch (true) do {
 			case "radar": {["MCC_MWradar", "", ["Land_Radar_Small_F","B_Radar_System_01_F","O_Radar_System_02_F"]] call MCC_fnc_edenWizardSetting};
 			default {["MCC_MWRadio", "", ["Land_TTowerBig_2_F"]] call MCC_fnc_edenWizardSetting};
 		};
-		//The enemy's own vehicles first, then anything in the list (old wizard)
+		//The enemy's own vehicles first, then anything in the list
 		private _sideList = _list select {getNumber (configFile >> "CfgVehicles" >> _x >> "side") == (_enemy get "sideNum")};
 		if (_sideList isNotEqualTo []) then {_list = _sideList};
 		if (_list isEqualTo []) exitWith {};
@@ -274,7 +274,7 @@ switch (true) do {
 
 	case (_type in ["Acquire Intel", "Download Intel"]): {
 		private _download = _type == "Download Intel";
-		//Open ground: a camp; a building close by is used for the item (old wizard)
+		//Open ground: a camp; a building close by is used for the item
 		if (!_isCQB) then {
 			_pos = [_pos, false] call _fnc_camp;
 			if (_building isNotEqualTo [] && {((_building select 0) distance2D _pos) > 50}) then {_building = []};
@@ -291,7 +291,7 @@ switch (true) do {
 			_class = "Land_DataTerminal_01_F";
 		} else {
 			_class = selectRandom (["MCC_MWIntelObjects", "", ["Land_File2_F","Land_FilePhotos_F","Land_Laptop_unfolded_F","Land_SatellitePhone_F","Land_Suitcase_F"]] call MCC_fnc_edenWizardSetting);
-			//On a small table like the old wizard
+			//On a small table
 			private _table = ["Object", "Land_WoodenTable_small_F", _spot, [["enableSimulation", false], ["rotation", [0, 0, random 360]]], true] call MCC_fnc_edenWizardCreate;
 			if (!isNull _table) then {
 				_table set3DENAttribute ["position", _spot];
@@ -360,7 +360,7 @@ switch (true) do {
 		private _device = ["Object", _class, _spot, [["Name", _objVar], ["rotation", [0, 0, random 360]]], true] call MCC_fnc_edenWizardCreate;
 		if (isNull _device) exitWith {_objVar = ""};
 		_device set3DENAttribute ["position", _spot];
-		//MCC IED module: big, deadly, mini-game disarm, only the mission maker can detonate it (old wizard: trigger type 4)
+		//MCC IED module: big, deadly, mini-game disarm, only the mission maker can detonate it (trigger type 4)
 		private _module = ["Logic", "MCC_Module_createIED", _spot getPos [4, 0], [
 			["side", _player get "sideNum"],
 			["size", "large"],
@@ -405,7 +405,7 @@ if (_placed < 2 && {_guards > 0}) then {
 	[_source, _gPos, _zone, "FORTIFY"] call MCC_fnc_edenWizardSpawnGroup;
 };
 
-//Infantry patrols in the objective zone (old wizard: 20% of the enemy force per objective)
+//Infantry patrols in the objective zone (20% of the enemy force per objective)
 private _budget = _total * 0.2;
 private _start = _ctx getOrDefault ["units", 0];
 for "_i" from 1 to 6 do {

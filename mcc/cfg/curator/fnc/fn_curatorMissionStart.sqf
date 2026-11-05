@@ -1,7 +1,6 @@
 /*=================================================================MCC_fnc_curatorMissionStart======================================================================
 	Zeus module "Respawn / Mission Start": teleport every player to his side's start location now
 	(MCC_fnc_startLocations), disable respawn (start the mission), or toggle MCC role selection (admin / host only).
-	Replaces the old MCC menu "Disable respawn" button and Start Location tab actions.
 	Params:
 		0: OBJECT - the placed module
 	Returns: nothing
@@ -47,7 +46,7 @@ switch (_result select 0) do {
 		publicVariable "CP_activated";
 		if (CP_activated) then {[] spawn MCC_fnc_s_player_init};
 
-		//Set tickets on the server (old menu behaviour)
+		//Set tickets on the server
 		if (isServer) then {
 			{
 				private _tickets = missionNamespace getVariable [format ["MCC_tickets%1", _x], 200];

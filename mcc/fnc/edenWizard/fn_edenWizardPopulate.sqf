@@ -150,7 +150,7 @@ if (_artillery > 0) then {
 	}] call _fnc_part;
 };
 
-//------------------------------------------------------------ Static weapons (70%, old wizard) ------------------------------------------------------------
+//------------------------------------------------------------ Static weapons (70%) ------------------------------------------------------------
 if (random 1 > 0.3 && {(_enemy get "staticMG") isNotEqualTo []}) then {
 	["statics", {
 		for "_i" from 1 to (1 + floor random 3) do {
@@ -232,7 +232,7 @@ if (_opts get "ied") then {
 			if (_placed >= _max) exitWith {};
 			if (random 1 > 0.3) then {
 				private _road = _x;
-				//30% a parked civilian car, else junk on the roadside (old wizard)
+				//30% a parked civilian car, else junk on the roadside
 				private _useCar = random 1 < 0.3 && {_wrecks isNotEqualTo []};
 				private _class = if (_useCar) then {selectRandom _wrecks} else {selectRandom _props};
 				if (isNil "_class") exitWith {};
@@ -278,7 +278,7 @@ private _fnc_civWithModule = {
 
 if (_opts get "sb") then {
 	["suicideBombers", {
-		//Old wizard: for 0..total/30, 50% each
+		//For 0..total/30, 50% each
 		private _count = 0;
 		for "_i" from 0 to floor (_total / 30) do {if (random 1 > 0.5) then {_count = _count + 1}};
 		[_count max 1, "MCC_Module_createIED", [["side", _playerSideNum], ["size", "large"], ["effect", 0]], "bomber"] call _fnc_civWithModule;
