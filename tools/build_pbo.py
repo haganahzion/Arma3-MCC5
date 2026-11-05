@@ -56,10 +56,11 @@ def main():
                  'logoOver = "\\mcc_sandbox_mod\\data\\mod.paa";\ntooltip = "MCC Sandbox 5";\n'
                  'overview = "Mission Control Center: build and run missions on the fly with Zeus and Eden. GAIA AI commander.";\n'
                  'author = "shay_gman";\n')
-    inst = os.path.join(ROOT, "INSTALL.md")
-    if os.path.exists(inst):
-        with open(inst, "rb") as a, open(os.path.join(mod, "INSTALL.md"), "wb") as b:
-            b.write(a.read())
+    for doc in ("INSTALL.md", "LICENSE.md"):
+        src = os.path.join(ROOT, doc)
+        if os.path.exists(src):
+            with open(src, "rb") as a, open(os.path.join(mod, doc), "wb") as b:
+                b.write(a.read())
     print("packed %d files, %.1f MB -> %s" % (n, size / 1e6, mod))
 
 if __name__ == "__main__":
