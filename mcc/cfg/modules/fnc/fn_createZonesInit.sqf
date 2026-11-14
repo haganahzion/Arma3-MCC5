@@ -42,17 +42,27 @@ if (isNull curatorCamera) exitWith {
 				_module = _x;
 				_behavior = _module getVariable	["behavior",0];
 
+				if !(_behavior isEqualType 0) then {_behavior = 0};
+				_behavior = (round _behavior) max 0 min ((count MCC_spawn_behaviors) - 1);
+
+				private _assignGroups = [];
 				{
-					if (_x isEqualType grpNull) then {
-						_x setVariable ["GAIA_ZONE_INTEND",[str _zoneNumber ,((MCC_spawn_behaviors select _behavior) select 1)], true];
-					};
+					if (_x isEqualType grpNull) then {_assignGroups pushBackUnique _x};
 
 					if (_x isEqualType objNull) then {
-						if (side group _x in [west,resistance,east,civilian]) then {
-							(group _x) setVariable ["GAIA_ZONE_INTEND",[str _zoneNumber ,((MCC_spawn_behaviors select _behavior) select 1)], true];
-						};
+						if (side group _x in [west,resistance,east,civilian]) then {_assignGroups pushBackUnique (group _x)};
 					};
 				} forEach (synchronizedobjects _module);
+
+				//Same as MCC_fnc_edenGroupGAIA / MCC_fnc_AI_assignToZone: intend, GAIA cache (the group's own "GAIA Cache"
+				//attribute, else the MCC caching default) and immediate registration
+				{
+					private _cache = _x getVariable ["MCC_edenGaiaCache", missionNamespace getVariable ["mcc_caching", false]];
+					if !(_cache isEqualType true) then {_cache = false};
+					_x setVariable ["GAIA_ZONE_INTEND",[str _zoneNumber ,((MCC_spawn_behaviors select _behavior) select 1)], true];
+					_x setVariable ["mcc_gaia_cache", _cache, true];
+					[_x] call GAIA_fnc_registerGroup;
+				} forEach (_assignGroups select {!isNull _x && {(units _x) isNotEqualTo []}});
 			} forEach _assignAImodule;
 		};
 	};

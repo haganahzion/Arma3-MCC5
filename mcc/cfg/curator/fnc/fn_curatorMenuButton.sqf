@@ -30,7 +30,7 @@ MCC_fnc_curatorMenuPlace = {
 	private _pos = screenToWorld [0.5, 0.5];
 	private _grp = createGroup [sideLogic, true];
 	private _logic = _grp createUnit [_class, _pos, [], 0, "CAN_COLLIDE"];
-	(getAssignedCuratorLogic player) addCuratorEditableObjects [[_logic], false];
+	[getAssignedCuratorLogic player, [[_logic], false]] remoteExec ["addCuratorEditableObjects", 2];
 };
 
 MCC_fnc_curatorMenuCreate = {

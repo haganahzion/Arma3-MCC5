@@ -67,7 +67,7 @@ switch (_mode) do {
 			private _p = if (_i == 0) then {+_pos} else {_pos getPos [random (_radius * (_i / 40)) + 5, random 360]};
 			_p resize 2;
 			if !(surfaceIsWater _p) then {
-				private _flat = _p isFlatEmpty [_size, -1, 0.35, _size, 0, false, objNull];
+				private _flat = [_p select 0, _p select 1, 0] isFlatEmpty [_size, -1, 0.35, _size, 0, false, objNull];
 				if (_flat isNotEqualTo [] && {!isOnRoad _p}) exitWith {_result = [_p select 0, _p select 1, 0]};
 			};
 			if (_result isNotEqualTo []) exitWith {};

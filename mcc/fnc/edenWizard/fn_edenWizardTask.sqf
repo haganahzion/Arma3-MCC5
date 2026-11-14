@@ -52,8 +52,8 @@ private _destCode = if (_precise) then {
 };
 
 private _init = format [
-	"if (isServer) then {0 = [] spawn {sleep 1; [%1, %2, [%3, %4, ''], %5, 'CREATED', 1, true, %6, %7] call BIS_fnc_taskCreate;};};",
-	_sideCode, _idCode, str _description, str _title, _destCode, str _type, _precise && {_objVar != ""}
+	"if (isServer) then {0 = [] spawn {sleep 1; [%1, %2, [%3, %4, ''], %5, 'CREATED', 1, true, %6, %7] call BIS_fnc_taskCreate; if (isNil 'MCC_taskRegistry') then {MCC_taskRegistry = []}; MCC_taskRegistry pushBackUnique [%8, %1];};};",
+	_sideCode, _idCode, str _description, str _title, _destCode, str _type, _precise && {_objVar != ""}, str _id
 ];
 
 private _logic = ["Logic", "Logic", _pos getPos [3, 180], [
