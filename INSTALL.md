@@ -18,7 +18,7 @@
    (Any folder works, but the Arma 3 folder is the simplest.)
 3. Open the **Arma 3 Launcher**, go to **Mods**, then **Add watched folder** (or **Local mod** under the "..." menu), and pick the `@mcc_sandbox_a3` folder.
 4. Tick **MCC Sandbox 5** and **CBA_A3**, plus any optional mods you want, then press **Play**.
-5. **Remove or untick any old MCC Sandbox 4 version.** Two MCC versions loaded together will conflict.
+5. **Remove or untick any older MCC Sandbox version.** Two MCC versions loaded together will conflict.
 
 ### Dedicated server
 - Copy `@mcc_sandbox_a3` to the server folder and add it to the start line, together with CBA:
@@ -38,7 +38,7 @@
    - `GAIA` cycle timings: AI performance
    - `MCC network security: refused`: a blocked network call (only in Strict mode)
 
-## What changed from MCC 4
+## What's new in MCC 5
 - **The MCC menu is gone.** Everything is in Zeus modules and Eden modules/attributes.
 - **GAIA AI:**
   - The AI commander was rewritten for performance.
@@ -54,4 +54,4 @@ Please send:
 - what you did
 - what happened
 
-Don't load MCC 4 missions; they aren't supported.
+Missions made with older MCC versions aren't supported.

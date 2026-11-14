@@ -82,4 +82,6 @@ same count on `git show HEAD:<file>` (some original files are already "unbalance
 ## Known open points (check in game)
 - Everything since the revamp is untested in game: Eden menu, editor wizard (faction drop-down, marker colours,
   tasks), Zeus button position, GAIA performance and vehicle logic, logistics, PAA artwork.
-- Wiki: `docs/wiki/*.md` is the source; a hosted copy is at https://mcc5-wiki.pages.dev/.
+- Wiki: `docs/wiki/*.md` is the source. `python3 tools/build_wiki_html.py <out.html>` builds the one-page site
+  (built-in Markdown converter, no CDN); it is published athttps://mcc5-wiki.pages.dev/. The mod's
+  Website button (CfgMods action), in-game help links and login screen point there.

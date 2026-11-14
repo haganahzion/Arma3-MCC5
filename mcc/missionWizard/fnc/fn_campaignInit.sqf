@@ -233,9 +233,9 @@ private _fnc_startAO = {
 	private _isAS = random 1 > (missionNamespace getvariable [format ["MCC_civRelations_%1",_sidePlayer],0.5]);
 	private _isSB = random 1 > (missionNamespace getvariable [format ["MCC_civRelations_%1",_sidePlayer],0.5]);
 	private _reinforcement =if (random 100 < (_difficulty)*2 || _reconMission) then {[1,1,1,1,2] call BIS_fnc_selectRandom} else {0};
-	private _obj1 = if (_reconMission) then {["Destroy Vehicle","Destroy AA","Destroy Artillery","Destroy Weapon Cahce","Destroy Fuel Depot","Secure HVT","Kill HVT","Acquire Intel","Download Intel"] call BIS_fnc_selectRandom} else {["Destroy Vehicle","Destroy AA","Destroy Artillery","Destroy Weapon Cahce","Destroy Fuel Depot","Secure HVT","Kill HVT","Acquire Intel","Download Intel","Capture Area","Capture Area","Capture Area","Capture Area","Capture Area","Capture Area","Capture Area","Capture Area","Disarm IED"] call BIS_fnc_selectRandom};
+	private _obj1 = if (_reconMission) then {["Destroy Vehicle","Destroy AA","Destroy Artillery","Destroy Weapon Cache","Destroy Fuel Depot","Secure HVT","Kill HVT","Acquire Intel","Download Intel"] call BIS_fnc_selectRandom} else {["Destroy Vehicle","Destroy AA","Destroy Artillery","Destroy Weapon Cache","Destroy Fuel Depot","Secure HVT","Kill HVT","Acquire Intel","Download Intel","Capture Area","Capture Area","Capture Area","Capture Area","Capture Area","Capture Area","Capture Area","Capture Area","Disarm IED"] call BIS_fnc_selectRandom};
 	private _obj2 = if (random 80 < _difficulty) then {"Destroy Radar/Radio"} else {"None"};
-	private _sideObjectives = ["Destroy Vehicle","Destroy AA","Destroy Artillery","Destroy Weapon Cahce","Destroy Fuel Depot","Secure HVT","Kill HVT","Acquire Intel","Disarm IED"];
+	private _sideObjectives = ["Destroy Vehicle","Destroy AA","Destroy Artillery","Destroy Weapon Cache","Destroy Fuel Depot","Secure HVT","Kill HVT","Acquire Intel","Disarm IED"];
 	private _objectivesList = [_obj1, _obj2];
 
 	//3rd objective and, when MCC_MWmaxObjectives > 3, extra ones, each with a difficulty based chance

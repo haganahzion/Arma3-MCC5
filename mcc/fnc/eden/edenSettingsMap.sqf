@@ -122,7 +122,7 @@
 	["MCC5S_MCC_vonRadioDistanceGlobal", "MCC_vonRadioDistanceGlobal", "slider", 1000, 5000],
 	["MCC5S_MCC_vonRadioDistanceSide", "MCC_vonRadioDistanceSide", "slider", 3000, 7000],
 	["MCC5S_MCC_vonRadioDistanceCommander", "MCC_vonRadioDistanceCommander", "slider", 8000, 20000],
-	["MCC5S_MCC_vonRadioDistanceGroup", "MCC_vonRadioDistanceGroup", "slider", 300, 1000],
+	["MCC5S_MCC_vonRadioDistanceGroup", "MCC_vonRadioDistanceGroup", "slider", 300, 5000],
 	["MCC5S_MCC_vonRadioKickIdle", "MCC_vonRadioKickIdle", "bool"],
 	["MCC5S_MCC_vonRadioKickIdleTime", "MCC_vonRadioKickIdleTime", "slider", 5, 60],
 	["MCC5S_MCC_saveGearIndex", "MCC_saveGearIndex", "bool"],

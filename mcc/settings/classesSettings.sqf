@@ -44,7 +44,7 @@
 [
     "MCC_ied_hidden",
     "EDITBOX",
-    ["IEDs wrecks","Array first element is display name, second is the object class"],
+    ["IEDs hidden","Array first element is display name, second is the object class"],
     ["MCC Classes", "IED"],
     '[["Dirt Small","IEDLandSmall_Remote_Ammo"],["Dirt Big","IEDLandBig_Remote_Ammo"],["Urban Small","IEDUrbanSmall_Remote_Ammo"],["Urban Big","IEDUrbanBig_Remote_Ammo"]]',
     true,

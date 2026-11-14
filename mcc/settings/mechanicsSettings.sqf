@@ -23,12 +23,12 @@ if (count (allMissionObjects "MCC_Module_settingsMechanics") == 0) then {
     [
         "MCC_disableFatigue",
         "CHECKBOX",
-        ["Fatigue","Enable/Disable players fatigue system"],
+        ["Disable Fatigue","Turn off the players' fatigue system"],
         "MCC Mechanics",
-        true,
+        false,
         true,
         {
-        	player enableFatigue MCC_disableFatigue
+        	player enableFatigue !MCC_disableFatigue
         }
     ] call CBA_fnc_addSetting;
 

@@ -333,7 +333,7 @@ class MCC5S_Cat_MCC_Classes_IED
 		};
 		class MCC5S_MCC_ied_hidden
 		{
-			displayName = "IEDs wrecks";
+			displayName = "IEDs hidden";
 			tooltip = "Array first element is display name, second is the object class\nEmpty = use addon setting. Addon default: [[""Dirt Small"",""IEDLandSmall_Remote_Ammo""],[""Dirt Big"",""IEDLandBig_Remote_Ammo""],[""Urban Small"",""IEDUrbanSmall_Remote_Ammo""],[""Urban Big"",""IEDUrbanBig_Remote_Ammo""]]\nCBA setting: MCC_ied_hidden";
 			property = "MCC5S_MCC_ied_hidden";
 			expression = "";
@@ -1364,8 +1364,8 @@ class MCC5S_Cat_MCC_Mechanics
 		};
 		class MCC5S_MCC_disableFatigue
 		{
-			displayName = "Fatigue";
-			tooltip = "Enable/Disable players fatigue system\n(addon default: On)\nCBA setting: MCC_disableFatigue";
+			displayName = "Disable Fatigue";
+			tooltip = "Turn off the players' fatigue system\n(addon default: Off)\nCBA setting: MCC_disableFatigue";
 			property = "MCC5S_MCC_disableFatigue";
 			expression = "";
 			control = "Combo";
@@ -1787,7 +1787,7 @@ class MCC5S_Cat_MCC_Radio_Distance
 		class MCC5S_MCC_vonRadioDistanceGroup
 		{
 			displayName = "Group Radio Distance";
-			tooltip = "Empty = use addon setting. Number 300 to 1000 (addon default: 2500).\nCBA setting: MCC_vonRadioDistanceGroup";
+			tooltip = "Empty = use addon setting. Number 300 to 5000 (addon default: 2500).\nCBA setting: MCC_vonRadioDistanceGroup";
 			property = "MCC5S_MCC_vonRadioDistanceGroup";
 			expression = "";
 			control = "Edit";
@@ -1929,8 +1929,8 @@ class MCC5S_Cat_MCC_User_Interface
 	{
 		class MCC5S_MCC_Settings_ViewDistance
 		{
-			displayName = "STR_UI_VIEWDISTANCE";
-			tooltip = "STR_UI_SETVIEWDISTANCE\nEmpty = use addon setting. Number 200 to 15000 (addon default: 5000).\nCBA setting: MCC_Settings_ViewDistance";
+			displayName = "View Distance";
+			tooltip = "Your view distance in meters\nEmpty = use addon setting. Number 200 to 15000 (addon default: 5000).\nCBA setting: MCC_Settings_ViewDistance";
 			property = "MCC5S_MCC_Settings_ViewDistance";
 			expression = "";
 			control = "Edit";
@@ -1939,8 +1939,8 @@ class MCC5S_Cat_MCC_User_Interface
 		};
 		class MCC5S_MCC_Settings_grassDetail
 		{
-			displayName = "STR_UI_GRASSDETAIL";
-			tooltip = "STR_UI_SETGRASSDETAIL\nEmpty = use addon setting. Number 1 to 50 (addon default: 10).\nCBA setting: MCC_Settings_grassDetail";
+			displayName = "Grass Detail";
+			tooltip = "Grass detail, higher shows more grass\nEmpty = use addon setting. Number 1 to 50 (addon default: 10).\nCBA setting: MCC_Settings_grassDetail";
 			property = "MCC5S_MCC_Settings_grassDetail";
 			expression = "";
 			control = "Edit";

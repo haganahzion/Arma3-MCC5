@@ -209,7 +209,7 @@ class MCC_Module_missionWizard : Module_F
 				class V7
 				{
 					name = "Destroy Weapon Cache";
-					value = "Destroy Weapon Cahce";
+					value = "Destroy Weapon Cache";
 				};
 				class V8
 				{
@@ -291,7 +291,7 @@ class MCC_Module_missionWizard : Module_F
 				class V7
 				{
 					name = "Destroy Weapon Cache";
-					value = "Destroy Weapon Cahce";
+					value = "Destroy Weapon Cache";
 				};
 				class V8
 				{
@@ -373,7 +373,7 @@ class MCC_Module_missionWizard : Module_F
 				class V7
 				{
 					name = "Destroy Weapon Cache";
-					value = "Destroy Weapon Cahce";
+					value = "Destroy Weapon Cache";
 				};
 				class V8
 				{

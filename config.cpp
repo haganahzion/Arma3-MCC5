@@ -17,7 +17,7 @@ class CfgPatches
 		author = "shay_gman";
 		name = "MCC Sandbox";
 		versionDesc = "MCC Sandbox 5";
-		version = "5.0.1";
+		version = "5.0.2";
 	};
 
 	class mcc_sandbox_curatorExp
@@ -37,7 +37,7 @@ class CfgMods
 	{
 		dir = "@mcc_sandbox_a3";
 		name = "MCC Sandbox";
-		action = "https://mccsandbox.fandom.com/wiki/MCCSandbox_Wiki";
+		action = "https://mcc5-wiki.pages.dev/";
 		actionName = "Website";
 		tooltip = "MCC Sandbox";
 		overview = "Mission Control Center is a powerful game mode that let the ArmA player complete freedom as a mission maker. <br />With MCC you can build complected missions the way you wanted in few minutes and save them as a mission file or in your profile to share with friends. <br />MCC have a dynamic AI system that called GAIA that gives AI more human like tactics while they flank, support and use CAS or artillery.  MCC holds unique mission generator so if you can just push in some variables and MCC will generate a complete random mission set to your play-style and the amount of players and objectives needed. MCC holds much more as unique: IED, CAS, Evac Helicopters aproch, air drops, 3D editor, persistence database for players levels and achievements and many many more.";

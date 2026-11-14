@@ -1,3 +1,17 @@
+Changelog v5.0.2:
+Fixed:
+	- GAIA Control Group could send groups to the map corner (task destinations given as an object or none)
+	- AI groups following tasks now also see the Mission Wizard's tasks on the server
+	- Groups the editor Mission Wizard assigns to zones are registered with GAIA right away and can be cached
+	- Zeus MCC 5 button: placed modules are made editable on the server
+	- "Disable Fatigue" setting worked backwards; Group Radio Distance slider could not reach its default
+	- Settings labels: View Distance and Grass Detail (missing texts), IEDs hidden, Ambient Units
+	- Objective name "Destroy Weapon Cache" spelling
+Changed:
+	- Wiki links (launcher Website button, in-game help, login screen) point to the new MCC 5 wiki
+	- Removed old MCC 4 Discord and wiki links
+
+
 Changelog R34 (MCC5 revamp):
 Security:
 	- Replaced all BIS_fnc_MP calls with remoteExec
@@ -1530,7 +1544,7 @@ Mission Wizard:
 - Added: Mission Wizards will completely save including objectives reinforcment exc, objectives can be edited by Zeus in game.
 - Added: You can now select the civilians faction in Mission Wizard.
 - Added: Animal spawning in Mission Wizard.
-- Changed: MCC Mission Wizard objectives added: "Destroy Vehicle","Destroy AA", "Destroy Artillery", "Destroy Weapon Cahce", "Destroy Fuel Depot", "Destroy Radar/Radio",
+- Changed: MCC Mission Wizard objectives added: "Destroy Vehicle","Destroy AA", "Destroy Artillery", "Destroy Weapon Cache", "Destroy Fuel Depot", "Destroy Radar/Radio",
 
 Engine:
 - Changed: Zones can be loaded changed and re-saved again and again.

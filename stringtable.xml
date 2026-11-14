@@ -170,9 +170,9 @@
         </Container>
         <Container name="ambientCiviliansCurator">
             <Key ID="STR_CURATOR_Module_ambientCiviliansCurator_displayName">
-                <Original>Ambient Unis</Original>
-                <English>Ambient Unis</English>
-                <Italian>Unis Ambientale</Italian>
+                <Original>Ambient Units</Original>
+                <English>Ambient Units</English>
+                <Italian>Unità Ambientali</Italian>
             </Key>
             <Key ID="STR_CURATOR_Module_ambientCiviliansCurator_isCiv_displayName">
                 <Original>Ambient Patrols</Original>
@@ -1176,6 +1176,28 @@
                 <Original>Zone:</Original>
                 <English>Zone:</English>
                 <Italian>Zona:</Italian>
+            </Key>
+        </Container>
+        <Container name="UISettings">
+            <Key ID="STR_UI_VIEWDISTANCE">
+                <Original>View Distance</Original>
+                <English>View Distance</English>
+                <Italian>Distanza visiva</Italian>
+            </Key>
+            <Key ID="STR_UI_SETVIEWDISTANCE">
+                <Original>Your view distance in meters</Original>
+                <English>Your view distance in meters</English>
+                <Italian>La tua distanza visiva in metri</Italian>
+            </Key>
+            <Key ID="STR_UI_GRASSDETAIL">
+                <Original>Grass Detail</Original>
+                <English>Grass Detail</English>
+                <Italian>Dettaglio erba</Italian>
+            </Key>
+            <Key ID="STR_UI_SETGRASSDETAIL">
+                <Original>Grass detail, higher shows more grass</Original>
+                <English>Grass detail, higher shows more grass</English>
+                <Italian>Dettaglio erba, piu alto mostra piu erba</Italian>
             </Key>
         </Container>
     </Package>
