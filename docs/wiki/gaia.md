@@ -2,7 +2,7 @@
 
 GAIA is the MCC AI commander. You give AI groups a **zone** and a **behaviour**. GAIA then decides where each group goes: patrols, attacks on enemy contacts, building defence, vehicle use and calls for support.
 
-GAIA does not replace the soldiers' own combat AI. It gives orders to groups. With LAMBS Danger or HBQ Advanced Driving AI loaded, GAIA leaves unit combat or driving to those mods. See [AI mod compatibility](ai-mod-compatibility.md).
+GAIA gives orders to groups and leaves the soldiers' own combat AI alone. With LAMBS Danger or HBQ Advanced Driving AI loaded, GAIA leaves unit combat or driving to those mods. See [AI mod compatibility](ai-mod-compatibility.md).
 
 GAIA runs on the server. Groups can be moved to headless clients.
 
@@ -20,9 +20,9 @@ Ways to make a zone:
 
 | Behaviour | Code name | What GAIA does with the group |
 |---|---|---|
-| **Aggressive** | `MOVE` | Patrols the zone. Attacks enemy contacts, also outside the zone, as long as they are in range. Mortar and artillery groups may fire anywhere. |
-| **Defensive** | `NOFOLLOW` | Patrols the zone. Only attacks contacts inside its own zone. Mortar and artillery groups fire only inside the zone, unless **NOFOLLOW Artillery Fires Outside Zone** is on. |
-| **Fortify** | `FORTIFY` | Occupies buildings and static weapons near its position and stays there. |
+| Aggressive | `MOVE` | Patrols the zone. Attacks enemy contacts, also outside the zone, as long as they are in range. Mortar and artillery groups may fire anywhere. |
+| Defensive | `NOFOLLOW` | Patrols the zone. Only attacks contacts inside its own zone. Mortar and artillery groups fire only inside the zone, unless **NOFOLLOW Artillery Fires Outside Zone** is on. |
+| Fortify | `FORTIFY` | Occupies buildings and static weapons near its position and stays there. |
 
 How far an aggressive group reacts depends on how fast it is. In the code, slow groups react up to about 600 m, medium groups up to about 4.5 km, and fast groups much further. Any contact inside the group's own zone always counts.
 
@@ -69,19 +69,19 @@ Groups given to GAIA with **GAIA: Control Group** follow the side's tasks:
 4. When that task is done, it takes the next nearest one. Tasks are checked every 15 seconds.
 5. With no tasks left, it patrols its last zone, or the nearest one. With no zone at all, a 300 m zone is made around the group.
 
-This is a good way to let friendly AI squads play a Mission Wizard mission next to you.
+Use it to let friendly AI squads play a Mission Wizard mission next to you.
 
 ## Vehicles
 
-With **Smart Vehicle Use** on (default), GAIA groups use vehicles sensibly:
+With **Smart Vehicle Use** on (default), GAIA groups use vehicles like this:
 
-- **Long trips.** Infantry going further than **Find Ride Distance** (1500 m) look for an empty friendly vehicle within **Vehicle Search Radius** (300 m) of the leader that fits the whole group. A unit other than the leader drives, so the leader can get out with his men.
-- **At the objective.** At **Dismount Distance** (400 m) from the objective, the whole group gets out, leader included.
+- Long trips: infantry going further than **Find Ride Distance** (1500 m) look for an empty friendly vehicle within **Vehicle Search Radius** (300 m) of the leader that fits the whole group. A unit other than the leader drives, so the leader can get out with his men.
+- At the objective: at **Dismount Distance** (400 m) from the objective, the whole group gets out, leader included.
   - A borrowed vehicle is left parked. The group remembers it.
   - A group's own vehicle (motorized or mechanized): passengers and leader get out, the crew stays in to give fire support.
-- **After a fight.** If the objective is still far, the group gets back into the same vehicle instead of walking.
-- **Stuck or wrong way.** If the vehicle is not 100 m closer to the objective after 90 seconds, the route is planned again. After 3 tries the group continues on foot. This is off when HBQ Advanced Driving AI is active.
-- **Vehicle lost.** The group forgets it and may find another ride later.
+- After a fight: if the objective is still far, the group gets back into the same vehicle instead of walking.
+- Stuck or wrong way: if the vehicle is not 100 m closer to the objective after 90 seconds, the route is planned again. After 3 tries the group continues on foot. This is off when HBQ Advanced Driving AI is active.
+- Vehicle lost: the group forgets it and may find another ride later.
 
 **Unstick Vehicles** (default on) is for tanks and armed cars without passengers. If they have not moved for about a minute while they still have somewhere to go:
 1. If flipped, and no player is within 300 m, they are put back on their wheels.
@@ -117,9 +117,9 @@ The three kinds:
 
 | Support | What happens | Limits |
 |---|---|---|
-| **Artillery** | An idle GAIA mortar or artillery group in range fires on the contact. | Not when friendlies are within **Danger Close Distance** (200 m). **Artillery Cooldown** 60 s, **Artillery Budget** 20 per side per mission. Needs a GAIA artillery group. |
-| **CAS** | An off-map close air support run with the side's CAS plane (or the vanilla default). | Not danger close. **CAS Cooldown** 300 s, **CAS Budget** 2 per mission. With **CAS Needs Own Aircraft** on, only when the side has an armed aircraft of its own. |
-| **Reinforcements** | Motorized reinforcements spawn about 2 km behind the friendly group, unload near it, then join GAIA in that group's zone. **Reinforcement Size**: small 2, medium 3, large 4 vehicles. | **Reinforcement Cooldown** 600 s, **Reinforcement Budget** 2 per mission. |
+| Artillery | An idle GAIA mortar or artillery group in range fires on the contact. | Not when friendlies are within **Danger Close Distance** (200 m). **Artillery Cooldown** 60 s, **Artillery Budget** 20 per side per mission. Needs a GAIA artillery group. |
+| CAS | An off-map close air support run with the side's CAS plane (or the vanilla default). | Not danger close. **CAS Cooldown** 300 s, **CAS Budget** 2 per mission. With **CAS Needs Own Aircraft** on, only when the side has an armed aircraft of its own. |
+| Reinforcements | Motorized reinforcements spawn about 2 km behind the friendly group, unload near it, then join GAIA in that group's zone. **Reinforcement Size**: small 2, medium 3, large 4 vehicles. | **Reinforcement Cooldown** 600 s, **Reinforcement Budget** 2 per mission. |
 
 Which one GAIA tries first:
 - Heavily outnumbered: reinforcements, then artillery, then CAS.

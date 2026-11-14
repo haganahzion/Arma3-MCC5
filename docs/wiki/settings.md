@@ -1,10 +1,10 @@
 # Settings
 
-MCC has many settings. This page lists every one, grouped like in the game, with what it does and its default.
+Every MCC setting, grouped as in the game, with what it does and its default.
 
 ## Where to change settings
 
-There are three places. They all change the same values.
+You can change settings in three places, and they all change the same values.
 
 ### 1. CBA Addon Options
 
@@ -34,21 +34,21 @@ These are the first category in MCC 5 Mission Settings. The Eden names are a lit
 
 | Eden name | CBA setting (category) | What it does | Default |
 |---|---|---|---|
-| **Limited Logistics** | Limited Logistics (MCC Logistics) | Off: unlimited supply, as before. Fuel only: fuel trucks, fuel crates and vehicle service fuel are finite. Full: fuel, ammo and repair are finite. Supply trucks refill at their side's base from side resources. See [Limited logistics](logistics.md). | Off |
-| **Mission Wizard: Max Objectives** | Max objectives (MCC Mission Wizard - Mission size) | Objectives per Zeus or runtime Mission Wizard mission, 1 to 8. The dialog sets the first 3, the rest are random types. | 3 |
-| **Mission Wizard: Mission Size** | Mission size (MCC Mission Wizard - Mission size) | Multiplier on the number of enemies: Small 0.5, Normal 1, Large 1.75, Huge 2.5. | Normal |
-| **Mission Wizard: Max Spawned Units** | Max spawned units (MCC Mission Wizard - Mission size) | Hard cap on the units one Mission Wizard mission or campaign AO may spawn. CBA range 30 to 600; Eden offers 50 to 600. | 200 |
-| **Campaign: Simultaneous AOs** | Campaign simultaneous AOs (MCC Mission Wizard - Campaign) | How many campaign areas of operation can be active at once, 1 to 3. | 1 |
-| **Campaign: AO Size** | Campaign AO size (MCC Mission Wizard - Campaign) | Objective radius in meters of every campaign AO. CBA range 150 to 1500. | 300 |
-| **Campaign: Ambient Groups Cap** | Campaign ambient groups cap (MCC Mission Wizard - Campaign) | Max ambient enemy groups kept around players (2 per player up to this). Range 0 to 60. | 18 |
-| **GAIA: AI Support Requests** | AI Support Requests (MCC GAIA - Support Requests) | AI commanders call artillery, CAS and reinforcements on strong contacts. | On |
-| **GAIA: AI Artillery** | Artillery Support (MCC GAIA - Support Requests) | GAIA mortar and artillery groups answer support requests. | On |
-| **GAIA: AI Close Air Support** | CAS Support (MCC GAIA - Support Requests) | GAIA calls an off-map CAS run. | On |
-| **GAIA: AI Reinforcements** | Reinforcements (MCC GAIA - Support Requests) | GAIA calls motorized reinforcements when heavily outnumbered or when nothing else is available. | On |
-| **GAIA: Coordinated Attacks** | Coordinated Attacks (MCC GAIA - Coordination) | Groups on the same contact get roles: main attack, flank, support-by-fire, reserve. Off: every group attacks on its own. | On |
-| **GAIA: Headless Client Balancing** | Headless Client Balancing (MCC GAIA - Headless Clients) | GAIA groups spawned during the mission are moved to connected headless clients, in turn. | On |
-| **Zeus for MCC Users** | Zeus for MCC users (MCC General - Zeus) | Every player allowed to use MCC gets Zeus with all MCC modules. Others get nothing. | On |
-| **Network Security** | (Eden only, no CBA setting) | Normal: MCC accepts network requests from any player. Strict: in multiplayer, MCC ignores requests from players not allowed to use MCC. No effect in single player. See [Multiplayer and security](multiplayer-and-security.md). | Normal |
+| Limited Logistics | Limited Logistics (MCC Logistics) | Off: unlimited supply, as before. Fuel only: fuel trucks, fuel crates and vehicle service fuel are finite. Full: fuel, ammo and repair are finite. Supply trucks refill at their side's base from side resources. See [Limited logistics](logistics.md). | Off |
+| Mission Wizard: Max Objectives | Max objectives (MCC Mission Wizard - Mission size) | Objectives per Zeus or runtime Mission Wizard mission, 1 to 8. The dialog sets the first 3, the rest are random types. | 3 |
+| Mission Wizard: Mission Size | Mission size (MCC Mission Wizard - Mission size) | Multiplier on the number of enemies: Small 0.5, Normal 1, Large 1.75, Huge 2.5. | Normal |
+| Mission Wizard: Max Spawned Units | Max spawned units (MCC Mission Wizard - Mission size) | Hard cap on the units one Mission Wizard mission or campaign AO may spawn. CBA range 30 to 600; Eden offers 50 to 600. | 200 |
+| Campaign: Simultaneous AOs | Campaign simultaneous AOs (MCC Mission Wizard - Campaign) | How many campaign areas of operation can be active at once, 1 to 3. | 1 |
+| Campaign: AO Size | Campaign AO size (MCC Mission Wizard - Campaign) | Objective radius in meters of every campaign AO. CBA range 150 to 1500. | 300 |
+| Campaign: Ambient Groups Cap | Campaign ambient groups cap (MCC Mission Wizard - Campaign) | Max ambient enemy groups kept around players (2 per player up to this). Range 0 to 60. | 18 |
+| GAIA: AI Support Requests | AI Support Requests (MCC GAIA - Support Requests) | AI commanders call artillery, CAS and reinforcements on strong contacts. | On |
+| GAIA: AI Artillery | Artillery Support (MCC GAIA - Support Requests) | GAIA mortar and artillery groups answer support requests. | On |
+| GAIA: AI Close Air Support | CAS Support (MCC GAIA - Support Requests) | GAIA calls an off-map CAS run. | On |
+| GAIA: AI Reinforcements | Reinforcements (MCC GAIA - Support Requests) | GAIA calls motorized reinforcements when heavily outnumbered or when nothing else is available. | On |
+| GAIA: Coordinated Attacks | Coordinated Attacks (MCC GAIA - Coordination) | Groups on the same contact get roles: main attack, flank, support-by-fire, reserve. Off: every group attacks on its own. | On |
+| GAIA: Headless Client Balancing | Headless Client Balancing (MCC GAIA - Headless Clients) | GAIA groups spawned during the mission are moved to connected headless clients, in turn. | On |
+| Zeus for MCC Users | Zeus for MCC users (MCC General - Zeus) | Every player allowed to use MCC gets Zeus with all MCC modules. Others get nothing. | On |
+| Network Security | (Eden only, no CBA setting) | Normal: MCC accepts network requests from any player. Strict: in multiplayer, MCC ignores requests from players not allowed to use MCC. No effect in single player. See [Multiplayer and security](multiplayer-and-security.md). | Normal |
 
 ## CBA settings that are not in the Eden window
 
@@ -61,7 +61,7 @@ These are the first category in MCC 5 Mission Settings. The Eden names are a lit
 
 ## All other settings
 
-Below is every other MCC setting, in the order of the MCC 5 Mission Settings window. The text comes from the setting's own description. "CBA variable" is the name to use in `cba_settings.sqf` or `description.ext`.
+The rest of the MCC settings, in the order of the MCC 5 Mission Settings window. The text comes from the setting's own description. "CBA variable" is the name to use in `cba_settings.sqf` or `description.ext`.
 
 Long class list defaults are not repeated here. Hover over the setting in Eden or CBA to see the full default.
 

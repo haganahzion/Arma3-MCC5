@@ -14,7 +14,7 @@ There are three ways to use it:
 | Undo | Ctrl+Z, Clear, Regenerate | No | No |
 | Different every time you play | No, it is fixed once generated | Yes | Yes |
 
-The editor wizard is new in MCC 5 and is the main way to build a Mission Wizard mission.
+The editor wizard is new in MCC 5. It is the main way to build a Mission Wizard mission.
 
 ## Editor wizard: step by step
 
@@ -33,12 +33,12 @@ All "Random" choices are rolled when you press Generate. The result is fixed aft
 
 | Option | What it does | Default |
 |---|---|---|
-| **Mission Area** | Where the mission is built. **Selected trigger/marker, else camera view**: the area of the one selected trigger or area marker; with nothing selected, the point the camera looks at. **Camera view (center of screen)**: always the screen center. **Whole map (random location)**: a random town or location on the map. | Selected trigger/marker, else camera view |
-| **Area Radius (m)** | Radius of the area. 0 = automatic, worked out from players, objectives and mission size. Ignored when a selected trigger or marker gives the area. | 0 |
-| **Expected Players** | Number of players the mission is built for. | 10 |
-| **Difficulty** | Enemies per player: Easy (2), Medium (4), Hard (6). | Medium |
-| **Mission Size** | Multiplier on enemy numbers and area size: Small (0.5), Normal (1), Large (1.75), Huge (2.5). | Normal |
-| **Max AI Units** | Hard cap on the AI the wizard places (enemies, civilians, crews). | 200 |
+| Mission Area | Where the mission is built. **Selected trigger/marker, else camera view**: the area of the one selected trigger or area marker; with nothing selected, the point the camera looks at. **Camera view (center of screen)**: always the screen center. **Whole map (random location)**: a random town or location on the map. | Selected trigger/marker, else camera view |
+| Area Radius (m) | Radius of the area. 0 = automatic, worked out from players, objectives and mission size. Ignored when a selected trigger or marker gives the area. | 0 |
+| Expected Players | Number of players the mission is built for. | 10 |
+| Difficulty | Enemies per player: Easy (2), Medium (4), Hard (6). | Medium |
+| Mission Size | Multiplier on enemy numbers and area size: Small (0.5), Normal (1), Large (1.75), Huge (2.5). | Normal |
+| Max AI Units | Hard cap on the AI the wizard places (enemies, civilians, crews). | 200 |
 
 How many enemies: Expected Players x Difficulty. If that is 10 or less, 20 is used. The result is multiplied by Mission Size. If the estimate would go over Max AI Units, the number is lowered to fit.
 
@@ -46,9 +46,9 @@ How many enemies: Expected Players x Difficulty. If that is 10 or less, 20 is us
 
 | Option | What it does | Default |
 |---|---|---|
-| **Enemy Faction** | The faction players fight. The enemy side comes from the faction. Groups come from CfgGroups, single units and vehicles from CfgVehicles. | OPFOR `OPF_F` |
-| **Player Faction** | The players' faction. It decides who gets the tasks and briefing, the hostage faction and who sets off IEDs. Must be on a different side from the enemy. | BLUFOR `BLU_F` |
-| **Civilian Faction** | Civilians for CQB, hostages, suicide bombers and armed civilians. | `CIV_F` |
+| Enemy Faction | The faction players fight. The enemy side comes from the faction. Groups come from CfgGroups, single units and vehicles from CfgVehicles. | OPFOR `OPF_F` |
+| Player Faction | The players' faction. It decides who gets the tasks and briefing, the hostage faction and who sets off IEDs. Must be on a different side from the enemy. | BLUFOR `BLU_F` |
+| Civilian Faction | Civilians for CQB, hostages, suicide bombers and armed civilians. | `CIV_F` |
 
 The faction lists show every faction that has at least one playable-scope soldier, as "SIDE - Name (class)". This includes factions from mods you have loaded. The list is built once per game session. If you load a new mod, restart the game to see its factions. A faction saved in the mission whose mod is no longer loaded shows as "(not loaded)".
 
@@ -56,25 +56,25 @@ The faction lists show every faction that has at least one playable-scope soldie
 
 | Option | What it does | Default |
 |---|---|---|
-| **Number of Objectives** | How many of the 8 objective slots are used. Slots set to None are skipped. | 3 |
-| **Objective 1** to **Objective 8** | The type of each objective. **Random** picks a type not used yet in this mission. | Random |
+| Number of Objectives | How many of the 8 objective slots are used. Slots set to None are skipped. | 3 |
+| Objective 1 to Objective 8 | The type of each objective. **Random** picks a type not used yet in this mission. | Random |
 
 Objective types:
 
 | Type | What players do | Done when | Failed when |
 |---|---|---|---|
-| **Secure HVT (hostage rescue)** | Find a tied up hostage (a soldier of your faction or a civilian), untie him and take him home | He is alive, freed and more than 300 m from where he was held | He dies |
-| **Kill HVT** | Kill or capture an enemy officer with 1 to 4 bodyguards. In the open he may walk a patrol. | He is dead, captive, handcuffed (ACE) or disarmed | - |
-| **Destroy Vehicle** | Destroy a locked prototype tank or aircraft, in a sandbag nest or a hangar | It is destroyed | - |
-| **Destroy AA** | Destroy a crewed anti-air vehicle | It is destroyed | - |
-| **Destroy Artillery** | Destroy a crewed artillery piece | It is destroyed | - |
-| **Destroy Weapon Cache** | Destroy an ammo cache | It is destroyed | - |
-| **Destroy Fuel Depot** | Destroy a fuel tank | It is destroyed | - |
-| **Destroy Radar/Radio** | Destroy a radar or a radio tower | It is destroyed | - |
-| **Acquire Intel** | Pick up an intel item (files, photos, laptop, phone or suitcase) from a small table | The item is picked up | The item is destroyed |
-| **Download Intel** | Hack a data terminal and download the data | The download is done | The terminal is destroyed |
-| **Capture Area** | Clear an enemy camp, or a building in CQB | No enemy left within 100 m (50 m in CQB), checked after 30 s | - |
-| **Disarm IED** | Find and disarm a large IED device (60 s disarm time) | Disarmed and not set off | The device is destroyed |
+| Secure HVT (hostage rescue) | Find a tied up hostage (a soldier of your faction or a civilian), untie him and take him home | He is alive, freed and more than 300 m from where he was held | He dies |
+| Kill HVT | Kill or capture an enemy officer with 1 to 4 bodyguards. In the open he may walk a patrol. | He is dead, captive, handcuffed (ACE) or disarmed | - |
+| Destroy Vehicle | Destroy a locked prototype tank or aircraft, in a sandbag nest or a hangar | It is destroyed | - |
+| Destroy AA | Destroy a crewed anti-air vehicle | It is destroyed | - |
+| Destroy Artillery | Destroy a crewed artillery piece | It is destroyed | - |
+| Destroy Weapon Cache | Destroy an ammo cache | It is destroyed | - |
+| Destroy Fuel Depot | Destroy a fuel tank | It is destroyed | - |
+| Destroy Radar/Radio | Destroy a radar or a radio tower | It is destroyed | - |
+| Acquire Intel | Pick up an intel item (files, photos, laptop, phone or suitcase) from a small table | The item is picked up | The item is destroyed |
+| Download Intel | Hack a data terminal and download the data | The download is done | The terminal is destroyed |
+| Capture Area | Clear an enemy camp, or a building in CQB | No enemy left within 100 m (50 m in CQB), checked after 30 s | - |
+| Disarm IED | Find and disarm a large IED device (60 s disarm time) | Disarmed and not set off | The device is destroyed |
 
 In open terrain, most objectives come with a camp or outpost composition. In CQB the objective goes in or next to a building.
 
@@ -84,29 +84,29 @@ The classes used for HVTs, tanks, aircraft, AA, artillery, caches, fuel tanks, r
 
 | Option | What it does | Default |
 |---|---|---|
-| **CQB** | Urban mission. Enemies garrison buildings and objectives go in buildings. **With civilians** also puts civilians in buildings. Choices: No, Yes - without civilians, Yes - with civilians, Random. | Random |
-| **Enemy Vehicles** | Light and motorized enemy vehicles patrolling. No, Yes, Random. | Random |
-| **Enemy Armor** | Armored and mechanized enemy groups. | Random |
-| **Stealth** | Black ops. Enemies start relaxed (SAFE, slow). If Weather / Time changes the time, the mission is at night. | Random |
-| **IEDs** | MCC IEDs on the roads in the area. | Random |
-| **Suicide Bombers** | Civilian suicide bombers. | Random |
-| **Armed Civilians** | Civilians that draw weapons on the players. | Random |
-| **Roadblocks** | Manned checkpoints on roads leading into the area. | Random |
-| **Animals** | Ambient animals (vanilla goat, poultry and sheep modules). | Random |
-| **Reinforcements** | No, Aerial, Motorized, Random. Any choice other than No turns on GAIA AI reinforcement requests for this mission. Motorized also places a motorized QRF group outside the area. | Random |
-| **Enemy Artillery** | No, Mortars, Self propelled artillery, Random. Places artillery in the area and turns on GAIA AI artillery requests. | Random |
+| CQB | Urban mission. Enemies garrison buildings and objectives go in buildings. **With civilians** also puts civilians in buildings. Choices: No, Yes - without civilians, Yes - with civilians, Random. | Random |
+| Enemy Vehicles | Light and motorized enemy vehicles patrolling. No, Yes, Random. | Random |
+| Enemy Armor | Armored and mechanized enemy groups. | Random |
+| Stealth | Black ops. Enemies start relaxed (SAFE, slow). If Weather / Time changes the time, the mission is at night. | Random |
+| IEDs | MCC IEDs on the roads in the area. | Random |
+| Suicide Bombers | Civilian suicide bombers. | Random |
+| Armed Civilians | Civilians that draw weapons on the players. | Random |
+| Roadblocks | Manned checkpoints on roads leading into the area. | Random |
+| Animals | Ambient animals (vanilla goat, poultry and sheep modules). | Random |
+| Reinforcements | No, Aerial, Motorized, Random. Any choice other than No turns on GAIA AI reinforcement requests for this mission. Motorized also places a motorized QRF group outside the area. | Random |
+| Enemy Artillery | No, Mortars, Self propelled artillery, Random. Places artillery in the area and turns on GAIA AI artillery requests. | Random |
 
 ### Weather, briefing and markers
 
 | Option | What it does | Default |
 |---|---|---|
-| **Weather / Time** | **Don't change**, **Random**, **Sandstorm**, **Blizzard**, **Snow**. Changes the scenario date, time and weather in Attributes > Environment. Sandstorm, Blizzard and Snow also add the MCC weather effect at mission start. | Don't change |
-| **Intro** | **Cinematic (music + title)**, **Pop-up title**, **None**. | Cinematic |
-| **Precise Objective Markers** | On: the task points at the exact objective. Off: the task points somewhere within 300 m. | On |
-| **General Markers** | Also place map markers for the objective zones, roadblocks and enemy positions. Players see them. | Off |
-| **Briefing** | Add the generated briefing to the players' map (Diary). | On |
-| **Player Start** | **None (place your own)** or **Respawn marker outside the area**. | None |
-| **End Mission When Done** | When every objective is done, the scenario ends (END1). | Off |
+| Weather / Time | **Don't change**, **Random**, **Sandstorm**, **Blizzard**, **Snow**. Changes the scenario date, time and weather in Attributes > Environment. Sandstorm, Blizzard and Snow also add the MCC weather effect at mission start. | Don't change |
+| Intro | **Cinematic (music + title)**, **Pop-up title**, **None**. | Cinematic |
+| Precise Objective Markers | On: the task points at the exact objective. Off: the task points somewhere within 300 m. | On |
+| General Markers | Also place map markers for the objective zones, roadblocks and enemy positions. Players see them. | Off |
+| Briefing | Add the generated briefing to the players' map (Diary). | On |
+| Player Start | **None (place your own)** or **Respawn marker outside the area**. | None |
+| End Mission When Done | When every objective is done, the scenario ends (END1). | Off |
 
 ## Mission area
 
@@ -126,11 +126,11 @@ Everything goes into a root layer called **MCC Mission Wizard**. If one already 
 
 | Layer | What's inside |
 |---|---|
-| **Area and zones** | The operation marker (red border, named "Operation NAME" or "Black Ops: NAME"), the main zone |
-| **Objectives** | Objective objects and units, compositions, guards, objective zones |
-| **Enemy forces** | Patrols, garrisons, vehicles, armor, artillery, static weapons, roadblocks, the QRF |
-| **Civilians, IEDs and animals** | Civilians, IED objects and modules, suicide bombers, armed civilians, animal modules |
-| **Tasks, triggers and briefing** | Task logics, task triggers, briefing, intro, weather effect, end trigger |
+| Area and zones | The operation marker (red border, named "Operation NAME" or "Black Ops: NAME"), the main zone |
+| Objectives | Objective objects and units, compositions, guards, objective zones |
+| Enemy forces | Patrols, garrisons, vehicles, armor, artillery, static weapons, roadblocks, the QRF |
+| Civilians, IEDs and animals | Civilians, IED objects and modules, suicide bombers, armed civilians, animal modules |
+| Tasks, triggers and briefing | Task logics, task triggers, briefing, intro, weather effect, end trigger |
 
 ### Zones and GAIA
 
@@ -244,24 +244,24 @@ The **Mission Wizard** Eden module (**MCC 5 > Place MCC Module > Mission Wizard 
 
 | Option | What it does | Default |
 |---|---|---|
-| **Mission Area** | **Area (synced trigger or module area)**: a random spot inside a synced trigger, or the module's own area (750 m by default). **Exact (around the module)**: objectives around the module. **Whole map**. | Area |
-| **Start Delay (s)** | Seconds after mission start before generating | 5 |
-| **Mission ID** | Optional. While the mission runs, `MCC_MWMissionRuning_<ID>` is true. Empty: edenMW_1, edenMW_2... | empty |
-| **Expected Players** | Players the mission is built for | 10 |
-| **Difficulty** | Easy, Medium, Hard | Medium |
-| **Objectives** | Use MCC setting, or 1 to 8. Objectives above 3 are random. | Use MCC setting |
-| **Objective 1 / 2 / 3** | Objective types | Random, Random, None |
-| **Enemy Faction** | CfgFactionClasses class name | `OPF_F` |
-| **Player Faction** | CfgFactionClasses class name | `BLU_F` |
-| **Civilian Faction** | CfgFactionClasses class name | `CIV_F` |
-| **CQB** | No, Yes - without civilians, Yes - with civilians, Random | Random |
-| **Enemy Vehicles**, **Enemy Armor**, **Stealth**, **IEDs**, **Suicide Bombers**, **Armed Civilians**, **Roadblocks**, **Animals** | No, Yes, Random | Random |
-| **Reinforcements** | No, Aerial, Motorized, Random | Random |
-| **Enemy Artillery** | No, Mortars, Self propelled artillery, Random | Random |
-| **Weather / Time** | Don't change, Random, Sandstorm, Blizzard, Snow | Don't change |
-| **Intro** | Cinematic, Pop-up, None | Cinematic |
-| **Precise Objective Markers** | Exact spot or an area marker | On |
-| **General Markers** | Show the general enemy area markers | Off |
+| Mission Area | **Area (synced trigger or module area)**: a random spot inside a synced trigger, or the module's own area (750 m by default). **Exact (around the module)**: objectives around the module. **Whole map**. | Area |
+| Start Delay (s) | Seconds after mission start before generating | 5 |
+| Mission ID | Optional. While the mission runs, `MCC_MWMissionRuning_<ID>` is true. Empty: edenMW_1, edenMW_2... | empty |
+| Expected Players | Players the mission is built for | 10 |
+| Difficulty | Easy, Medium, Hard | Medium |
+| Objectives | Use MCC setting, or 1 to 8. Objectives above 3 are random. | Use MCC setting |
+| Objective 1 / 2 / 3 | Objective types | Random, Random, None |
+| Enemy Faction | CfgFactionClasses class name | `OPF_F` |
+| Player Faction | CfgFactionClasses class name | `BLU_F` |
+| Civilian Faction | CfgFactionClasses class name | `CIV_F` |
+| CQB | No, Yes - without civilians, Yes - with civilians, Random | Random |
+| Enemy Vehicles, Enemy Armor, Stealth, IEDs, Suicide Bombers, Armed Civilians, Roadblocks, Animals | No, Yes, Random | Random |
+| Reinforcements | No, Aerial, Motorized, Random | Random |
+| Enemy Artillery | No, Mortars, Self propelled artillery, Random | Random |
+| Weather / Time | Don't change, Random, Sandstorm, Blizzard, Snow | Don't change |
+| Intro | Cinematic, Pop-up, None | Cinematic |
+| Precise Objective Markers | Exact spot or an area marker | On |
+| General Markers | Show the general enemy area markers | Off |
 
 Notes:
 - No MCC zones are needed. The wizard makes its own.
