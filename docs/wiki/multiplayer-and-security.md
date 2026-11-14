@@ -1,6 +1,6 @@
 # Multiplayer and security
 
-This page is for server owners and mission makers who run MCC in multiplayer.
+For server owners and mission makers who run MCC in multiplayer.
 
 ## Dedicated server setup
 
@@ -61,9 +61,8 @@ Set it in Eden: **MCC 5 > MCC 5 Mission Settings... > MCC 5 > Network Security**
 | **Normal** (default) | MCC accepts network requests from any player. This is the old behaviour. |
 | **Strict (recommended for public servers)** | In multiplayer, MCC refuses requests that came over the network from players who are not allowed to use MCC. Requests from the server or the same machine are always fine. |
 
-Notes:
 - Strict has no effect in single player.
-- Without an Access Rights module, everyone is allowed, so Strict changes little. Use Strict **together with** the Access Rights module.
+- Without an Access Rights module, everyone is allowed, so Strict changes little. Use Strict together with the Access Rights module.
 - Each refused call is written to the RPT as `MCC network security: refused <function> from owner <id>`.
 - The server tells clients every 10 seconds (and when players join or leave) which players are allowed, so clients can check requests too.
 

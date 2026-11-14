@@ -1,9 +1,9 @@
-# MCC Sandbox 5 Wiki
+# MCC Sandbox 5 wiki
 
 MCC Sandbox 5 (Mission Control Center, version 5.0.1) is an Arma 3 mod for building and running missions. You work in two places:
 
-- **The Eden editor.** A new **MCC 5** menu in the top menu bar holds all mission settings, an editor Mission Wizard that builds a whole mission for you, and quick placement of MCC modules.
-- **Zeus.** Players allowed to use MCC get Zeus in game. An **MCC 5** button at the top of the Zeus screen lists every MCC tool.
+- In the Eden editor, a new **MCC 5** menu in the top menu bar holds all mission settings, an editor Mission Wizard that builds a whole mission for you, and quick placement of MCC modules.
+- In Zeus. Players allowed to use MCC get Zeus in game. An **MCC 5** button at the top of the Zeus screen lists every MCC tool.
 
 Behind both sits **GAIA**, the MCC AI commander. GAIA moves AI groups around their zones, uses vehicles, coordinates attacks and can call artillery, CAS and reinforcements.
 

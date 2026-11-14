@@ -1,6 +1,6 @@
 # Limited logistics
 
-By default Arma supply is endless. An ammo truck never runs dry and a fuel crate never empties. MCC 5 can change that. With **limited logistics** on, supply trucks, crates and vehicle service run out, and they refill at your base from your side's resources.
+By default Arma supply is endless: an ammo truck never runs dry and a fuel crate never empties. In MCC 5, with **limited logistics** on, supply trucks, crates and vehicle service run out, and they refill at your base from your side's resources.
 
 It is optional and off by default.
 
@@ -62,7 +62,7 @@ A supply vehicle refills when it is parked at its side's base:
 - "At base" means within **Base Radius** (default 75 m) of the side's **start location**, or of a built **RTS base building** of that side.
 - While parked there, it takes **Base Refill Rate** (default 100) resource units from the side resources every 5 seconds, until it is full.
 
-So your side needs resources. Without them, the trucks stay empty.
+Without side resources the trucks stay empty.
 
 ## Side resources
 

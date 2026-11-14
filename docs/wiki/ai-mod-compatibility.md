@@ -1,6 +1,6 @@
 # AI mod compatibility
 
-GAIA is a commander. It decides where groups go, which vehicle they use and when to call support. It works next to these AI mods instead of fighting them:
+GAIA is a commander. It decides where groups go, which vehicle they use and when to call support. It works alongside these AI mods:
 
 - **LAMBS Danger.fsm**
 - **LAMBS Suppression**
@@ -31,7 +31,7 @@ Groups running a **LAMBS task waypoint** (a scripted waypoint from LAMBS) are le
 
 ## LAMBS Suppression
 
-MCC detects LAMBS Suppression and writes it in the RPT. The code has no further special handling for it, so both simply run side by side.
+MCC detects LAMBS Suppression and writes it in the RPT. The code has no further special handling for it, so the two just run side by side.
 
 MCC also has its own **Suppression Effects** setting (MCC User Interface, off by default). It is a separate, client side effect.
 

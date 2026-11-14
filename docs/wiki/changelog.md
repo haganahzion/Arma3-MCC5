@@ -1,6 +1,6 @@
 # Changelog
 
-This page sums up what changed in MCC 5. The full list is in `MCC_changelog.txt` (sections R34 and R35) in the mod.
+A short summary of what changed in MCC 5. The full list is in `MCC_changelog.txt` (sections R34 and R35) in the mod.
 
 
 ## v5.0.2

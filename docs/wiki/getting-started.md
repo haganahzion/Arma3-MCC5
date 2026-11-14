@@ -1,6 +1,6 @@
 # Getting started
 
-This page takes you from an empty map to a playable mission in about 10 minutes. You will use the editor Mission Wizard, place your squad, play, and open Zeus.
+You can go from an empty map to a playable mission in about 10 minutes. You use the editor Mission Wizard, place your squad, play, and open Zeus.
 
 If the mod is not installed yet, start with [Installation](installation.md).
 
@@ -43,7 +43,7 @@ The center of the area must be on land, not in the water.
 
 Everything the wizard made is now normal editor content in a layer called **MCC Mission Wizard**. Open the layer list on the left to see it. You can move, edit or delete anything in it.
 
-Don't like it? Press **Ctrl+Z** once to undo the whole generation. Or use **MCC 5 > Regenerate Mission (clear + generate)** to throw it away and build a new one.
+To undo the whole generation, press **Ctrl+Z** once. Or use **MCC 5 > Regenerate Mission (clear + generate)** to throw it away and build a new one.
 
 ## 5. Place your squad
 

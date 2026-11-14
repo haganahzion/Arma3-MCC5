@@ -6,7 +6,7 @@ In MCC 5 a campaign can run **up to 3 AOs at the same time**.
 
 ## Quick start: sample missions
 
-The fastest way to try it: the mod ships ready campaign missions. In the multiplayer scenario list, look for names like:
+The quickest way to try it is with the campaign missions that ship with the mod. In the multiplayer scenario list, look for names like:
 
 - **(MCC) Campaign** and **(MCC) Campaign CSAT** (Altis, Tanoa)
 - **(MCC) Campaign BAF**, **USMC**, **USA**, **RU**, **GU**, **TK** on other maps
@@ -86,4 +86,4 @@ Each in-game day the campaign also updates tickets, weather and the enemy's beha
 - Headless clients help a lot in long campaigns. See [GAIA AI](gaia.md#headless-clients).
 - For a one-off mission, use the [Mission Wizard](mission-wizard.md) instead.
 
-The campaign code has more details (resource rewards, day cycle, database) than this page covers. The options above are what you set as a mission maker.
+The campaign code has more details (resource rewards, day cycle, database) than are covered here. As a mission maker you only set the options above.
