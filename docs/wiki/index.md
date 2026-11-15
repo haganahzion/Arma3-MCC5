@@ -57,4 +57,4 @@ MCC 5 is free software under the GNU General Public License v3 (GPL-3.0), like t
 - You may change it. If you share a changed version, keep it under the GPL-3.0 with its source, and keep the credits.
 - Keep the credit to Shay_gman & Spirit.
 
-Read more on the [License](license.md) page. Community and support: [Discord](https://discord.gg/bxwX5EkMEf).
+Read more on the [License](license.md) page. Community and support: [Discord](https://discord.gg/bxwX5EkMEf). Get it on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3840123393).

@@ -6,7 +6,11 @@
 - **CBA_A3**. MCC needs it. Subscribe to it on the Steam Workshop.
 - Optional: ACE3, RHS, CUP, LAMBS Danger.fsm, LAMBS Suppression, HBQ Advanced Driving AI. MCC finds them by itself.
 
-## Get the right file
+## Steam Workshop (easiest)
+
+Subscribe to [MCC Sandbox 5 on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3840123393). Steam also subscribes you to CBA_A3. In the Arma 3 Launcher, tick both under **Mods** and play. Servers that check signatures need the key from the mod's `keys` folder.
+
+## Manual install: get the right file
 
 Download **ARMA3-MCC5.zip** from the latest GitHub release. Use the release file. GitHub's "Code > Download ZIP" button gives you the source code, not the mod.
 

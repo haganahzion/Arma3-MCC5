@@ -2,7 +2,7 @@
 
 # MCC Sandbox 5 for Arma 3 (v5.0.3)
 
-**Wiki:** https://mcc5-wiki.pages.dev/
+**Wiki:** https://mcc5-wiki.pages.dev/ · **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3840123393
 
 The full MCC 5 overhaul: a new Eden and Zeus interface, a rewritten GAIA AI commander, an in-editor Mission Wizard, ACE3/RHS/CUP support and optional limited logistics.
 
