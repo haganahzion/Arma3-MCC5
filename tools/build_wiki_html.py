@@ -239,7 +239,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; }
       <details class="toc-mobile" id="tocm"><summary>Pages</summary><div id="tocmList"></div></details>
       <article id="page"></article>
       <div class="pager" id="pager"></div>
-      <footer>MCC Sandbox 5 is built on MCC Sandbox by Shay_gman &amp; Spirit. Personal, non-commercial use only. Questions: @z1on_8200 on Discord.</footer>
+      <footer>MCC Sandbox 5 is built on MCC Sandbox by Shay_gman &amp; Spirit. Free under the GPL-3.0. Discord: <a href="https://discord.gg/bxwX5EkMEf">discord.gg/bxwX5EkMEf</a>.</footer>
     </div>
   </div>
 </div>

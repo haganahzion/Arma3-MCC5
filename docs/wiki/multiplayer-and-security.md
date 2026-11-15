@@ -117,6 +117,6 @@ You can use the Network Security level, the engine whitelist, or both.
 
 See [Settings](settings.md).
 
-## Usage rules for servers
+## License for servers
 
-MCC 5 may not be used on servers that charge players, sell perks or ranks, or otherwise monetize gameplay, without written permission. See [License and usage rules](license.md).
+MCC 5 is under the GPL-3.0, so any server may run it. See [License](license.md).

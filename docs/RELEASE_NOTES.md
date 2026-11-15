@@ -65,4 +65,4 @@ If your mission or server saved **Find Ride Distance** at 1500, set it to 500 (C
 
 Full details: `MCC_changelog.txt` (R34, R35).
 
-**Usage rules:** personal, non-commercial use only. No selling, reuploading or monetized servers. See `LICENSE.md` (also inside the zip). Permission requests: @z1on_8200 on Discord.
+**License:** GPL-3.0, like the original MCC Sandbox. See `LICENSE.md` (also inside the zip). Credit: MCC Sandbox by Shay_gman & Spirit. Discord: https://discord.gg/bxwX5EkMEf

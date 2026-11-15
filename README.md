@@ -12,4 +12,4 @@ Mission making the easy way: build and run missions in the Eden editor and Zeus,
 - **Optional mods detected automatically:** ACE3, RHS, CUP, LAMBS Danger / Suppression, HBQ Advanced Driving AI.
 - **Optional limited logistics:** fuel, ammo and repair run out and must be resupplied.
 
-Changelog: [MCC_changelog.txt](MCC_changelog.txt) · **License / usage rules:** [LICENSE.md](LICENSE.md) (personal, non-commercial use only)
+Changelog: [MCC_changelog.txt](MCC_changelog.txt) · **License:** [GPL-3.0](LICENSE.md), like the original MCC Sandbox · **Discord:** https://discord.gg/bxwX5EkMEf

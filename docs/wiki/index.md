@@ -27,7 +27,7 @@ The old MCC main menu is gone. Everything it did is now a Zeus module, an Eden m
 - [Campaign](campaign.md): the MCC campaign mode
 - [Troubleshooting](troubleshooting.md): logs and common problems
 - [Changelog](changelog.md): what changed in MCC 5
-- [License and usage rules](license.md)
+- [License](license.md)
 
 ## Requirements
 
@@ -49,15 +49,12 @@ Do not load an older MCC version at the same time as MCC 5. Missions made with o
 
 MCC 5 is built on MCC Sandbox by **Shay_gman & Spirit**.
 
-## Usage rules (summary)
+## License
 
-MCC 5 is for personal, non-commercial use only.
+MCC 5 is free software under the GNU General Public License v3 (GPL-3.0), like the original MCC Sandbox.
 
-- No selling it or using it to make money.
-- No reuploading or redistributing it without written permission.
-- Don't present it as your own work.
-- Your own edits stay private.
-- No monetized servers without written permission.
+- You may use it, share it and run it on any server.
+- You may change it. If you share a changed version, keep it under the GPL-3.0 with its source, and keep the credits.
 - Keep the credit to Shay_gman & Spirit.
 
-Read the full text on the [License and usage rules](license.md) page. Permission requests go to @z1on_8200 on Discord.
+Read more on the [License](license.md) page. Community and support: [Discord](https://discord.gg/bxwX5EkMEf).

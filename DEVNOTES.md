@@ -4,7 +4,7 @@ Notes for anyone working on this repo. Read this first.
 
 ## What this is
 MCC Sandbox 5: an Arma 3 mod (SQF + config) built on MCC Sandbox by Shay_gman & Spirit. Owner: haganahzion
-(Discord @z1on_8200). Private repo, personal non-commercial use only (see `LICENSE.md`).
+(Discord @z1on_8200). Licensed GPL-3.0 like the original MCC Sandbox (see `LICENSE.md`); keep the Shay_gman & Spirit credit. Discord: https://discord.gg/bxwX5EkMEf.
 Current version: see `VERSION` (5.0.x scheme; do not jump to 6). Requires CBA_A3.
 
 There is no Arma 3 in the dev container, and no SQF linter can be installed. Nothing can be run here. Every change

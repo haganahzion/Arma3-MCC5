@@ -12,5 +12,5 @@
 12. [Multiplayer and security](multiplayer-and-security.md)
 13. [Campaign](campaign.md)
 14. [Troubleshooting](troubleshooting.md)
-15. [License and usage rules](license.md)
+15. [License](license.md)
 16. [Changelog](changelog.md)
