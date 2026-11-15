@@ -1,7 +1,6 @@
 // MCC remoteExec whitelist (CfgRemoteExec >> Functions).
-// Generated from every remoteExec call in the mod. allowedTargets: 0 = any machine, 2 = server only.
-// BIS_fnc_MP was removed (MCC no longer uses it). MCC_fnc_globalExecute stays for the mission maker
-// command line and is guarded by MCC Network Security (Strict).
+// One entry per function the mod calls with remoteExec. allowedTargets: 0 = any machine, 1 = clients, 2 = server only.
+// MCC_fnc_globalExecute is for the mission maker command line and is guarded by MCC Network Security (Strict).
 
 class BIS_fnc_BoatRack01Init {allowedTargets=0;};
 class BIS_fnc_Carrier01Init {allowedTargets=0;};

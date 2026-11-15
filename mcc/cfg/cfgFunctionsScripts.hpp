@@ -1,5 +1,5 @@
-// Auto-generated: legacy scripts that used to run through execVM, now registered as functions.
-// Call them with: _args spawn MCC_fnc_s_<name>;  (same _this as the old execVM call)
+// Older MCC scripts registered as functions.
+// Call them with: _args spawn MCC_fnc_s_<name>;
 class scripts
 {
 	class s_3Deditor_mouseDown

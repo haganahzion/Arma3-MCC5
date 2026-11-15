@@ -1,4 +1,4 @@
-![MCC 5](https://raw.githubusercontent.com/haganahzion/Arma3-MCC5/mcc5/docs/mcc5_banner.png)
+![MCC 5](https://raw.githubusercontent.com/haganahzion/Arma3-MCC5/ARMA3-MCC5-v5.0.3/docs/mcc5_banner.png)
 
 # MCC Sandbox 5 for Arma 3 (v5.0.3)
 

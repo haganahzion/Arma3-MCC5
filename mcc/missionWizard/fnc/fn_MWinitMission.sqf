@@ -952,7 +952,7 @@ if (_multipleObjectives) then {
 //Briefings
 _music = MWinitMissionMusic call BIS_fnc_selectRandom;
 
-//Operation screen: every AI group holds fire while the player side sees the operation (replaces the old cinematic)
+//Operation screen: every AI group holds fire while the player side sees the operation
 if (_playMusic < 2) then {
 	private _introPlace = if ((_center isEqualType []) && {(_center param [1, ""]) isEqualType ""}) then {_center param [1, ""]} else {""};
 	private _introMusic = ["", _music] select (_playMusic == 0 && {_music isEqualType ""});
