@@ -7,6 +7,7 @@ class curator
 	#endif
 
 	class addToZeus {description = "add units to zeus";};
+	class curatorAllAddons {description = "Every loaded CfgPatches addon, for MCC curators";};
 	class curatorAmbientCivilians {description = "handles the add ambient civilians module";};
 	class curatorMCCCAS {description = "MCC CAS in Zeus";};
 	class curatorSetEvac {description = "Mark Vehicle as Evac Vehicle";};

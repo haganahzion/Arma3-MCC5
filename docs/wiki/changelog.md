@@ -3,6 +3,12 @@
 A short summary of what changed in MCC 5. The full list is in `MCC_changelog.txt` (sections R34 and R35) in the mod.
 
 
+## v5.0.5
+
+- GAIA only manages its own groups. Zeus and other mods' groups (CAS, helicopter LZ drops, reinforcements) keep their waypoints in a fight.
+- MCC's Zeus lists the modules and objects of every loaded mod.
+- Fixed an IED error with editor module settings.
+
 ## v5.0.4
 
 - GAIA task groups put the task first: they march straight to it, return fire on the way, only stop to fight enemies within 150 m, and are no longer sent off to other fights. Lost or stuck groups get their order again.

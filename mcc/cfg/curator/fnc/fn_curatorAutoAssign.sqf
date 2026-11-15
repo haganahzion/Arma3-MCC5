@@ -32,7 +32,7 @@ if (!isServer) exitWith {};
 		_cur setVariable ["showNotification", false, true];
 		_cur setVariable ["mccIgnore", true];
 		_cur setVariable ["MCC_autoCurator", true, true];
-		_cur addCuratorAddons activatedAddons;
+		_cur addCuratorAddons (call MCC_fnc_curatorAllAddons);
 		{[_cur, _x, ["%ALL"]] call BIS_fnc_setCuratorAttributes} forEach ["player", "object", "group", "waypoint", "marker"];
 		_cur
 	};

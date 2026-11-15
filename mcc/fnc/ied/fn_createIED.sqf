@@ -28,13 +28,27 @@ if (!isServer) exitWIth {};
 params [
 		["_fakeIed",objNull,[objNull]],
 		["_trapvolume","medium",["",[]]],
-		["_IEDExplosionType",0,[0]],
-		["_IEDDisarmTime",10,[0]],
-		["_IEDJammable",true,[true]],
-		["_IEDTriggerType",0,[0]],
-		["_trapdistance",10,[0]],
+		["_IEDExplosionType",0,[0,""]],
+		["_IEDDisarmTime",10,[0,""]],
+		["_IEDJammable",true,[true,0,""]],
+		["_IEDTriggerType",0,[0,""]],
+		["_trapdistance",10,[0,""]],
 		["_iedside",[west],[sideLogic,"",[]]]
 	];
+
+//Editor module attributes can arrive as text ("0", "60", "1"): use them as numbers / true-false
+{
+	if (_x isEqualType "") then {
+		switch (_forEachIndex) do {
+			case 0: {_IEDExplosionType = parseNumber _x};
+			case 1: {_IEDDisarmTime = parseNumber _x};
+			case 2: {_IEDTriggerType = parseNumber _x};
+			case 3: {_trapdistance = parseNumber _x};
+		};
+	};
+} forEach [_IEDExplosionType, _IEDDisarmTime, _IEDTriggerType, _trapdistance];
+if (_IEDJammable isEqualType "") then {_IEDJammable = (toLowerANSI _IEDJammable) in ["1", "true"]};
+if (_IEDJammable isEqualType 0) then {_IEDJammable = _IEDJammable == 1};
 
 if (isNull _fakeIed) exitWith {diag_log "MCC Sandbox Error: MCC_fnc_createIED object null "};
 

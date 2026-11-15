@@ -710,6 +710,8 @@ if ( isServer ) then {
 	_dummy setvariable ["birdType","",true];
 	call compile (_name + " = _dummy");
 	publicVariable _name;
+	//Every loaded addon's modules and objects (other mods' Zeus modules too, e.g. CAS / support mods)
+	_dummy addCuratorAddons (call MCC_fnc_curatorAllAddons);
 
 	/*
 	//Add addons to curator

@@ -1,3 +1,9 @@
+Changelog v5.0.5:
+Fixed:
+	- GAIA's cancel orders pass and ambient smoke/flares ran over every group of a side: groups of Zeus, the mission and other mods (CAS, LZ insertion, reinforcement mods) lost their waypoints in COMBAT or after MCC_GAIA_MAX_ORDER_AGE; now GAIA registered groups only
+	- MCC curators (MCC_curator and the per-player ones) get every loaded CfgPatches addon (MCC_fnc_curatorAllAddons) instead of activatedAddons, so other mods' Zeus modules show up
+	- MCC_fnc_createIED: editor module values given as text (effect, disarm time, trigger type, distance, jammable) are converted instead of failing params
+
 Changelog v5.0.4:
 Added:
 	- Setting "Reinforcements For Player Sides" (MCC_GAIA_SUPPORT_REINF_PLAYERSIDE, off): GAIA reinforcements only for sides without players unless turned on

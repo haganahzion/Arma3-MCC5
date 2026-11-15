@@ -67,3 +67,10 @@ When ACE is loaded, MCC hands several jobs to ACE:
 - Some MCC actions, like resupply, use ACE items (for example field dressings instead of First Aid Kits).
 
 If something MCC normally does seems missing with ACE loaded, it is usually because ACE does that job.
+
+## Other Zeus and support mods
+
+MCC 5 works next to other Zeus mods, such as ZEN and CAS, helicopter LZ or reinforcement mods:
+
+- The Zeus MCC 5 gives you lists the modules and objects of every loaded mod.
+- GAIA only gives orders to its own groups (groups in a GAIA zone or under **GAIA: Control Group**). Units you place in Zeus, or that another mod spawns, keep their waypoints. GAIA does not take them over unless you hand them to GAIA.

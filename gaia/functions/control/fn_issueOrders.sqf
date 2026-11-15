@@ -265,7 +265,10 @@ private _fnc_caCost = {
 					)
 			then	{[_x] call GAIA_fnc_removeWaypoints;/*player globalchat "7";*/};
 	};
-}forEach _allSideGroups;
+//GAIA groups only: groups of other mods, Zeus and the mission (CAS runs, helicopter insertions, reinforcements)
+//keep their waypoints. Every group that isn't GAIA's would otherwise lose them when in COMBAT or when it
+//has no GAIA order time (older than MCC_GAIA_MAX_ORDER_AGE).
+}forEach _sideGroups;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 //									ORGANISE DEFENSIVE ORDERS (FOR NOW FORTIFY)
@@ -936,6 +939,7 @@ private "_IsNightCache";
 
 		   	 };
 			};
-}  forEach _allSideGroups;
+//GAIA groups only (smoke and flares are GAIA behaviour)
+}  forEach _sideGroups;
 
 true;
