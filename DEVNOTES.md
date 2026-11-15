@@ -26,7 +26,7 @@ Say clearly in replies that changes are untested in game.
 - Build locally: `python3 tools/build_pbo.py <outdir>` makes `<outdir>/@mcc_sandbox_a3/addons/mcc_sandbox_mod.pbo`
   (+ mod.cpp, INSTALL.md, LICENSE.md). Unbinarized, unsigned. PBO prefix `mcc_sandbox_mod` (also `$PBOPREFIX$`);
   the packer generates `BIS_AddonInfo.hpp`.
-- Release: bump `VERSION`, then push a commit whose message contains `[release]`. `.github/workflows/release.yml`
+- Release: bump `VERSION`, then push a commit whose message contains `[release]`. `.github/workflows/build-release.yml`
   builds, zips `@mcc_sandbox_a3` as `ARMA3-MCC5.zip`, and publishes release `ARMA3-MCC5-v<VERSION>` with
   `docs/RELEASE_NOTES.md` as the body (marked latest). Tags can't be pushed from the session; the workflow creates them.
   Keep `config.cpp` CfgPatches `version` and `definesMod.hpp` `MCCVersion` in step with `VERSION`.
