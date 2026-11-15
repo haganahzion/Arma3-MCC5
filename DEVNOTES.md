@@ -30,6 +30,11 @@ Say clearly in replies that changes are untested in game.
   builds, zips `@mcc_sandbox_a3` as `ARMA3-MCC5.zip`, and publishes release `ARMA3-MCC5-v<VERSION>` with
   `docs/RELEASE_NOTES.md` as the body (marked latest). Tags can't be pushed from the session; the workflow creates them.
   Keep `config.cpp` CfgPatches `version` and `definesMod.hpp` `MCCVersion` in step with `VERSION`.
+- Steam Workshop: item id `3840123393` (https://steamcommunity.com/sharedfiles/filedetails/?id=3840123393), CBA_A3 set
+  as required item. Update: build into `Documents\MCC5-workshop\@mcc_sandbox_a3`, sign the PBO with
+  `Documents\MCC5-keys\mcc5.biprivatekey` (Arma 3 Tools `DSSignFile`, key `keys\mcc5.bikey` stays in the mod folder), then
+  `"<Arma 3 Tools>\Publisher\PublisherCmd.exe" update /id:3840123393 /changeNoteFile:<notes.txt> /path:<mod folder>`.
+  Launch Publisher tools through the Windows shell (not a sandboxed shell) or Steam init fails. Never commit the private key.
 - Images: `python3 tools/img2paa.py in.png out.paa` (DXT1 + mipmaps, power-of-two sizes). Banner/logo sources in `docs/`.
 - Settings window: after changing any CBA setting in `mcc/settings/*.sqf`, run `python3 tools/gen_eden_settings.py`
   to regenerate `mcc/cfg/eden/settingsAttributes.hpp` and `mcc/fnc/eden/edenSettingsMap.sqf`.
