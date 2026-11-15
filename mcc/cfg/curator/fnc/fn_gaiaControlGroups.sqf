@@ -14,6 +14,12 @@ params [["_groups", [], [[]]], ["_mode", 0, [0]], ["_vehicles", true, [true]]];
 	private _group = _x;
 	if (isNull _group || {isPlayer leader _group}) then {continue};
 
+	// Leaving task-following (or a new mode): end any task march and give the AI their normal combat behaviour back
+	if (_mode != 0 && {_group getVariable ["GAIA_taskMarch", false] || {_group getVariable ["GAIA_marchAI", false]}}) then {
+		_group setVariable ["GAIA_taskMarch", nil, true];
+		if (local _group) then {[_group, false] call GAIA_fnc_marchAI} else {[_group, false] remoteExecCall ["GAIA_fnc_marchAI", groupOwner _group]};
+	};
+
 	if (_mode == 3) then {
 		_group setVariable ["GAIA_followTasks", nil, true];
 		_group setVariable ["GAIA_ZONE_INTEND", nil, true];

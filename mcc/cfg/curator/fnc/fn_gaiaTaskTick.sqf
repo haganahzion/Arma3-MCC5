@@ -1,10 +1,19 @@
 /*
-	MCC_fnc_gaiaTaskTick  (server)
+	MCC_fnc_gaiaTaskTick  (server, every 15 s from the task loop and when a fight ends)
 	For a group with GAIA_followTasks: picks the nearest unfinished task of the group's side that has a destination,
-	makes sure an MCC zone covers it (creating one if needed) and points GAIA at that zone. When the task is done,
-	the next call moves the group on to the next task. With no tasks left, the group patrols its last zone (or the nearest one).
-	A group that was pulled into a fight away from its task zone is sent back to the task once the fight is over
-	(GAIA_fnc_contactTick sets GAIA_contactEnded), or when it is done with that fight's waypoints.
+	makes sure an MCC zone covers it (creating one if needed) and points GAIA at that zone.
+	The task comes first. Until the group is at the task (GAIA_TASK_ARRIVE_RADIUS m or inside the task zone) it
+	"marches" (GAIA_taskMarch):
+		- GAIA gives it no other orders (GAIA_fnc_issueOrders leaves marching groups alone), so it is never sent
+		  off to another fight, a clear spot or a transport job, and its march order never times out.
+		- march mode (GAIA_fnc_marchAI, switched by GAIA_fnc_contactTick): return fire and keep walking; only
+		  enemies within GAIA_MARCH_ENGAGE_RADIUS m make it stop and fight.
+		- watchdog: the march waypoint is put back when it is gone or points elsewhere, and set again when the
+		  group gets no closer on foot for GAIA_MARCH_STUCK_TIME s. Rides: GAIA_fnc_vehicleTick.
+	At the task the march ends and GAIA runs the group in the task zone (attack what is there, patrol).
+	An arrived group that gets more than GAIA_TASK_LEAVE_RADIUS m away and leaves the zone marches back.
+	When the task is done, the next call moves the group on to the next task. With no tasks left, the group
+	patrols its last zone (or the nearest one).
 	Params:
 		0: GROUP
 */
@@ -46,6 +55,11 @@ if (_tasks isEqualTo []) exitWith {
 		[_group] call GAIA_fnc_registerGroup;
 	};
 	_group setVariable ["GAIA_followTask", "", true];
+	// Was on its way to a task that is now done: stop and let GAIA run it in the zone
+	if (_group getVariable ["GAIA_taskMarch", false]) then {
+		_group setVariable ["GAIA_taskMarch", nil, true];
+		[_group] call GAIA_fnc_removeWaypoints;
+	};
 };
 
 // Keep the current task while it's open, else the nearest open one
@@ -57,39 +71,103 @@ private _task = if (_current in _tasks) then {_current} else {
 	(_withDist select 0) select 1
 };
 private _intend = _group getVariable ["GAIA_ZONE_INTEND", []];
-private _contactEnded = _group getVariable ["GAIA_contactEnded", false];
-if (_contactEnded) then {_group setVariable ["GAIA_contactEnded", nil, true]};
-// Busy with a fight GAIA gave it (attack / clear) outside the task zone, out of contact, and the fight is over
-// or its waypoints are done
-private _distracted = (
-	!(_group getVariable ["GAIA_inContact", false])
-	&& {(_group getVariable ["GAIA_Order", ""]) in GAIA_CONTACT_ORDERS}
-	&& {_intend isNotEqualTo []}
-	&& {!([_group getVariable ["GAIA_OrderPosition", []], _intend select 0] call GAIA_fnc_inZone)}
-	&& {_contactEnded || {currentWaypoint _group >= count waypoints _group}}
-);
-if (_task == _current && {_intend isNotEqualTo []} && {!_distracted}) exitWith {};
-
+if (_group getVariable ["GAIA_contactEnded", false]) then {_group setVariable ["GAIA_contactEnded", nil, true]};
 private _dest = _task call _fnc_taskPos;
+private _debug = missionNamespace getVariable ["MCC_GAIA_debug", false];
 
-private _zone = [_dest, 400] call MCC_fnc_gaiaNearestZone;
-if (_zone < 1) then {
-	_zone = [] call MCC_fnc_MWnextZoneNumber;
-	[_zone, _dest, [200, 200]] call MCC_fnc_MWUpdateZone;
+// Send the group to the task: one MOVE waypoint, march order. The order is a patrol with the task as its
+// position, so GAIA's vehicle logic sees the destination and the group isn't counted as busy with a fight.
+private _fnc_march = {
+	params ["_group", "_dest"];
+	[_group] call GAIA_fnc_removeWaypoints;
+	private _wp = _group addWaypoint [_dest, 0];
+	_wp setWaypointType "MOVE";
+	_wp setWaypointBehaviour (["UNCHANGED", GAIA_MARCH_BEHAVIOUR] select (behaviour leader _group != "COMBAT"));
+	_wp setWaypointCombatMode GAIA_MARCH_COMBAT_MODE;
+	_wp setWaypointSpeed GAIA_MARCH_SPEED;
+	_wp setWaypointCompletionRadius GAIA_MARCH_WP_RADIUS;
+	_group setCurrentWaypoint _wp;
+	_group setVariable ["GAIA_Order", "DoPatrol", false];
+	_group setVariable ["GAIA_OrderTime", time, false];
+	_group setVariable ["GAIA_OrderPosition", _dest, false];
+	_group setVariable ["GAIA_marchProgress", [time, (leader _group) distance2D _dest]];
+	_group setVariable ["GAIA_taskMarch", true, true];
 };
 
-_group setVariable ["GAIA_followTask", _task, true];
-_group setVariable ["GAIA_ZONE_INTEND", [str _zone, "MOVE"], true];
-[_group] call GAIA_fnc_removeWaypoints;
-[_group] call GAIA_fnc_registerGroup;
+// At the task: close enough. Arriving needs the leader near the task itself (an existing zone can be big);
+// staying also counts the whole task zone, so GAIA can patrol it without the group marching back.
+private _fnc_arrived = {
+	params ["_group", "_dest", "_radius", ["_zoneCounts", false]];
+	private _zone = (_group getVariable ["GAIA_ZONE_INTEND", []]) param [0, ""];
+	((leader _group) distance2D _dest) < _radius
+	|| {_zoneCounts && {_zone != ""} && {[getPosATL leader _group, _zone] call GAIA_fnc_inZone}}
+};
 
-// Head for the task now (GAIA patrols the zone once the group is there). The order is a patrol, so GAIA's
-// vehicle logic sees the destination and the group isn't counted as busy with a fight.
-[_group, _dest, "MOVE"] call GAIA_fnc_addAttackWaypoint;
-_group setVariable ["GAIA_Order", "DoPatrol", false];
-_group setVariable ["GAIA_OrderTime", time, false];
-_group setVariable ["GAIA_OrderPosition", _dest, false];
+// New task (or no zone yet): zone at the task, march there
+if (_task != _current || {_intend isEqualTo []}) exitWith {
+	private _zone = [_dest, GAIA_TASK_ZONE_SEARCH] call MCC_fnc_gaiaNearestZone;
+	if (_zone < 1) then {
+		_zone = [] call MCC_fnc_MWnextZoneNumber;
+		[_zone, _dest, GAIA_TASK_ZONE_SIZE] call MCC_fnc_MWUpdateZone;
+	};
+	_group setVariable ["GAIA_followTask", _task, true];
+	_group setVariable ["GAIA_ZONE_INTEND", [str _zone, "MOVE"], true];
+	[_group] call GAIA_fnc_registerGroup;
 
-if (missionNamespace getVariable ["MCC_GAIA_debug", false]) then {
-	diag_log format ["GAIA tasks: %1 -> task %2, zone %3 at %4 (back from a fight: %5)", _group, _task, _zone, _dest, _distracted];
+	if ([_group, _dest, GAIA_TASK_ARRIVE_RADIUS] call _fnc_arrived) then {
+		_group setVariable ["GAIA_taskMarch", nil, true];
+		[_group] call GAIA_fnc_removeWaypoints;
+	} else {
+		[_group, _dest] call _fnc_march;
+	};
+	if (_debug) then {diag_log format ["GAIA tasks: %1 -> task %2, zone %3 at %4", _group, _task, _zone, _dest]};
+};
+
+private _marching = _group getVariable ["GAIA_taskMarch", false];
+
+// Not marching: at the task, GAIA runs it in the zone. March back when it got pulled far away.
+if (!_marching) exitWith {
+	if !([_group, _dest, GAIA_TASK_LEAVE_RADIUS, true] call _fnc_arrived) then {
+		[_group, _dest] call _fnc_march;
+		if (_debug) then {diag_log format ["GAIA tasks: %1 too far from task %2, marching back", _group, _task]};
+	};
+};
+
+// Marching and there: hand over to GAIA in the task zone
+if ([_group, _dest, GAIA_TASK_ARRIVE_RADIUS] call _fnc_arrived) exitWith {
+	_group setVariable ["GAIA_taskMarch", nil, true];
+	_group setVariable ["GAIA_marchProgress", nil];
+	[_group] call GAIA_fnc_removeWaypoints;
+	if (_debug) then {diag_log format ["GAIA tasks: %1 reached task %2", _group, _task]};
+};
+
+// Marching: the waypoint must still lead to the task (it can be gone after a fight, or the task moved)
+private _wps = waypoints _group;
+private _wpOk = (
+	count _wps > 0
+	&& {currentWaypoint _group < count _wps}
+	&& {((waypointPosition (_wps select (count _wps - 1))) distance2D _dest) < GAIA_MARCH_WP_TOLERANCE}
+);
+if (!_wpOk) exitWith {
+	[_group, _dest] call _fnc_march;
+	if (_debug) then {diag_log format ["GAIA tasks: %1 march waypoint to task %2 set again", _group, _task]};
+};
+
+// Marching on foot but getting no closer: new path. Not while getting into a ride, driving (GAIA_fnc_vehicleTick
+// handles stuck vehicles) or fighting close enemies.
+private _dist = _leader distance2D _dest;
+(_group getVariable ["GAIA_marchProgress", [time, _dist]]) params ["_since", "_lastDist"];
+if (_dist < _lastDist - GAIA_MARCH_PROGRESS) exitWith {
+	_group setVariable ["GAIA_marchProgress", [time, _dist]];
+};
+private _busy = (
+	vehicle _leader != _leader
+	|| {(_group getVariable ["GAIA_boardUntil", -1]) > 0}
+	|| {(time - (_group getVariable ["GAIA_marchCloseAt", -1e6])) < GAIA_MARCH_CALM_TIME}
+);
+if (_busy) exitWith {_group setVariable ["GAIA_marchProgress", [time, _dist]]};
+if (time - _since > GAIA_MARCH_STUCK_TIME) then {
+	[_group, _dest] call _fnc_march;
+	{if (!isPlayer _x) then {_x doFollow leader _group}} forEach (units _group);
+	if (_debug) then {diag_log format ["GAIA tasks: %1 stuck on the way to task %2, new path", _group, _task]};
 };

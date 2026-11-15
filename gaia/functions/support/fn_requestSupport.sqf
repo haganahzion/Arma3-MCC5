@@ -21,7 +21,8 @@ Description:
 		        near it, then given to GAIA in that group's zone. With a Mission
 		        Wizard unit cap (MCC_MW_maxEnemyAI) only the units still free under
 		        the cap (alive units of the side counted) may come, and none when
-		        fewer than GAIA_REINF_MIN_UNITS are free.
+		        fewer than GAIA_REINF_MIN_UNITS are free. Never for a side with
+		        players unless MCC_GAIA_SUPPORT_REINF_PLAYERSIDE is on.
 	Order of preference: heavily outnumbered (CA points > 4x own points in contact,
 	CA points carry the x2/x3 multiplier):
 	REINF, ARTY, CAS; armoured CA: CAS, ARTY, REINF; else ARTY, CAS, REINF.
@@ -161,6 +162,11 @@ private _fnc_cas = {
 //--------------------------------------------- REINFORCEMENTS ---------------------------------------------
 private _fnc_reinf = {
 	if !(missionNamespace getVariable ["MCC_GAIA_SUPPORT_REINF", true]) exitWith {false};
+	//No new units for a side that has players, unless the mission maker allows it
+	if (
+		!(missionNamespace getVariable ["MCC_GAIA_SUPPORT_REINF_PLAYERSIDE", false])
+		&& {(allPlayers findIf {alive _x && {side group _x == _side}}) > -1}
+	) exitWith {false};
 	if (isNil "MCC_fnc_reinforcement") exitWith {false};
 	if !(["REINF", "MCC_GAIA_SUPPORT_REINF_COOLDOWN", 600, "MCC_GAIA_SUPPORT_REINF_BUDGET", 2] call _fnc_available) exitWith {false};
 

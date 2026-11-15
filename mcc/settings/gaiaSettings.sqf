@@ -339,6 +339,15 @@
 ] call CBA_fnc_addSetting;
 
 [
+    "MCC_GAIA_SUPPORT_REINF_PLAYERSIDE",
+    "CHECKBOX",
+   	["Reinforcements For Player Sides","Also send reinforcements to sides that have players (off: only AI sides get new units)"],
+   	["MCC GAIA", "Support Requests"],
+    false,
+    true
+] call CBA_fnc_addSetting;
+
+[
     "MCC_GAIA_SUPPORT_REINF_COOLDOWN",
     "SLIDER",
    	["Reinforcement Cooldown","Seconds between two reinforcement calls of one side"],

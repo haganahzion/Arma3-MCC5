@@ -3,6 +3,11 @@
 A short summary of what changed in MCC 5. The full list is in `MCC_changelog.txt` (sections R34 and R35) in the mod.
 
 
+## v5.0.4
+
+- GAIA task groups put the task first: they march straight to it, return fire on the way, only stop to fight enemies within 150 m, and are no longer sent off to other fights. Lost or stuck groups get their order again.
+- GAIA no longer spawns reinforcements for a side that has players. New setting: Reinforcements For Player Sides (off).
+
 ## v5.0.2
 
 - Fixed GAIA Control Group sending groups to the map corner when a task's destination was an object or missing.

@@ -69,9 +69,14 @@ Groups given to GAIA with **GAIA: Control Group** follow the side's tasks:
 
 1. The group takes the nearest unfinished task of its side that has a map position.
 2. If no MCC zone is within 400 m of the task, a 200 m zone is made there.
-3. The group goes there as aggressive.
-4. When that task is done, it takes the next nearest one. Tasks are checked every 15 seconds.
-5. With no tasks left, it patrols its last zone, or the nearest one. With no zone at all, a 300 m zone is made around the group.
+3. The group marches to the task. The task comes first:
+   - GAIA gives a marching group no other orders. It is never sent to another fight, a clear job or a transport run, and its order to go to the task never runs out.
+   - On the way the AI return fire and keep moving in formation. They only stop and fight properly when enemies are within 150 m, and start marching again 20 seconds after the last close enemy.
+   - If the group lost its way after a fight, it gets the order again. If it gets no closer on foot for 2 minutes, it gets a new path.
+   - Long trips still use empty vehicles (see Vehicles below).
+4. At the task (leader within 150 m), GAIA runs the group in the task zone: it attacks what is there and patrols. If it gets pulled more than 400 m away and out of the zone, it marches back.
+5. When that task is done, it takes the next nearest one. Tasks are checked every 15 seconds.
+6. With no tasks left, it patrols its last zone, or the nearest one. With no zone at all, a 300 m zone is made around the group.
 
 Use it to let friendly AI squads play a Mission Wizard mission next to you.
 
@@ -80,7 +85,7 @@ Use it to let friendly AI squads play a Mission Wizard mission next to you.
 With **Smart Vehicle Use** on (default), GAIA groups use vehicles like this:
 
 - Long trips: infantry going further than **Find Ride Distance** (500 m) look for an empty land vehicle within **Vehicle Search Radius** (300 m) of the leader. Any side's empty vehicle counts, as long as it isn't locked, can move and has fuel. An AI drives (never a player, and not the leader when another AI can). If the vehicle fits at least 60% of the AI, they get in; the rest walk on as their own GAIA group with the same order. Players in the group are ordered in too, but the vehicle leaves without them after about 90 seconds.
-- After a fight: a group goes back to normal and to its job about 30 seconds after the last known enemy within 500 m. Groups that follow tasks only join fights within 400 m of their route or inside their task's zone.
+- After a fight: a group goes back to normal and to its job about 30 seconds after the last known enemy within 500 m. Groups on their way to a task only fight enemies close to them (see Following tasks). At the task they join fights within 250 m or inside the task zone.
 - At the objective: at **Dismount Distance** (400 m) from the objective, the whole group gets out, leader included.
   - A borrowed vehicle is left parked. The group remembers it.
   - A group's own vehicle (motorized or mechanized): passengers and leader get out, the crew stays in to give fire support.
@@ -130,6 +135,8 @@ Which one GAIA tries first:
 - Heavily outnumbered: reinforcements, then artillery, then CAS.
 - Armoured contact: CAS, then artillery, then reinforcements.
 - Otherwise: artillery, then CAS, then reinforcements.
+
+Reinforcements are only sent to sides with no players on them, so no extra friendly units show up next to you. Turn on **Reinforcements For Player Sides** to allow them for every side.
 
 Each kind can be turned off on its own. At most one new support response per side per GAIA cycle. Air contacts are ignored. All settings are on the [Settings](settings.md#mcc-gaia---support-requests) page and in MCC 5 Mission Settings.
 

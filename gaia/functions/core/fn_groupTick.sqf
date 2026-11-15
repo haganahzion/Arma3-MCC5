@@ -54,6 +54,7 @@ if (_group getVariable ["mcc_gaia_cache", false]) then {
 	private _wantDS = (
 		_eligible
 		&& {(behaviour _leader) != "COMBAT"}
+		&& {!(_group getVariable ["GAIA_taskMarch", false])}
 		&& {!((_group getVariable ["GAIA_Order", ""]) in (missionNamespace getVariable ["GAIA_DS_EXCLUDED_ORDERS", ["DoAttack","DoClear","DoTransport","DoSupport"]]))}
 	);
 

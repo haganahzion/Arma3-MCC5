@@ -1,3 +1,10 @@
+Changelog v5.0.4:
+Added:
+	- Setting "Reinforcements For Player Sides" (MCC_GAIA_SUPPORT_REINF_PLAYERSIDE, off): GAIA reinforcements only for sides without players unless turned on
+Fixed:
+	- GAIA task-following groups march to their task first: GAIA gives marching groups no attack, clear, transport or timeout orders; AUTOCOMBAT off and combat mode YELLOW on the way (return fire, keep formation), normal combat only with enemies within 150 m; lost march waypoints are set again and groups stuck on foot for 120 s get a new path; at the task GAIA takes over, groups pulled more than 400 m away march back
+	- GAIA spawned friendly reinforcements for the players' own side
+
 Changelog v5.0.3:
 Added:
 	- Zeus right-click menu on AI units: GAIA: Control Group, GAIA: Attack Area, GAIA: Defend Area, Player Control Group (ZEN context menu when ZEN is loaded)

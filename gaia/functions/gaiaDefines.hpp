@@ -40,7 +40,7 @@
 #define GAIA_NO_RIDE_COOLDOWN		300
 
 // Group variables copied to the walking group when a group splits
-#define GAIA_SPLIT_VARS				["GAIA_ZONE_INTEND", "GAIA_followTasks", "GAIA_followTask", "GAIA_noVehicles", "mcc_gaia_cache"]
+#define GAIA_SPLIT_VARS				["GAIA_ZONE_INTEND", "GAIA_followTasks", "GAIA_followTask", "GAIA_taskMarch", "GAIA_noVehicles", "mcc_gaia_cache"]
 
 //------------------------------ Contact ------------------------------
 // Contact: an enemy known within this radius (meters) with information younger than this (seconds)
@@ -55,4 +55,30 @@
 // Orders that come from contact (attack, flank, support by fire and hold all use "DoAttack")
 #define GAIA_CONTACT_ORDERS			["DoAttack", "DoClear"]
 // Task-following groups only take on fights this close to them (meters) unless the fight is in their task zone
-#define GAIA_CHASE_LIMIT			400
+#define GAIA_CHASE_LIMIT			250
+
+//------------------------------ Task march ------------------------------
+// A task-following group "marches" until it reaches its task. While marching GAIA gives it no other orders
+// (no attacks on other fights, no clear spots, no transport, no order timeouts) and it keeps its formation.
+// Arrived: leader this close to the task (meters) or inside the task zone
+#define GAIA_TASK_ARRIVE_RADIUS		150
+// An arrived group that ends up this far from the task (meters) and outside the task zone marches back
+#define GAIA_TASK_LEAVE_RADIUS		400
+// Task zone size made around a task when no zone covers it (meters)
+#define GAIA_TASK_ZONE_SIZE			[200, 200]
+// An existing zone within this distance of the task is used for it (meters)
+#define GAIA_TASK_ZONE_SEARCH		400
+// The march waypoint must end this close to the task, else it is set again (meters)
+#define GAIA_MARCH_WP_TOLERANCE		100
+#define GAIA_MARCH_WP_RADIUS		30
+// Marching: return fire, keep formation (RED would let every soldier run off after targets)
+#define GAIA_MARCH_COMBAT_MODE		"YELLOW"
+#define GAIA_MARCH_SPEED			"NORMAL"
+#define GAIA_MARCH_BEHAVIOUR		"AWARE"
+// Enemies known this close (meters) make a marching group fight properly (engine combat mode on)
+#define GAIA_MARCH_ENGAGE_RADIUS	150
+// Seconds without close enemies before a marching group goes back to marching mode
+#define GAIA_MARCH_CALM_TIME		20
+// Not this much closer (meters) in this time (seconds) on foot: set the march again (new path)
+#define GAIA_MARCH_PROGRESS			50
+#define GAIA_MARCH_STUCK_TIME		120

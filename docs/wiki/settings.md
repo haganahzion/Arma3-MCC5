@@ -212,6 +212,7 @@ Long class list defaults are not repeated here. Hover over the setting in Eden o
 | CAS Plane BLUFOR | Plane class for BLUFOR CAS runs (empty: vanilla default) | (empty) | `MCC_GAIA_SUPPORT_CAS_PLANE_WEST` |
 | CAS Plane OPFOR | Plane class for OPFOR CAS runs (empty: vanilla default) | (empty) | `MCC_GAIA_SUPPORT_CAS_PLANE_EAST` |
 | CAS Plane Independent | Plane class for Independent CAS runs (empty: vanilla default) | (empty) | `MCC_GAIA_SUPPORT_CAS_PLANE_INDEP` |
+| Reinforcements For Player Sides | Also send reinforcements to sides that have players (off: only AI sides get new units). | Off | `MCC_GAIA_SUPPORT_REINF_PLAYERSIDE` |
 | Reinforcement Cooldown | Seconds between two reinforcement calls of one side. Range 60 to 3600. | 600 | `MCC_GAIA_SUPPORT_REINF_COOLDOWN` |
 | Reinforcement Budget | Reinforcement calls per side for the whole mission. Range 0 to 20. | 2 | `MCC_GAIA_SUPPORT_REINF_BUDGET` |
 | Reinforcement Size | Number of vehicles: small 2, medium 3, large 4 | Small | `MCC_GAIA_SUPPORT_REINF_SIZE` |

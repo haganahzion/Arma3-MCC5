@@ -42,6 +42,7 @@ class GAIA
         class groupTick {};
         class hasLambsWaypoint {};
         class inZone {};
+        class marchAI {};
         class perFrame {};
         class registerGroup {};
         class registrySweep {};

@@ -964,6 +964,22 @@ class MCC5S_Cat_MCC_GAIA_Support_Requests
 			typeName = "STRING";
 			defaultValue = """""";
 		};
+		class MCC5S_MCC_GAIA_SUPPORT_REINF_PLAYERSIDE
+		{
+			displayName = "Reinforcements For Player Sides";
+			tooltip = "Also send reinforcements to sides that have players (off: only AI sides get new units)\n(addon default: Off)\nCBA setting: MCC_GAIA_SUPPORT_REINF_PLAYERSIDE";
+			property = "MCC5S_MCC_GAIA_SUPPORT_REINF_PLAYERSIDE";
+			expression = "";
+			control = "Combo";
+			typeName = "NUMBER";
+			defaultValue = "-1";
+			class Values
+			{
+				class V0 {name = "Use addon setting"; value = -1;};
+				class V1 {name = "Off"; value = 0;};
+				class V2 {name = "On"; value = 1;};
+			};
+		};
 		class MCC5S_MCC_GAIA_SUPPORT_REINF_COOLDOWN
 		{
 			displayName = "Reinforcement Cooldown";

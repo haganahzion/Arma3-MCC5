@@ -114,8 +114,12 @@ _StartTimeIssueOrders = time;
 private _allSideGroups	= groups _side;
 private _sideGroups		= [_side] call GAIA_fnc_getGroups;
 
-//Groups running LAMBS Danger task waypoints are left alone (treated like FORTIFY)
-private _lambsGroups	= _allSideGroups select {[_x] call GAIA_fnc_hasLambsWaypoint};
+//Groups running LAMBS Danger task waypoints are left alone (treated like FORTIFY).
+//So are task-following groups still on their way to the task (GAIA_taskMarch, set by MCC_fnc_gaiaTaskTick):
+//they get no attack, clear, transport or timeout orders until they are there.
+private _lambsGroups	= _allSideGroups select {
+	([_x] call GAIA_fnc_hasLambsWaypoint) || {_x getVariable ["GAIA_taskMarch", false]}
+};
 
 //Conflict Area cost, computed once per CA per cycle
 private _caCostCache = createHashMap;

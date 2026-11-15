@@ -12,6 +12,9 @@
 		- rides: GAIA_fnc_vehicleTick re-mounts when the objective is still far.
 	Sets GAIA_inContact (BOOL, public on change), GAIA_lastContact (time, local) and GAIA_contactEnded
 	(BOOL, public, task-following groups only, cleared by MCC_fnc_gaiaTaskTick).
+	Task march (GAIA_taskMarch, set by MCC_fnc_gaiaTaskTick): a group on its way to a task stays in march mode
+	(GAIA_fnc_marchAI) and only fights properly while enemies are known within GAIA_MARCH_ENGAGE_RADIUS m.
+	GAIA_MARCH_CALM_TIME s after the last close enemy it goes back to march mode and keeps walking.
 	Leaves alone: groups led by a player, FORTIFY and garrison groups, groups on LAMBS task waypoints.
 	Params:
 		0: GROUP
@@ -31,6 +34,18 @@ private _intend = _group getVariable ["GAIA_ZONE_INTEND", []];
 if (_intend isEqualTo [] || {(_intend param [1, ""]) == "FORTIFY"}) exitWith {};
 if (_group getVariable ["Garrisoning", false]) exitWith {};
 if ([_group] call GAIA_fnc_hasLambsWaypoint) exitWith {};
+
+// Task march: march mode unless enemies are close, back to normal once the group is there
+private _marchAI = _group getVariable ["GAIA_marchAI", false];
+if (_group getVariable ["GAIA_taskMarch", false]) then {
+	if (count (_leader targets [true, GAIA_MARCH_ENGAGE_RADIUS, [], GAIA_CONTACT_MAX_AGE]) > 0) then {
+		_group setVariable ["GAIA_marchCloseAt", time];
+	};
+	private _wantMarch = (time - (_group getVariable ["GAIA_marchCloseAt", -1e6])) > GAIA_MARCH_CALM_TIME;
+	if (_wantMarch isNotEqualTo _marchAI) then {[_group, _wantMarch] call GAIA_fnc_marchAI};
+} else {
+	if (_marchAI) then {[_group, false] call GAIA_fnc_marchAI};
+};
 
 private _contact = count (_leader targets [true, GAIA_CONTACT_RADIUS, [], GAIA_CONTACT_MAX_AGE]) > 0;
 private _was = _group getVariable ["GAIA_inContact", false];

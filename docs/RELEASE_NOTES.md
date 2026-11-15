@@ -1,6 +1,6 @@
-![MCC 5](https://raw.githubusercontent.com/haganahzion/Arma3-MCC5/ARMA3-MCC5-v5.0.3/docs/mcc5_banner.png)
+![MCC 5](https://raw.githubusercontent.com/haganahzion/Arma3-MCC5/ARMA3-MCC5-v5.0.4/docs/mcc5_banner.png)
 
-# MCC Sandbox 5 for Arma 3 (v5.0.3)
+# MCC Sandbox 5 for Arma 3 (v5.0.4)
 
 **Wiki:** https://mcc5-wiki.pages.dev/ · **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3840123393
 
@@ -22,6 +22,10 @@ The full MCC 5 overhaul: a new Eden and Zeus interface, a rewritten GAIA AI comm
   - **Mission Wizard... / Generate Mission**: set the options, then the whole mission is built in the editor so you can see and edit it before playing (Ctrl+Z undoes it)
   - **Place MCC Module / Place Settings Module**: quick placement of MCC modules
 - **In game:** MCC users get **Zeus** (Ctrl+Delete or Y). Every MCC tool is in the Zeus **Modules** tab. Right-click an AI soldier for quick GAIA orders.
+
+## New in 5.0.4
+- **GAIA puts the task first.** Groups given to GAIA with **GAIA: Control Group** now march to their task and nothing pulls them away. On the way they return fire and keep moving, and they only stop to fight when enemies get within 150 m. GAIA no longer sends them off to other fights, clear jobs or transport runs, and their order to go to the task never runs out. If the way gets lost after a fight, or the group gets stuck, the order is given again. Once at the task, GAIA runs the group there as before, and a group pulled more than 400 m away walks back.
+- **No more surprise friendly units.** GAIA no longer calls reinforcements for a side that has players on it. New setting **Reinforcements For Player Sides** (off by default) turns it back on.
 
 ## New in 5.0.3
 - **Zeus right-click menu:** right-click an AI soldier (leader or anyone in the squad) for **GAIA: Control Group**, **GAIA: Attack Area**, **GAIA: Defend Area** and **Player Control Group** (take the group back from GAIA). With ZEN loaded, the same options are in the ZEN menu under MCC 5.
