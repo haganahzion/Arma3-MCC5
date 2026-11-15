@@ -106,6 +106,9 @@ _area set [0, [_center select 0, _center select 1, 0]];
 if (surfaceIsWater (_area select 0)) exitWith {["the center of the mission area is in the water - move the camera or select a trigger on land"] call _fnc_error};
 
 //------------------------------------------------------------ Factions ------------------------------------------------------------
+if ((_opts get "enemyFaction") == "") exitWith {
+	[format ["the enemy faction %1 is not loaded - load its mod or pick another faction in MCC 5 > Mission Wizard...", _opts getOrDefault ["missingFaction", ""]]] call _fnc_error
+};
 private _enemy = [_opts get "enemyFaction"] call MCC_fnc_edenWizardFactionData;
 private _player = [_opts get "playerFaction"] call MCC_fnc_edenWizardFactionData;
 private _civ = [_opts get "civFaction"] call MCC_fnc_edenWizardFactionData;

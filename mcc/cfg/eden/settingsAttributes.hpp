@@ -727,7 +727,7 @@ class MCC5S_Cat_MCC_GAIA_Vehicles
 		class MCC5S_MCC_GAIA_rideDistance
 		{
 			displayName = "Find Ride Distance";
-			tooltip = "Infantry going further than this (meters) look for an empty vehicle\nEmpty = use addon setting. Number 500 to 5000 (addon default: 1500).\nCBA setting: MCC_GAIA_rideDistance";
+			tooltip = "Infantry going further than this (meters) look for an empty vehicle nearby (and only when the drive is at least 200 m longer than the Dismount Distance)\nEmpty = use addon setting. Number 200 to 5000 (addon default: 500).\nCBA setting: MCC_GAIA_rideDistance";
 			property = "MCC5S_MCC_GAIA_rideDistance";
 			expression = "";
 			control = "Edit";

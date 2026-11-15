@@ -2,6 +2,7 @@
 	Editor-time Mission Wizard: puts units into building positions (Eden mirror of MCC_fnc_garrison). Units are placed in
 	groups of up to 4, each unit stays where it is (doStop, stance UP) at mission start. Military groups are put under
 	GAIA control (FORTIFY by default) in the given zone. Building positions already used by the wizard are skipped.
+	Stops at the unit cap (MCC5MW_ctx "maxUnits" minus "reserve", the units kept for objectives still to come).
 
 	Params:
 		0: ARRAY   - center (ATL)
@@ -24,6 +25,8 @@ params [
 	["_isCiv", false, [false]]
 ];
 
+#define GAR_DEFAULT_MAX_UNITS 200
+
 private _ctx = missionNamespace getVariable ["MCC5MW_ctx", createHashMap];
 _count = round _count;
 if (_count < 1 || {_classes isEqualTo []}) exitWith {0};
@@ -37,7 +40,7 @@ private _positions = [];
 if (_positions isEqualTo []) exitWith {0};
 _positions = _positions call BIS_fnc_arrayShuffle;
 
-private _maxUnits = _ctx getOrDefault ["maxUnits", 200];
+private _maxUnits = (_ctx getOrDefault ["maxUnits", GAR_DEFAULT_MAX_UNITS]) - (_ctx getOrDefault ["reserve", 0]);
 private _init = if (_isCiv) then {
 	"if (local this) then {doStop this};"
 } else {

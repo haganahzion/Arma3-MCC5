@@ -34,7 +34,7 @@ if !(_isCQB) then {
 
 //Lets spawn some body guards
 _range = if (_isCQB) then {30} else {60};
-[_objPos,_range,0,4,_faction, _side] remoteExec ["MCC_fnc_garrison",2];
+[_objPos,_range,0,4,_faction, _side, false, false, "obj"] remoteExec ["MCC_fnc_garrison",2];
 
 //Lets find out if we have a building close by
 _selectedBuilding = ([_objPos, 100] call MCC_fnc_MWFindbuildingPos) call BIS_fnc_selectRandom;

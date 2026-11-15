@@ -1,3 +1,16 @@
+Changelog v5.0.3:
+Added:
+	- Zeus right-click menu on AI units: GAIA: Control Group, GAIA: Attack Area, GAIA: Defend Area, Player Control Group (ZEN context menu when ZEN is loaded)
+	- New operation screen at mission start (editor Mission Wizard intro): camera over the area, operation name, place, time, weather, enemy and objectives, weapons hold countdown; every AI group holds fire and players can't fire until it ends
+Removed:
+	- The MCC 5 button on the Zeus screen (every tool stays in the Zeus Modules tab)
+Fixed:
+	- GAIA groups take a nearby empty vehicle for trips over 500 m (was 1500 m): any side's vehicle, mod trucks included (seats counted with fullCrew), never a player as driver, AI-led groups with a player in them too; AI that don't fit walk as their own group
+	- Mission Wizard: every enemy unit, group, vehicle, crew, HVT, objective target, artillery, CAS plane and reinforcement comes only from the chosen enemy faction (missing pieces are skipped, never filled from another faction); a faction whose mod is not loaded stops Generate instead of using CSAT
+	- Mission Wizard: Max AI Units is a hard limit on units actually placed (crews included, objectives keep their minimum guards); GAIA reinforcements stop at the cap
+	- GAIA groups go back to their task or zone after a fight (no more staying in COMBAT with no orders); task-following groups don't chase fights more than 400 m off their route
+
+
 Changelog v5.0.2:
 Fixed:
 	- GAIA Control Group could send groups to the map corner (task destinations given as an object or none)

@@ -18,6 +18,9 @@ class GAIA_vehicles
 		class safePos {};
 		class groupVehicle {};
 		class groupObjective {};
+		class rideSeats {};
+		class boardRide {};
+		class splitGroup {};
 		class findRide {};
 		class dismount {};
 		class remount {};

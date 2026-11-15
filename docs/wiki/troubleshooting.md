@@ -53,9 +53,13 @@ Check these in order:
 5. Press **Ctrl+Delete** (the MCC keybind) or **Y**. If you get "MCC: you have no Zeus access", MCC has not given you a Zeus. Look for `MCC Zeus: assigned` in the server RPT.
 6. The key may be taken by another mod. Change "Open Zeus (MCC)" in CBA keybinds (MCC).
 
-### The MCC 5 button is missing in Zeus
+### The right-click menu doesn't open in Zeus
 
-The button is added when the Zeus screen opens. Close Zeus and open it again. You can always use **Modules > MCC** in the Zeus module tree instead.
+- Click the right button, don't hold it. Holding moves the camera.
+- Right-click the soldier himself, not empty ground.
+- With a group selected, right-clicking a unit of another group gives a waypoint instead. Click empty ground to clear the selection, or select the group you right-click.
+- With ZEN loaded, the options are in the ZEN menu under **MCC 5**, and ZEN only opens it when no AI is selected.
+- Groups led by a player don't get the menu.
 
 ### The Mission Wizard faction list is empty or a faction is missing
 

@@ -39,3 +39,4 @@ class unassignVehicle {allowedTargets=0;};
 class setAmmoCargo {allowedTargets=0;};
 class setRepairCargo {allowedTargets=0;};
 class setFuelCargo {allowedTargets=0;};
+class setCombatMode {allowedTargets=0;};

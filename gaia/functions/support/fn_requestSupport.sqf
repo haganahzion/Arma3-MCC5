@@ -11,12 +11,17 @@ Description:
 		ARTY  - an idle GAIA mortar / artillery group in range fires
 		        (GAIA_fnc_doMortar / GAIA_fnc_doArtillery). A mortar already firing
 		        on the CA counts as the response. Not when danger close.
-		CAS   - off-map CAS run (MCC_fnc_cas) with the side's plane class.
-		        Not when danger close. Optionally only when the side has an armed
-		        aircraft of its own (MCC_GAIA_SUPPORT_CAS_OWNAIR).
-		REINF - motorized reinforcements (MCC_fnc_reinforcement) spawned ~2 km
-		        behind the friendly group, unloaded near it, then given to GAIA in
-		        that group's zone.
+		CAS   - off-map CAS run (MCC_fnc_cas). Plane: the side's plane setting,
+		        else a plane of the calling group's faction; a default plane of
+		        another faction is never used. Not when danger close. Optionally
+		        only when the side has an armed aircraft of its own
+		        (MCC_GAIA_SUPPORT_CAS_OWNAIR).
+		REINF - motorized reinforcements (MCC_fnc_reinforcement) of the calling
+		        group's faction, spawned ~2 km behind the friendly group, unloaded
+		        near it, then given to GAIA in that group's zone. With a Mission
+		        Wizard unit cap (MCC_MW_maxEnemyAI) only the units still free under
+		        the cap (alive units of the side counted) may come, and none when
+		        fewer than GAIA_REINF_MIN_UNITS are free.
 	Order of preference: heavily outnumbered (CA points > 4x own points in contact,
 	CA points carry the x2/x3 multiplier):
 	REINF, ARTY, CAS; armoured CA: CAS, ARTY, REINF; else ARTY, CAS, REINF.
@@ -43,6 +48,8 @@ params [
 	["_sideGroups", [], [[]]],
 	["_skipGroups", [], [[]]]
 ];
+
+#define GAIA_REINF_MIN_UNITS 4
 
 if (!isServer) exitWith {0};
 if !(missionNamespace getVariable ["MCC_GAIA_SUPPORT_ENABLED", true]) exitWith {0};
@@ -112,15 +119,22 @@ private _fnc_arty = {
 //--------------------------------------------- CAS ---------------------------------------------
 private _fnc_planeClass = {
 	private _suffix = [_side] call GAIA_fnc_sideSuffix;
-	private _list = [missionNamespace getVariable ["MCC_GAIA_SUPPORT_CAS_PLANE_" + _suffix, ""]];
-	_list append (switch (_side) do {
+	private _setting = missionNamespace getVariable ["MCC_GAIA_SUPPORT_CAS_PLANE_" + _suffix, ""];
+	if (_setting != "" && {isClass (configFile >> "CfgVehicles" >> _setting)} && {_setting isKindOf "Plane"}) exitWith {_setting};
+	//The calling group's faction: its default plane, else any of its armed planes
+	private _faction = faction (leader _ref);
+	private _list = switch (_side) do {
 		case west:			{["B_Plane_CAS_01_dynamicLoadout_F", "B_Plane_CAS_01_F"]};
 		case east:			{["O_Plane_CAS_02_dynamicLoadout_F", "O_Plane_CAS_02_F"]};
 		case independent:	{["I_Plane_Fighter_03_dynamicLoadout_F", "I_Plane_Fighter_03_CAS_F"]};
 		default				{[]};
-	});
-	private _idx = _list findIf {_x != "" && {isClass (configFile >> "CfgVehicles" >> _x)} && {_x isKindOf "Plane"}};
-	if (_idx < 0) then {""} else {_list select _idx}
+	};
+	_list = _list select {isClass (configFile >> "CfgVehicles" >> _x) && {getText (configFile >> "CfgVehicles" >> _x >> "faction") == _faction}};
+	if (_list isEqualTo []) then {
+		_list = (format ["getNumber (_x >> 'scope') == 2 && {getText (_x >> 'faction') == '%1'}", _faction] configClasses (configFile >> "CfgVehicles"))
+			select {(configName _x) isKindOf "Plane" && {!((configName _x) isKindOf "UAV")}} apply {configName _x};
+	};
+	if (_list isEqualTo []) then {""} else {_list select 0}
 };
 
 private _fnc_cas = {
@@ -176,8 +190,16 @@ private _fnc_reinf = {
 	} forEach [2000, 2500, 3000];
 	if (_start isEqualTo []) exitWith {false};
 
+	//Mission Wizard unit cap: only what is still free for the side
+	private _cap = missionNamespace getVariable ["MCC_MW_maxEnemyAI", -1];
+	private _free = -1;
+	if (_cap > 0) then {
+		_free = _cap - ({alive _x && {(side group _x) isEqualTo _side}} count allUnits);
+	};
+	if (_cap > 0 && {_free < GAIA_REINF_MIN_UNITS}) exitWith {false};
+
 	private _size = 9 + ((missionNamespace getVariable ["MCC_GAIA_SUPPORT_REINF_SIZE", 0]) min 2 max 0);
-	[_end, _side, _size, _zone, _faction, _start] spawn MCC_fnc_reinforcement;
+	[_end, _side, _size, _zone, _faction, _start, _free] spawn MCC_fnc_reinforcement;
 
 	["REINF"] call _fnc_spend;
 	true

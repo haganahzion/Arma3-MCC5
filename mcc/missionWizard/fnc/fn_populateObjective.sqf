@@ -104,14 +104,14 @@ if (_vehicles && (random 1 > 0.5)) then
 //Artillery
 if (_artillery != 0) then
 {
-	[(_totalEnemyUnits*0.2), _missionCenter,_missionRadius, MCC_MWunitsArrayStatic, 5, 10, _enemySide, _artillery, _zoneNumber, _markers] remoteExec ["MCC_fnc_MWSpawnStatic",2];
+	[(_totalEnemyUnits*0.2), _missionCenter,_missionRadius, MCC_MWunitsArrayStatic, 5, 10, _enemySide, _artillery, _zoneNumber, _markers, _enemyfaction] remoteExec ["MCC_fnc_MWSpawnStatic",2];
 	if (_debug) then {diag_log "Enemy's Artillery Spawned in main zone"};
 };
 
 //Static
 if (random 1 > 0.3) then
 {
-	[(_totalEnemyUnits*0.2),_missionCenter,_missionRadius,MCC_MWunitsArrayStatic,4,8,_enemySide,999,_zoneNumber] remoteExec ["MCC_fnc_MWSpawnStatic", 2];
+	[(_totalEnemyUnits*0.2),_missionCenter,_missionRadius,MCC_MWunitsArrayStatic,4,8,_enemySide,999,_zoneNumber,false,_enemyfaction] remoteExec ["MCC_fnc_MWSpawnStatic", 2];
 	if (_debug) then {diag_log "Enemy's Static Weapons Spawned in main zone"};
 };
 

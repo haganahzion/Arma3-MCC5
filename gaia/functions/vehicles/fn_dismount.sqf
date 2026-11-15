@@ -37,8 +37,9 @@ if (!_isRide && {driver _veh == _leader}) then {
 {unassignVehicle _x} forEach _out;
 _out allowGetIn false;
 _out orderGetIn false;
+// Players get the order to get out but are never pulled out
 {
-	if (vehicle _x != _x) then {doGetOut _x};
+	if (vehicle _x != _x && {!isPlayer _x}) then {doGetOut _x};
 } forEach _out;
 
 if (!isNull _newDriver) then {
@@ -54,6 +55,7 @@ if (!isNull _newDriver) then {
 };
 
 _group setVariable ["GAIA_dismounted", true];
+_group setVariable ["GAIA_boardUntil", -1];
 if (_isRide) then {_group leaveVehicle _veh};
 
 if (missionNamespace getVariable ["MCC_GAIA_debug", false]) then {

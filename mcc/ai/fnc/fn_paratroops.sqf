@@ -18,7 +18,11 @@
 // 	_p_mcc_awareness			String, The helicopter's cargo will have this awareness ("default","safe" exc...)
 //	_p_mcc_spawnfaction			String, Faction name.
 //	_startPosDir				Array, spawn and de-spawn location for the helicopter.
+//	_maxUnits					Number (optional), most units (helicopter crew and cargo) to create, -1 (default) = no limit, other negatives = none
 //==============================================================================================================================================================*/
+#define PARA_MIN_CARGO 2
+#define PARA_NO_CAP -1
+#define PARA_UNLIMITED 1e6
 private ["_away","_p_mcc_zone_markername","_heli","_heliCrew","_pos","_paraSide", "_paraType", "_helitype","_heli_pilot","_spawn","_heliPilot","_gunnersGroup","_type","_entry","_turrets","_path", "_timeOut","_unit", "_side", "_spawnParaGroup", "_paraGroupArray", "_paraGroup", "_paraMode", "_heliCrewCount","_p_mcc_spawnfaction", "_p_mcc_zone_behavior", "_mcc_awareness", "_newParaGroup", "_rampOutPos", "_flyHeight","_dropPos", "_rope", "_ropes","_vehicleClass"];
 
 _pos 					= _this select 0;
@@ -29,6 +33,9 @@ _p_mcc_zone_behavior	= _this select 4;
 _p_mcc_awareness		= _this select 5;
 _p_mcc_spawnfaction		= _this select 6;
 _startPosDir			= _this select 7;
+private _maxUnits		= param [8, PARA_NO_CAP, [0]];
+private _unitsLeft		= [_maxUnits max 0, PARA_UNLIMITED] select (_maxUnits == PARA_NO_CAP);
+if (_unitsLeft == 0) exitWith {diag_log format ["MCC: paratroops skipped, no units left under the cap (%1)", _p_mcc_spawnfaction]};
 
 if ( isNil "_startPosDir" ) then {
 	_spawn = [(_pos select 0)+1000,_pos select 1,(_pos select 2) + 100];
@@ -57,6 +64,14 @@ _actualRopes = [];
 		_paraGroupArray pushBack (format ["%1", ( _x select 2)]);
 	};
 } forEach ([_paraSide,_p_mcc_spawnfaction,"Infantry","LAND"] call mcc_make_array_grps);
+
+//Only groups whose every unit is of the faction
+_paraGroupArray = _paraGroupArray select {
+	private _grpCfg = call compile _x;
+	(_grpCfg isEqualType configNull) && {isClass _grpCfg} && {
+		(("isClass _x" configClasses _grpCfg) findIf {(toLowerANSI getText (configFile >> "CfgVehicles" >> getText (_x >> "vehicle") >> "faction")) != (toLowerANSI _p_mcc_spawnfaction)}) < 0
+	}
+};
 
 
 if ( (count _paraGroupArray) == 0 ) then {
@@ -194,7 +209,20 @@ for "_i" from 0 to (count _vehiclesTypesArray)-1 step 1 do {
 if (count _newHeliClassesArray > 0) then {
 	_newHeliClassesArray sort true;
 	_helitype = (_newHeliClassesArray select 0) select 1;
+} else {
+	//The side default helicopter only when it is of this faction, else the faction's helicopter with the most seats
+	if ((toLowerANSI getText (configFile >> "CfgVehicles" >> _helitype >> "faction")) != (toLowerANSI _p_mcc_spawnfaction)) then {
+		private _fallback = [];
+		{
+			private _seats = [_x select 0, "allCargo"] call MCC_fnc_crewCount;
+			if (_seats >= PARA_MIN_CARGO) then {_fallback pushBack [_seats, _x select 0]};
+		} forEach _vehiclesTypesArray;
+		_fallback sort false;
+		_helitype = if (_fallback isEqualTo []) then {""} else {(_fallback select 0) select 1};
+	};
 };
+
+if (_helitype == "") exitWith {diag_log format ["MCC Warning: faction %1 has no helicopter with seats, no aerial reinforcement", _p_mcc_spawnfaction]};
 
 if ( _paraType < 3 ) then {
 	_paraMode = 0; // paradrop
@@ -211,7 +239,20 @@ if ( _paraType < 3 ) then {
 	_flyHeight = 50;
 };
 
+//The helicopter crew must fit under the cap
+if (([_helitype, false] call BIS_fnc_crewCount) > (_unitsLeft min (["left", ["gen", _side]] call MCC_fnc_MWbudget))) exitWith {
+	diag_log format ["MCC: paratroops skipped, the %1 crew does not fit under the unit cap", _helitype];
+};
+
 _heli 				= [_helitype, _spawn, _pos, _flyHeight, false, _side] call MCC_fnc_createPlane;
+if (!isNil "MCC_fnc_factionCrew") then {[_heli, _p_mcc_spawnfaction] call MCC_fnc_factionCrew};
+["trim", [crew _heli, "gen"]] call MCC_fnc_MWbudget;
+if (isNull driver _heli) exitWith {
+	{_heli deleteVehicleCrew _x} forEach (crew _heli);
+	deleteVehicle _heli;
+	diag_log "MCC: paratroops skipped, the helicopter crew does not fit under the unit cap";
+};
+_unitsLeft = (_unitsLeft - (count crew _heli)) max 0;
 _heliCrew			= group _heli;
 _heliPilot			= driver _heli;
 crew _heli joinSilent _heliCrew;
@@ -245,7 +286,7 @@ if ( _paraMode > 0 ) then {
 
 private ["_cargoNum","_unitsArray","_i","_type","_z","_cargoGroups"];
 //--------spawn the jumping group----------------------
-_cargoNum = [_helitype, "allCargo"] call MCC_fnc_crewCount; //populate heli before kick off
+_cargoNum = ([_helitype, "allCargo"] call MCC_fnc_crewCount) min _unitsLeft; //populate heli before kick off
 _cargoGroups = [];
 
 if (_cargoNum > 0) then {
@@ -270,6 +311,7 @@ if (_cargoNum > 0) then {
 
 	//lets spawn groups
 	for "_i" from 0 to (ceil (_cargoNum /6)) step 1 do {
+		if (_cargoNum <= 0) exitWith {};
 
 		if !( _customParaGroup ) then {
 			_unitspawned=[[100,100,5000], _side, (call compile _spawnParaGroup),[],[],[0.1,(missionNamespace getVariable ["MCC_AI_Skill",0.5])],[],[(6 min _cargoNum), 0]] call MCC_fnc_spawnGroup;
@@ -287,8 +329,17 @@ if (_cargoNum > 0) then {
 			};
 		};
 
+		//Seat limit and the unit cap
+		private _members = units _unitspawned;
+		if (count _members > _cargoNum) then {
+			{deleteVehicle _x} forEach (_members select [_cargoNum, count _members]);
+			_members resize _cargoNum;
+		};
+		_members = ["trim", [_members, "gen"]] call MCC_fnc_MWbudget;
+		if (_members isEqualTo []) exitWith {deleteGroup _unitspawned};
+
 		_cargoGroups pushBack _unitspawned;
-		_cargoNum = _cargoNum - (count units _unitspawned);
+		_cargoNum = _cargoNum - (count _members);
 
 		{
 			_x assignAsCargo _heli;
@@ -304,7 +355,7 @@ if (_cargoNum > 0) then {
 				removeBackpack _x;
 				_x addBackpack "B_Parachute";
 			*/
-		} forEach (units _unitspawned);
+		} forEach _members;
 	};
 };
 

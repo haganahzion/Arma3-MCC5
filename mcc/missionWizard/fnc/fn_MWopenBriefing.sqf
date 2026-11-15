@@ -46,6 +46,10 @@ _playMusic 			=  param [8, 0,[0]];
 _preciseMarkers		=  param [9, false,[false]];
 
 _mapCenter 			= _mapCenter call bis_fnc_position;
+
+//Let the operation screen finish first
+sleep 3;
+waitUntil {sleep 0.5; (missionNamespace getVariable ["MCC_opIntroState", createHashMap]) getOrDefault ["finished", true]};
 _overcast 			= overcast;
 _isNight 			= if ((date select 3)>19 || (date select 3)<6) then {true} else {false};
 

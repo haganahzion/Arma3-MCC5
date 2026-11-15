@@ -8,6 +8,9 @@
 	_this select 2: type of the vehicle (String).
 	_this select 3: side or existing group (Side or Group).
 	_this select 4: (optional) force precise position (Bool, default: true).
+	_this select 5: (optional) random animations (Bool, default: true).
+	_this select 6: (optional) faction (String, default: ""): crew of another faction is replaced with this
+	                faction's own men (MCC_fnc_factionCrew). "" keeps the config crew.
 
 	Returns:
 	Array:
@@ -29,7 +32,8 @@ _this params [
 	["_type","",[""]],
 	["_param4",sideEnemy,[sideEnemy,grpNull]],
 	["_precisePosition",true,[true]],
-	["_randomAnimations",true,[true]]
+	["_randomAnimations",true,[true]],
+	["_faction","",[""]]
 ];
 
 //Determine if an actual group was passed or a new one should be created.
@@ -89,6 +93,7 @@ if (_sim == "airplanex") then {
 
 //Spawn the crew and add the vehicle to the group.
 createvehiclecrew _veh;
+if (_faction != "" && {!isNil "MCC_fnc_factionCrew"}) then {[_veh, _faction] call MCC_fnc_factionCrew};
 _crew = crew _veh;
 _crew joinsilent _grp;
 _grp addVehicle _veh;

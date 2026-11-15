@@ -38,9 +38,9 @@ All "Random" choices are rolled when you press Generate. The result is fixed aft
 | Expected Players | Number of players the mission is built for. | 10 |
 | Difficulty | Enemies per player: Easy (2), Medium (4), Hard (6). | Medium |
 | Mission Size | Multiplier on enemy numbers and area size: Small (0.5), Normal (1), Large (1.75), Huge (2.5). | Normal |
-| Max AI Units | Hard cap on the AI the wizard places (enemies, civilians, crews). | 200 |
+| Max AI Units | Hard cap on the AI the wizard places (enemies, civilians, crews). Every man counts, vehicle crews included. GAIA reinforcements during the mission also stop at this number. | 200 |
 
-How many enemies: Expected Players x Difficulty. If that is 10 or less, 20 is used. The result is multiplied by Mission Size. If the estimate would go over Max AI Units, the number is lowered to fit.
+How many enemies: Expected Players x Difficulty. If that is 10 or less, 20 is used. The result is multiplied by Mission Size. If the estimate would go over Max AI Units, the number is lowered to fit. The cap is hard: the wizard counts every man it actually places (crews too), cuts infantry groups down to fit, skips vehicles that don't fit, and keeps room so every objective gets at least a few guards. During the mission GAIA sends no reinforcements once the enemy side is at the cap.
 
 ### Factions
 
@@ -50,7 +50,9 @@ How many enemies: Expected Players x Difficulty. If that is 10 or less, 20 is us
 | Player Faction | The players' faction. It decides who gets the tasks and briefing, the hostage faction and who sets off IEDs. Must be on a different side from the enemy. | BLUFOR `BLU_F` |
 | Civilian Faction | Civilians for CQB, hostages, suicide bombers and armed civilians. | `CIV_F` |
 
-The faction lists show every faction that has at least one playable-scope soldier, as "SIDE - Name (class)". This includes factions from mods you have loaded. The list is built once per game session. If you load a new mod, restart the game to see its factions. A faction saved in the mission whose mod is no longer loaded shows as "(not loaded)".
+The faction lists show every faction that has at least one playable-scope soldier, as "SIDE - Name (class)". This includes factions from mods you have loaded. The list is built once per game session. If you load a new mod, restart the game to see its factions. A faction saved in the mission whose mod is no longer loaded shows as "(not loaded)", and Generate stops with a message instead of using another faction.
+
+Every enemy unit, group, vehicle, crew, HVT, objective target, artillery piece, CAS plane and reinforcement comes from the enemy faction you pick. If the faction has no armor, artillery, AA or planes, that part is skipped; it is never filled from another faction. A Destroy objective the faction can't fill becomes a weapons cache. If a mod vehicle comes with another faction's crew, MCC swaps the crew for the faction's own men at mission start.
 
 ### Objectives
 
@@ -101,7 +103,7 @@ The classes used for HVTs, tanks, aircraft, AA, artillery, caches, fuel tanks, r
 | Option | What it does | Default |
 |---|---|---|
 | Weather / Time | **Don't change**, **Random**, **Sandstorm**, **Blizzard**, **Snow**. Changes the scenario date, time and weather in Attributes > Environment. Sandstorm, Blizzard and Snow also add the MCC weather effect at mission start. | Don't change |
-| Intro | **Cinematic (music + title)**, **Pop-up title**, **None**. | Cinematic |
+| Intro | **Cinematic**: a camera flies over the area with music while the operation screen plays. **Title card**: the same screen over the player's own view. **None**. Every AI group (both sides) holds fire until the screen ends. | Cinematic |
 | Precise Objective Markers | On: the task points at the exact objective. Off: the task points somewhere within 300 m. | On |
 | General Markers | Also place map markers for the objective zones, roadblocks and enemy positions. Players see them. | Off |
 | Briefing | Add the generated briefing to the players' map (Diary). | On |
@@ -174,10 +176,21 @@ Each task is made from editor objects you can read and change:
 
 With more than one objective there is also a parent "operation" task. An end trigger waits until every task is done. Then it marks the operation done and plays the "mission accomplished" sound. With **End Mission When Done** on, it also ends the scenario.
 
+### The operation screen
+
+At mission start the players of the player side see the operation screen:
+
+- Black bars slide in. With **Cinematic**, a camera slowly circles the operation area and music plays.
+- The operation name types in large letters, with the place, the date, the time and the grid.
+- A panel lists the enemy, the time and weather, the grid and the objectives.
+- A red **WEAPONS HOLD** countdown runs, then turns green: **WEAPONS FREE**.
+
+While it plays, every AI group on every side is on hold fire and the players can't fire. When all players of the side have seen it (at most 90 seconds), every group gets its old combat mode back. Players who join more than 5 minutes into the mission don't get the screen.
+
 ### Briefing, intro, weather and support
 
 - **Briefing**: a logic adds a diary entry for the player side, with the enemy, threats and the objective list with grid references.
-- **Intro**: a logic shows the operation title (and plays music for Cinematic).
+- **Intro**: a logic starts the operation screen at mission start. See [The operation screen](#the-operation-screen).
 - **Weather / Time**: sets the scenario date, time, overcast, fog and rain. Sandstorm, Blizzard and Snow add a logic for the effect.
 - **Reinforcements** or **Enemy Artillery** other than No set **GAIA: AI Support Requests** to On in MCC 5 Mission Settings, plus **AI Reinforcements** and/or **AI Artillery**.
 - **Player Start**: a respawn marker for the player side called "MW Start", on flat land outside the area.
@@ -231,7 +244,7 @@ Dialog options:
 - **Reinforcements**: No, Aerial, Motorized, Random
 - **Artillery**: No, Mortars, Self propelled, Random
 - **Weather**: Don't change, Random, Sandstorm, Blizzard, Snow
-- **Intro**: Cinematic, Intro only, None
+- **Intro**: Cinematic (operation screen with a camera over the area and music), Intro only (operation screen over your own view), None. Every AI group holds fire until the screen ends; the map briefing opens after it.
 - **Precise objective markers**, **Debug markers**
 
 Objectives beyond 3, the mission size and the unit cap come from the CBA settings **Max objectives**, **Mission size** and **Max spawned units** (or the matching MCC 5 Mission Settings).
@@ -259,7 +272,7 @@ The **Mission Wizard** Eden module (**MCC 5 > Place MCC Module > Mission Wizard 
 | Reinforcements | No, Aerial, Motorized, Random | Random |
 | Enemy Artillery | No, Mortars, Self propelled artillery, Random | Random |
 | Weather / Time | Don't change, Random, Sandstorm, Blizzard, Snow | Don't change |
-| Intro | Cinematic, Pop-up, None | Cinematic |
+| Intro | Cinematic, Pop-up (the operation screen without the camera), None | Cinematic |
 | Precise Objective Markers | Exact spot or an area marker | On |
 | General Markers | Show the general enemy area markers | Off |
 

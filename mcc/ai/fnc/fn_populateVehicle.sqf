@@ -3,12 +3,15 @@
 // Example:[_vehicle]  call MCC_fnc_populateVehicle;
 // <IN>
 //	_vehicle:					Object- vehicle to populate
+//	_maxCargo:					Number (optional) most units to put in the cargo, -1 (default) = no limit
 //
 // <OUT>
-//		nothing
+//		NUMBER - units put in the cargo
 //===========================================================================================================================================================================
 private["_pos","_vehicle","_cargoNum","_fillSlots","_locGr","_convoyGroupArray","_group","_unitsArray","_type","_unit"];
 _vehicle = _this select 0;
+private _maxCargo = param [1, -1, [0]];
+private _placed = 0;
 _pos = getPosATL _vehicle;
 
 //Define Stuff
@@ -17,9 +20,10 @@ _convoyGroupArray = [];
  //Find cargo space
 _cargoNum = [typeOf _vehicle, "allCargo"] call MCC_fnc_crewCount;;
 
-if (_cargoNum > 2) then {
+if (_cargoNum > 2 && {_maxCargo != 0}) then {
 	// random but at least majority of seats occupied
 	_fillSlots = _cargoNum - (round random (_cargoNum/4));
+	if (_maxCargo >= 0) then {_fillSlots = _fillSlots min _maxCargo};
 	_locGr =  _pos findEmptyPosition [10, 100];
 
 	sleep 0.1;
@@ -32,6 +36,15 @@ if (_cargoNum > 2) then {
 				_convoyGroupArray set [count _convoyGroupArray, format ["%1", ( _x select 2)]];
 			};
 		} forEach ([side _vehicle, faction _vehicle, "Infantry", "LAND"] call mcc_make_array_grps);
+
+		//Only groups whose every unit is of the vehicle's faction
+		private _vehFaction = toLowerANSI faction _vehicle;
+		_convoyGroupArray = _convoyGroupArray select {
+			private _grpCfg = call compile _x;
+			(_grpCfg isEqualType configNull) && {isClass _grpCfg} && {
+				(("isClass _x" configClasses _grpCfg) findIf {(toLowerANSI getText (configFile >> "CfgVehicles" >> getText (_x >> "vehicle") >> "faction")) != _vehFaction}) < 0
+			}
+		};
 
 		While { true } do {
 
@@ -58,15 +71,26 @@ if (_cargoNum > 2) then {
 				};
 			};
 
+			//Seat limit and the Mission Wizard unit cap (no effect when no wizard budget is active)
+			if (isNil "_group") exitWith {};
+			private _members = units _group;
+			if (_maxCargo >= 0 && {count _members > _fillSlots}) then {
+				{deleteVehicle _x} forEach (_members select [_fillSlots max 0, count _members]);
+				_members resize (_fillSlots max 0);
+			};
+			if (!isNil "MCC_fnc_MWbudget") then {_members = ["trim", [_members, "gen"]] call MCC_fnc_MWbudget};
+			if (_members isEqualTo []) exitWith {};
+
 			{
 				_unit = _x;
 				_unit assignAsCargo _vehicle;
 				[_unit] orderGetIn true;
 				_unit moveInCargo _vehicle;
 				{_x addCuratorEditableObjects [[_unit],false]} forEach allCurators;
-			} forEach units _group;
+			} forEach _members;
 
-			_fillSlots = _fillSlots - (count units _group);
+			_fillSlots = _fillSlots - (count _members);
+			_placed = _placed + (count _members);
 
 			// if only 1 seat left do not create a 1 man group but leave seat empty
 			if ( _fillSlots < 2 ) exitWith {};
@@ -86,3 +110,4 @@ if (_cargoNum > 2) then {
 	};
 };
 
+_placed

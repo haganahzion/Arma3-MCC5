@@ -7,6 +7,9 @@
 //_faction = enemy Faction
 // Return - nothing
 //===========================================================================================================================================================*/
+#define DESTROY_VEHICLE_KINDS ["tanks", "aa", "artillery", "air"]
+#define DESTROY_AIRLOCK_AIR_ONLY 2
+#define DESTROY_DEFAULT_CACHE "Box_East_AmmoVeh_F"
 private ["_objPos","_isCQB","_side","_faction","_preciseMarkers","_type","_objType","_typeSize","_spawnPos","_object","_dummyObject","_spawndir","_unitsArray","_group","_init","_range","_campaignMission","_sidePlayer","_vehiclesArray","_vehiclesArrayFlitered"];
 
 _objPos 		= _this select 0;
@@ -42,12 +45,54 @@ _vehiclesArray = switch _objType do
 		default	{missionNamespace getVariable ["MCC_MWFuelTanks",["Land_dp_smallTank_F","Land_ReservoirTank_V1_F","Land_dp_bigTank_F"]]};
 	};
 
-//Find the objects from the enemy side
-_vehiclesArrayFlitered = _vehiclesArray select {([(getNumber (configFile >> "cfgVehicles" >> _x >> "side"))] call BIS_fnc_sideType) isEqualTo _side};
+private _ofFaction = {(toLowerANSI getText (configFile >> "CfgVehicles" >> _this >> "faction")) == (toLowerANSI _faction)};
 
-//Couldn't find any object just select all
-if (count _vehiclesArrayFlitered <= 0) then {
-	_vehiclesArrayFlitered = _vehiclesArray;
+//A land vehicle with a turret magazine that can only lock air targets
+private _fnc_isAA = {
+	private _aa = false;
+	{
+		{
+			private _ammo = getText (configFile >> "CfgMagazines" >> _x >> "ammo");
+			if (getNumber (configFile >> "CfgAmmo" >> _ammo >> "airLock") == DESTROY_AIRLOCK_AIR_ONLY) exitWith {_aa = true};
+		} forEach getArray (_x >> "magazines");
+		if (_aa) exitWith {};
+	} forEach ("isClass _x" configClasses (configFile >> "CfgVehicles" >> _this >> "Turrets"));
+	_aa
+};
+
+//The enemy faction's own vehicles of one objective kind
+private _fnc_factionKind = {
+	params ["_kind"];
+	private _all = (format ["getNumber (_x >> 'scope') == 2 && {getText (_x >> 'faction') == '%1'}", _faction] configClasses (configFile >> "CfgVehicles")) apply {configName _x};
+	private _isArty = {getNumber (configFile >> "CfgVehicles" >> _this >> "artilleryScanner") == 1};
+	switch (_kind) do {
+		case "tanks": {_all select {(_x isKindOf "Tank" || {_x isKindOf "Wheeled_APC_F"}) && {!(_x call _isArty)} && {!(_x call _fnc_isAA)}}};
+		case "air": {_all select {_x isKindOf "Air" && {!(_x isKindOf "ParachuteBase")}}};
+		case "artillery": {_all select {_x isKindOf "StaticMortar" || {_x isKindOf "LandVehicle" && {_x call _isArty}}}};
+		case "aa": {_all select {_x isKindOf "LandVehicle" && {!(_x isKindOf "CAManBase")} && {_x call _fnc_isAA}}};
+		default {[]};
+	};
+};
+
+//Vehicle targets only from the enemy faction; for objects drop any vehicle of another faction and keep the props
+private _isVehicleKind = _objType in DESTROY_VEHICLE_KINDS;
+_vehiclesArrayFlitered = _vehiclesArray select {
+	_x isEqualType "" && {isClass (configFile >> "CfgVehicles" >> _x)} && {!(_x isKindOf "AllVehicles") || {_x call _ofFaction}}
+};
+if (_isVehicleKind) then {
+	_vehiclesArrayFlitered = _vehiclesArrayFlitered select {_x isKindOf "AllVehicles"};
+	if (_vehiclesArrayFlitered isEqualTo []) then {_vehiclesArrayFlitered = [_objType] call _fnc_factionKind};
+};
+
+//Nothing of the faction for this kind: the target becomes a weapons cache
+if (_vehiclesArrayFlitered isEqualTo []) then {
+	diag_log format ["MCC Mission Wizard: faction %1 has nothing for a '%2' target, using a weapons cache", _faction, _objType];
+	_objType = "cache";
+	_isVehicleKind = false;
+	_vehiclesArrayFlitered = (missionNamespace getVariable ["MCC_MWcache", []]) select {
+		_x isEqualType "" && {isClass (configFile >> "CfgVehicles" >> _x)} && {!(_x isKindOf "AllVehicles")}
+	};
+	if (_vehiclesArrayFlitered isEqualTo []) then {_vehiclesArrayFlitered = [DESTROY_DEFAULT_CACHE]};
 };
 
 //Select random vehicle
@@ -133,7 +178,11 @@ sleep 1;
 
 //Create the object
 if (_objType in ["artillery","aa"]) then {
-	_object = ([_spawnPos,_spawndir,_type,_side] call MCC_fnc_spawnVehicle) select 0;
+	_object = ([_spawnPos,_spawndir,_type,_side,true,true,_faction] call MCC_fnc_spawnVehicle) select 0;
+	//Unit cap: the target stays even when its crew does not fit
+	private _crew = crew _object;
+	private _granted = ["take", [_side, count _crew, "obj"]] call MCC_fnc_MWbudget;
+	{_object deleteVehicleCrew _x} forEach (_crew select [_granted, count _crew]);
 } else {
 	_object = _type createvehicle _spawnPos;
 	_object setpos _spawnPos;

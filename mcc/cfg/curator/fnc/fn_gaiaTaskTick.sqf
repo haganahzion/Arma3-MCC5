@@ -3,9 +3,12 @@
 	For a group with GAIA_followTasks: picks the nearest unfinished task of the group's side that has a destination,
 	makes sure an MCC zone covers it (creating one if needed) and points GAIA at that zone. When the task is done,
 	the next call moves the group on to the next task. With no tasks left, the group patrols its last zone (or the nearest one).
+	A group that was pulled into a fight away from its task zone is sent back to the task once the fight is over
+	(GAIA_fnc_contactTick sets GAIA_contactEnded), or when it is done with that fight's waypoints.
 	Params:
 		0: GROUP
 */
+#include "..\..\..\..\gaia\functions\gaiaDefines.hpp"
 params [["_group", grpNull, [grpNull]]];
 if (!isServer || {isNull _group}) exitWith {};
 private _leader = leader _group;
@@ -53,7 +56,19 @@ private _task = if (_current in _tasks) then {_current} else {
 	_withDist sort true;
 	(_withDist select 0) select 1
 };
-if (_task == _current && {(_group getVariable ["GAIA_ZONE_INTEND", []]) isNotEqualTo []}) exitWith {};
+private _intend = _group getVariable ["GAIA_ZONE_INTEND", []];
+private _contactEnded = _group getVariable ["GAIA_contactEnded", false];
+if (_contactEnded) then {_group setVariable ["GAIA_contactEnded", nil, true]};
+// Busy with a fight GAIA gave it (attack / clear) outside the task zone, out of contact, and the fight is over
+// or its waypoints are done
+private _distracted = (
+	!(_group getVariable ["GAIA_inContact", false])
+	&& {(_group getVariable ["GAIA_Order", ""]) in GAIA_CONTACT_ORDERS}
+	&& {_intend isNotEqualTo []}
+	&& {!([_group getVariable ["GAIA_OrderPosition", []], _intend select 0] call GAIA_fnc_inZone)}
+	&& {_contactEnded || {currentWaypoint _group >= count waypoints _group}}
+);
+if (_task == _current && {_intend isNotEqualTo []} && {!_distracted}) exitWith {};
 
 private _dest = _task call _fnc_taskPos;
 
@@ -68,6 +83,13 @@ _group setVariable ["GAIA_ZONE_INTEND", [str _zone, "MOVE"], true];
 [_group] call GAIA_fnc_removeWaypoints;
 [_group] call GAIA_fnc_registerGroup;
 
+// Head for the task now (GAIA patrols the zone once the group is there). The order is a patrol, so GAIA's
+// vehicle logic sees the destination and the group isn't counted as busy with a fight.
+[_group, _dest, "MOVE"] call GAIA_fnc_addAttackWaypoint;
+_group setVariable ["GAIA_Order", "DoPatrol", false];
+_group setVariable ["GAIA_OrderTime", time, false];
+_group setVariable ["GAIA_OrderPosition", _dest, false];
+
 if (missionNamespace getVariable ["MCC_GAIA_debug", false]) then {
-	diag_log format ["GAIA tasks: %1 -> task %2, zone %3 at %4", _group, _task, _zone, _dest];
+	diag_log format ["GAIA tasks: %1 -> task %2, zone %3 at %4 (back from a fight: %5)", _group, _task, _zone, _dest, _distracted];
 };

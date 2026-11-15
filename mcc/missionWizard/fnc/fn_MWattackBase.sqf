@@ -73,7 +73,7 @@ for "_i" from 0 to _strength step 5 do {
 			};
 			_grp = [_spawnPos, _enemySide, _units] call BIS_fnc_spawnGroup;
 		} else {
-			([_spawnPos, 200, ((_unitsArray call BIS_fnc_selectRandom) select 0), _enemySide] call MCC_fnc_spawnVehicle) params [
+			([_spawnPos, 200, ((_unitsArray call BIS_fnc_selectRandom) select 0), _enemySide, true, true, _factionEnemy] call MCC_fnc_spawnVehicle) params [
 					["_vehicle",objNull,[objNull]],
 					["_units",[],[[]]],
 					["_grp",grpNull,[grpNull]]

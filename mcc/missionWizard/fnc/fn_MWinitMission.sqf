@@ -58,6 +58,9 @@
 //	Scaling (CBA settings): _totalEnemyUnits is multiplied by MCC_MWmissionSize and capped so the estimated spawn
 //	stays under MCC_MWmaxSpawnedUnits (also enforced at spawn time through MCC_MWunitBudget).
 //================================================================================================================================================================*/
+#define MW_BUDGET_OBJ_RESERVE 5
+#define MW_BUDGET_OBJ_SHARE 0.5
+#define MW_BUDGET_RELEASE_DELAY 180
 #define	MWinitMissionMusic	["LeadTrack01a_F","LeadTrack02_F","LeadTrack03_F","LeadTrack04a_F","LeadTrack05_F","LeadTrack06_F","AmbientTrack03_F","BackgroundTrack03_F","BackgroundTrack01_F","BackgroundTrack01a_F","BackgroundTrack02_F","LeadTrack01_F_EPA","LeadTrack02_F_EPA","EventTrack01_F_EPA","EventTrack01a_F_EPA","EventTrack03_F_EPA"]
 
 private ["_missionCenter","_missionCenterTrigger","_totalEnemyUnits","_isCQB","_objType","_objArray","_minObjectivesDistance","_maxObjectivesDistance","_objPos","_timeStart","_enemySide","_enemyfaction","_sidePlayer","_factionPlayer","_obj1","_obj2","_obj3","_pos","_center","_wholeMap","_armor","_vehicles","_stealth","_roadPositions","_script_handler","_isIED","_isAS","_isSB","_spawnbehavior","_isRoadblocks","_objectives","_isCiv","_weatherChange","_preciseMarkers","_reinforcement","_artillery","_civFaction","_playMusic","_animals","_markerName","_missionMaker","_campaignMission","_markers"];
@@ -158,7 +161,11 @@ diag_log format ["MCC Mission Wizard: objectives %1, size x%2, total enemy %3 (c
 //Only one mission is generated at a time (shared globals below)
 private _genLockToken = ["acquire"] call MCC_fnc_MWgenLock;
 MCC_MWcurrentMissionId = _missionId;
-MCC_MWunitBudget = _maxSpawnedUnits;
+
+//Hard cap on the enemy AI really created: the objectives' minimum is reserved first (MCC_fnc_MWbudget)
+private _budgetReserve = (_objCount * MW_BUDGET_OBJ_RESERVE) min (floor (_maxSpawnedUnits * MW_BUDGET_OBJ_SHARE));
+private _budgetToken = ["start", [_maxSpawnedUnits, _budgetReserve, _enemySide]] call MCC_fnc_MWbudget;
+MCC_MW_maxEnemyAI = _maxSpawnedUnits;
 
 //Lets find the mission maker owner and make sure he'll get the zone markers too.
 private ["_missionMaker"];
@@ -181,7 +188,7 @@ MCC_MWCleanup =
 
 	if (!isNil "_genLockToken") then {
 		MCC_MWcurrentMissionId = "";
-		MCC_MWunitBudget = nil;
+		if (!isNil "_budgetToken") then {["release", _budgetToken] call MCC_fnc_MWbudget};
 		["release",_genLockToken] call MCC_fnc_MWgenLock;
 	};
 
@@ -302,7 +309,7 @@ if (typeName _wholeMap == typeName true ) then {
 
 if (isNil "_missionCenter") exitWith {
 	MCC_MWcurrentMissionId = "";
-	MCC_MWunitBudget = nil;
+	["release", _budgetToken] call MCC_fnc_MWbudget;
 	["release",_genLockToken] call MCC_fnc_MWgenLock;
 };
 
@@ -562,8 +569,13 @@ private _usedObjTypes = [];
 									_units pushBack ((_unitsArray call bis_fnc_selectRandom) select 0);
 								};
 
-								_group = [_objPos, _units, 1, _enemySide, false, false] call MCC_fnc_groupSpawn;
-								[_group, _objPos] call bis_fnc_taskDefend;
+								private _left = ["left", ["obj"]] call MCC_fnc_MWbudget;
+								if (count _units > _left) then {_units resize (_left max 0)};
+								if (_units isNotEqualTo []) then {
+									_group = [_objPos, _units, 1, _enemySide, false, false] call MCC_fnc_groupSpawn;
+									["trim", [_group, "obj"]] call MCC_fnc_MWbudget;
+									[_group, _objPos] call bis_fnc_taskDefend;
+								};
 							};
 							//Land_WaterBottle_01_stack_F Land_FoodSacks_01_small_brown_idap_F
 							[_supplyTruck, _objPos,"Logistics",_preciseMarkers,_enemySide,400] call MCC_fnc_MWCreateTask;
@@ -940,6 +952,26 @@ if (_multipleObjectives) then {
 //Briefings
 _music = MWinitMissionMusic call BIS_fnc_selectRandom;
 
+//Operation screen: every AI group holds fire while the player side sees the operation (replaces the old cinematic)
+if (_playMusic < 2) then {
+	private _introPlace = if ((_center isEqualType []) && {(_center param [1, ""]) isEqualType ""}) then {_center param [1, ""]} else {""};
+	private _introMusic = ["", _music] select (_playMusic == 0 && {_music isEqualType ""});
+	[
+		[
+			["OPERATION", "BLACK OPS"] select _stealth,
+			format ["%1 %2", _missionName1 select 0, _missionName2 select 0],
+			_introPlace,
+			_factionName,
+			_objectives apply {_x param [2, "", [""]]},
+			_missionCenter call BIS_fnc_position,
+			_introMusic,
+			_playMusic == 0
+		],
+		[sideUnknown, _sidePlayer] select (_sidePlayer isEqualType sideUnknown)
+	] call MCC_fnc_operationIntroStart;
+	_playMusic = 2;
+};
+
 if (_playMusic > 0 ) then {_music = ""};
 
 [_html2, ((_missionName1 select 0) +" " + (_missionName2  select 0)), [_missionTittle], [_missionCenter,_objectives,1,_html,_sounds,_music,_plainText,_sidePlayer,_playMusic,_preciseMarkers]] remoteExec ["MCC_fnc_makeBriefing", 2];
@@ -958,8 +990,14 @@ if (!isnil "MWMissionArea") then {deleteVehicle MWMissionArea;	MWMissionArea = n
 
 //Free the generator for the next mission / AO
 MCC_MWcurrentMissionId = "";
-MCC_MWunitBudget = nil;
 ["release",_genLockToken] call MCC_fnc_MWgenLock;
+
+//Spawns sent to the server during generation still finish after this point, so the cap stays on a while longer
+[_budgetToken] spawn {
+	params ["_token"];
+	sleep MW_BUDGET_RELEASE_DELAY;
+	["release", _token] call MCC_fnc_MWbudget;
+};
 
 //Wait till mission end
 [_missionCenter,_maxObjectivesDistance,_markerName,_missionId] spawn {

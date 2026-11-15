@@ -52,7 +52,7 @@
 	["MCC5S_MCC_GAIA_TARGET_RANGE", "MCC_GAIA_TARGET_RANGE", "slider", 300, 3000],
 	["MCC5S_MCC_GAIA_debug", "MCC_GAIA_debug", "bool"],
 	["MCC5S_MCC_GAIA_vehiclesEnabled", "MCC_GAIA_vehiclesEnabled", "bool"],
-	["MCC5S_MCC_GAIA_rideDistance", "MCC_GAIA_rideDistance", "slider", 500, 5000],
+	["MCC5S_MCC_GAIA_rideDistance", "MCC_GAIA_rideDistance", "slider", 200, 5000],
 	["MCC5S_MCC_GAIA_dismountDistance", "MCC_GAIA_dismountDistance", "slider", 100, 1500],
 	["MCC5S_MCC_GAIA_rideSearchRadius", "MCC_GAIA_rideSearchRadius", "slider", 50, 1000],
 	["MCC5S_MCC_GAIA_compatLAMBS", "MCC_GAIA_compatLAMBS", "list_number", -1],

@@ -146,6 +146,7 @@ class CfgMarkers
 class RscTitles
 {
 	titles[]={"img"};
+	#include "mcc\dialogs\mcc_operationIntro.hpp"
 
 	class img
 	{

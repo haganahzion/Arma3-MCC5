@@ -2,6 +2,9 @@
 	Editor-time Mission Wizard: builds one objective as Eden entities (Eden mirror of MCC_fnc_MWObjectiveHVT / Destroy /
 	Intel / Clear / Disable): the objective object or unit, its guards, an MCC zone with GAIA patrols around it and the
 	task (MCC_fnc_edenWizardTask). Uses the generation context MCC5MW_ctx.
+	Every unit and vehicle comes from the enemy faction (the hostage from the player or civilian faction); a class
+	list setting entry of another faction is never used. While it builds, MCC5MW_ctx "reserve" keeps
+	OBJ_MIN_UNITS AI per later objective out of the unit cap, so the first objectives can not use up the cap.
 
 	Params:
 		0: STRING - objective type ("Secure HVT", "Kill HVT", "Destroy Vehicle", "Destroy AA", "Destroy Artillery",
@@ -20,6 +23,11 @@ params [
 	["_building", [], [[]]]
 ];
 
+#define OBJ_MIN_UNITS 4
+#define OBJ_DEFAULT_MAX_UNITS 200
+#define OBJ_DEFAULT_CACHE "Box_East_AmmoVeh_F"
+#define OBJ_CREW_FIX_INIT "if (isServer) then {[this, '%1'] spawn MCC_fnc_factionCrew};"
+
 private _ctx = missionNamespace getVariable ["MCC5MW_ctx", createHashMap];
 private _opts = _ctx get "opts";
 private _enemy = _ctx get "enemy";
@@ -30,6 +38,11 @@ private _zoneRadius = _ctx get "objZoneRadius";
 private _isCQB = (_opts get "isCQB") && {_building isNotEqualTo []};
 private _taskId = format ["mcc5mw_%1_obj%2", _ctx get "token", _index];
 private _enemyMen = _enemy get "men";
+private _enemyFaction = _enemy get "faction";
+private _maxUnits = _ctx getOrDefault ["maxUnits", OBJ_DEFAULT_MAX_UNITS];
+
+//Keep the minimum of the objectives still to come out of the cap
+_ctx set ["reserve", (((count (_opts get "objectives")) - _index) max 0) * OBJ_MIN_UNITS];
 
 _pos = [_pos select 0, _pos select 1, 0];
 
@@ -60,6 +73,13 @@ private _fnc_camp = {
 	if (_flat isEqualTo [] || {_cfgs isEqualTo []}) exitWith {_near};
 	private _entities = create3DENComposition [selectRandom _cfgs, _flat];
 	if (isNil "_entities") then {_entities = []};
+	//Props only: a vehicle or static weapon of another faction in the composition is removed
+	private _foreign = _entities select {_x isEqualType objNull && {_x isKindOf "AllVehicles"} && {!(getText (configOf _x >> "faction") == _enemyFaction)}};
+	if (_foreign isNotEqualTo []) then {
+		{_foreign append (crew _x)} forEach +_foreign;
+		delete3DENEntities _foreign;
+		_entities = _entities - _foreign;
+	};
 	private _layer = _ctx getOrDefault ["curLayer", -1];
 	{
 		if (_layer >= 0) then {_x set3DENLayer _layer};
@@ -68,11 +88,11 @@ private _fnc_camp = {
 	_flat
 };
 
-//HVT / hostage class: Mission Wizard HVT setting for the side, else an officer, else a soldier of the faction
+//HVT / hostage class: Mission Wizard HVT setting entries of the faction, else an officer, else a soldier of the faction
 private _fnc_hvtClass = {
 	params ["_factionData"];
 	private _list = ["MCC_MWHVT", "MWHVT", ["B_officer_F","O_officer_F","I_officer_F","C_Nikos"]] call MCC_fnc_edenWizardSetting;
-	_list = _list select {getNumber (configFile >> "CfgVehicles" >> _x >> "side") == (_factionData get "sideNum")};
+	_list = _list select {getText (configFile >> "CfgVehicles" >> _x >> "faction") == (_factionData get "faction")};
 	if (_list isEqualTo []) then {_list = _factionData get "officers"};
 	if (_list isEqualTo []) then {_list = _factionData get "men"};
 	if (_list isEqualTo []) exitWith {""};
@@ -180,6 +200,7 @@ switch (true) do {
 		private _group = group _unit;
 		for "_i" from 1 to (1 + floor random 4) do {
 			if (_enemyMen isEqualTo []) exitWith {};
+			if ((_ctx getOrDefault ["units", 0]) >= _maxUnits - (_ctx getOrDefault ["reserve", 0])) exitWith {_ctx set ["capped", true]};
 			private _gPos = if (_isCQB) then {[] call _fnc_spot} else {_spot getPos [3 + random 6, random 360]};
 			private _guard = ["Object", selectRandom _enemyMen, _gPos, [["Init", "if (local this) then {doStop this};"]], false, _group] call MCC_fnc_edenWizardCreate;
 			if (!isNull _guard && {_isCQB}) then {_guard set3DENAttribute ["position", _gPos]};
@@ -206,14 +227,40 @@ switch (true) do {
 			case "air": {["MCC_MWAir", "", ["O_Heli_Attack_02_F","O_Heli_Attack_02_black_F","O_UAV_02_F","O_UAV_02_CAS_F","B_Heli_Attack_01_F","I_Plane_Fighter_03_CAS_F","I_Plane_Fighter_03_AA_F"]] call MCC_fnc_edenWizardSetting};
 			case "aa": {["MCC_MWAA", "MWAA", ["B_APC_Tracked_01_AA_F","O_APC_Tracked_02_AA_F","I_APC_Wheeled_03_cannon_F"]] call MCC_fnc_edenWizardSetting};
 			case "artillery": {["MCC_MWArtillery", "MWArtillery", ["B_MBT_01_arty_F","B_MBT_01_mlrs_F","O_MBT_02_arty_F","O_Mortar_01_F","I_Mortar_01_F"]] call MCC_fnc_edenWizardSetting};
-			case "cache": {["MCC_MWcache", "", ["Box_East_AmmoVeh_F","Land_Pallet_MilBoxes_F"]] call MCC_fnc_edenWizardSetting};
+			case "cache": {["MCC_MWcache", "", [OBJ_DEFAULT_CACHE,"Land_Pallet_MilBoxes_F"]] call MCC_fnc_edenWizardSetting};
 			case "fuel": {["MCC_MWFuelTanks", "", ["Land_dp_smallTank_F","Land_ReservoirTank_V1_F","Land_dp_bigTank_F"]] call MCC_fnc_edenWizardSetting};
 			case "radar": {["MCC_MWradar", "", ["Land_Radar_Small_F","B_Radar_System_01_F","O_Radar_System_02_F"]] call MCC_fnc_edenWizardSetting};
 			default {["MCC_MWRadio", "", ["Land_TTowerBig_2_F"]] call MCC_fnc_edenWizardSetting};
 		};
-		//The enemy's own vehicles first, then anything in the list
-		private _sideList = _list select {getNumber (configFile >> "CfgVehicles" >> _x >> "side") == (_enemy get "sideNum")};
-		if (_sideList isNotEqualTo []) then {_list = _sideList};
+		//Only the enemy faction: its entries in the setting, else its own vehicles of that kind; props stay,
+		//a vehicle or static of another faction is dropped. Nothing left: the objective becomes a weapons cache.
+		private _fnc_own = {(_this select {getText (configFile >> "CfgVehicles" >> _x >> "faction") == _enemyFaction})};
+		private _fnc_kindList = {
+			params ["_k", "_setting"];
+			if (_k in ["tanks", "air", "aa", "artillery"]) exitWith {
+				private _own = _setting call _fnc_own;
+				if (_own isEqualTo []) then {
+					_own = switch (_k) do {
+						case "tanks": {_enemy get "armor"};
+						case "air": {_enemy get "air"};
+						case "aa": {_enemy get "aa"};
+						default {(_enemy get "artySP") + (_enemy get "mortars")};
+					};
+				};
+				_own
+			};
+			_setting select {!(_x isKindOf "AllVehicles") || {getText (configFile >> "CfgVehicles" >> _x >> "faction") == _enemyFaction}}
+		};
+		_list = [_kind, _list] call _fnc_kindList;
+		if (_list isEqualTo [] && {_kind in ["tanks", "air"]}) then {
+			_kind = ["tanks", "air"] select (_kind == "tanks");
+			_list = [_kind, []] call _fnc_kindList;
+		};
+		if (_list isEqualTo []) then {
+			_kind = "cache";
+			_list = ["cache", ["MCC_MWcache", "", [OBJ_DEFAULT_CACHE, "Land_Pallet_MilBoxes_F"]] call MCC_fnc_edenWizardSetting] call _fnc_kindList;
+			if (_list isEqualTo [] && {isClass (configFile >> "CfgVehicles" >> OBJ_DEFAULT_CACHE)}) then {_list = [OBJ_DEFAULT_CACHE]};
+		};
 		if (_list isEqualTo []) exitWith {};
 		private _class = selectRandom _list;
 
@@ -234,6 +281,9 @@ switch (true) do {
 		if (_isVehicle && {!(_class isKindOf "StaticWeapon")}) then {_attrs pushBack ["lock", 2]};
 		private _object = ["Object", _class, _pos, _attrs, !_crewed] call MCC_fnc_edenWizardCreate;
 		if (isNull _object) exitWith {_objVar = ""};
+		if (((crew _object) findIf {!(getText (configOf _x >> "faction") == _enemyFaction)}) > -1) then {
+			_object set3DENAttribute ["Init", format [OBJ_CREW_FIX_INIT, _enemyFaction]];
+		};
 
 		private _name = getText (configFile >> "CfgVehicles" >> _class >> "displayName");
 		switch (_kind) do {

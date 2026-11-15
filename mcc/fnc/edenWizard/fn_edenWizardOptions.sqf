@@ -7,7 +7,8 @@
 	Params: none
 	Returns: HASHMAP - keys:
 		areaMode, areaRadius, players, difficulty, sizeMul, maxUnits (NUMBER)
-		enemyFaction, playerFaction, civFaction (STRING)
+		enemyFaction, playerFaction, civFaction (STRING); enemyFaction is "" when the chosen faction is not loaded
+		(the wizard then stops instead of using another faction)
 		objectives (ARRAY of objective type strings, "Random" already resolved, "None" removed)
 		isCQB, isCiv, vehicles, armor, stealth, ied, sb, ac, roadblocks, animals (BOOL)
 		reinforcement (0 none, 1 aerial, 2 motorized), artillery (0 none, 1 mortars, 2 self propelled)
@@ -43,15 +44,20 @@ _opts set ["sizeMul",		(["MCC5MW_missionSize", 1] call _fnc_get) max 0.25 min 4]
 _opts set ["maxUnits",		round ((["MCC5MW_maxUnits", 200] call _fnc_get) max 10 min 1000)];
 
 private _fnc_faction = {
-	params ["_prop", "_default"];
+	params ["_prop", "_default", ["_strict", false]];
 	private _f = [_prop, _default] call _fnc_get;
 	if (_f == "" || {!isClass (configFile >> "CfgFactionClasses" >> _f)}) then {
+		if (_f != "" && {_strict}) exitWith {
+			diag_log format ["MCC Mission Wizard: faction '%1' (%2) not found", _f, _prop];
+			_opts set ["missingFaction", _f];
+			_f = "";
+		};
 		if (_f != "") then {diag_log format ["MCC Mission Wizard: faction '%1' (%2) not found, using %3", _f, _prop, _default]};
 		_f = _default;
 	};
 	_f
 };
-_opts set ["enemyFaction",	["MCC5MW_enemyFaction", "OPF_F"] call _fnc_faction];
+_opts set ["enemyFaction",	["MCC5MW_enemyFaction", "OPF_F", true] call _fnc_faction];
 _opts set ["playerFaction",	["MCC5MW_playerFaction", "BLU_F"] call _fnc_faction];
 _opts set ["civFaction",	["MCC5MW_civFaction", "CIV_F"] call _fnc_faction];
 

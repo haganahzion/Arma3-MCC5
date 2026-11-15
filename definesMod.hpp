@@ -1,5 +1,5 @@
 #define MCCPATH "\mcc_sandbox_mod\"
-#define MCCVersion "(v5.0.2)"
+#define MCCVersion "(v5.0.3)"
 #define MCCMODE true
 
 class RscMapControl;
@@ -161,6 +161,7 @@ class RscTitles
 	#include "\mcc_sandbox_mod\mcc\dialogs\sqlPDA\MCC_SQLPDA_rsc.hpp"
 	#include "\mcc_sandbox_mod\mcc\survive\dialogs\mcc_rscSurviveStats.hpp"
 	#include "\mcc_sandbox_mod\mcc\HUD\cfg.hpp"
+	#include "\mcc_sandbox_mod\mcc\dialogs\mcc_operationIntro.hpp"
 
 	//----medic-----------------
 	#include "mcc\medic\dialogs\mcc_uncMain.hpp"

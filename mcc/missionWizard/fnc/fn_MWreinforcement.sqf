@@ -12,6 +12,9 @@
 // 	<OUT>
 //			Nothing
 //========================================================================================================================================================================================
+#define QRF_MIN_FREE_UNITS 4
+#define QRF_TRIM_DELAY 8
+
 private ["_reinforcement","_side","_missionCenterTriggerPos","_missionCenterTriggerArea","_cond","_trigger","_tlist","_zoneNumber","_script_handler","_found",
          "_faction","_warning","_ar","_totalEnemyUnits","_size","_strDir","_command","_para","_check"];
 
@@ -168,7 +171,25 @@ for "_i" from 0 to (count _cond) step 1 do
 				, false
 				];
 
+	//Max AI Units: no QRF when the side is at the cap, and units over the cap are removed after the spawn
+	private _cap = missionNamespace getVariable ["MCC_MW_maxEnemyAI", 0];
+	private _before = units _side select {alive _x};
+	if (_cap > 0 && {(_cap - count _before) < QRF_MIN_FREE_UNITS}) exitWith {};
 	_ar remoteExec ["mcc_setup", 2];
+	if (_cap > 0) then {
+		sleep QRF_TRIM_DELAY;
+		private _new = (units _side select {alive _x}) - _before;
+		private _excess = (count _before) + (count _new) - _cap;
+		if (_excess > 0) then {
+			_new = (_new select {isNull objectParent _x}) + (_new select {!isNull objectParent _x && {_x != driver objectParent _x}}) + (_new select {!isNull objectParent _x && {_x == driver objectParent _x}});
+			{
+				if (_forEachIndex < _excess) then {
+					if (!isNull objectParent _x) then {moveOut _x};
+					deleteVehicle _x;
+				};
+			} forEach _new;
+		};
+	};
 };
 
 //Clean up

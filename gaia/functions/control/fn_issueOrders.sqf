@@ -18,6 +18,7 @@ Author:
 	Spirit, 24-1-2014
 
 ---------------------------------------------------------------------------- */
+#include "..\gaiaDefines.hpp"
 
 private ["_side"
 				,"_CA"
@@ -405,6 +406,12 @@ private _fnc_caCost = {
 				};
 
 
+				//Task-following groups only take on fights close to them or in their task zone (GAIA_CHASE_LIMIT)
+				if (_CanDoAttack && {_x getVariable ["GAIA_followTasks", false]}) then
+				{
+					_CanDoAttack = (((leader _x) distance2D _SelectCA) < GAIA_CHASE_LIMIT) || {[_SelectCA,((_x getVariable  ["GAIA_zone_intend",[]]) select 0)] call GAIA_fnc_inZone};
+				};
+
 				//Futher checks on if we are allowed to attack
 				if (_CanDoAttack) then
 				{
@@ -585,6 +592,10 @@ private _clearCandidates = _sideGroups select {("DoClear" in (_x getVariable  ["
 																				  or
 						 															([_SpotPos,((_x getVariable  ["GAIA_zone_intend",[]]) select 0)] call GAIA_fnc_inZone)
 																				);
+						//Task-following groups don't go clearing spots off their route
+						if (_SpotIsWithinRange && {_x getVariable ["GAIA_followTasks", false]}) then {
+							_SpotIsWithinRange = (((leader _x) distance2D _SpotPos) < GAIA_CHASE_LIMIT) || {[_SpotPos,((_x getVariable  ["GAIA_zone_intend",[]]) select 0)] call GAIA_fnc_inZone};
+						};
 								   switch (true) do
 										{
 							  			//The Clear spot dude cases are here. So far i can think of only one case. Who knows later more? I love switch true

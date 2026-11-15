@@ -35,7 +35,7 @@ if (MCC_debug) then
 //Lets spawn someone to take care of traffic
 _unitsArray 	= [_faction,"soldier"] call MCC_fnc_makeUnitsArray;		//Let's build the faction unit's array
 
-if (count _unitsArray >= 4) then {
+if (count _unitsArray >= 4 && {(["take", [_side, 1, "gen"]] call MCC_fnc_MWbudget) > 0}) then {
 	_type = _unitsArray select round (random 4);
 	_group = creategroup _side;
 	_unit = _group createUnit [_type select 0,(_dummyObject modeltoworld [0,-1,0]) ,[],0.5,"NONE"];

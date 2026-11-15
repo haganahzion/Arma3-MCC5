@@ -108,7 +108,7 @@ while {true} do {
 					};
 					_grp = [_spawnPos, _enemySide, _units] call BIS_fnc_spawnGroup;
 				} else {
-					_grp = ([_spawnPos, 200, ((_unitsArray call BIS_fnc_selectRandom) select 0), _enemySide] call MCC_fnc_spawnVehicle) select 2;
+					_grp = ([_spawnPos, 200, ((_unitsArray call BIS_fnc_selectRandom) select 0), _enemySide, true, true, _enemyFaction] call MCC_fnc_spawnVehicle) select 2;
 				};
 
 				_grp setVariable ["GAIA_ZONE_INTEND",[([_spawnPos,1500] call MCC_fnc_campaignGetNearestTile) select 0, ["MOVE","NOFOLLOW"]call BIS_fnc_selectRandom], true];

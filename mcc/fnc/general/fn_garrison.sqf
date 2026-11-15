@@ -9,7 +9,11 @@
 //	faction: units will garrison from the same faction.
 //	side: side, [west, east, resistance, civilian]
 //	_groupUnits (optional) if broadcast will build all units in the same group
+//	_locked (optional) lock the spawned vehicles
+//	_budgetPool (optional) Mission Wizard unit cap pool, "gen" (default) or "obj" for objective guards (MCC_fnc_MWbudget):
+//		the first GARRISON_OBJ_MINIMUM guards use the objective reserve, the others the general pool
 //=========================================================================================
+#define GARRISON_OBJ_MINIMUM 3
 
 private ["_center","_radius","_spawnVehicles","_intanse","_faction","_unitsArray","_vehiclesArray","_SpawnUnit","_SpawnVehicle","_group","_unitsCount","_vehiclesCount","_buildingsArray","_buildingscount","_side","_spawnBuilding","_spawnPos","_unit","_type","_vehiclesNumber","_roads","_road","_vehicle","_vehicleClass","_groupUnits","_static","_locked","_roadPos"];
 
@@ -23,6 +27,8 @@ _faction		= [_this, 4, "CIV_F"] call BIS_fnc_param;
 _side			= [_this, 5, civilian] call BIS_fnc_param;
 _groupUnits 	= [_this, 6, false] call BIS_fnc_param;
 _locked			= [_this, 7, false] call BIS_fnc_param;
+private _budgetPool = [_this, 8, "gen"] call BIS_fnc_param;
+private _budgetPlaced = 0;
 
 _unitsArray 	= [_faction,"soldier","men"] call MCC_fnc_makeUnitsArray;		//Let's build the faction unit's array
 if(count _unitsArray < 4) then {
@@ -67,9 +73,10 @@ if (_buildingscount < 1) exitwith {hint "No buildings found"};	//No available bu
 			//Let's roll the dice
 			if (random 30 < _intanse) then {
 				//No other unit in the spawn position?
-				if (count (nearestObjects [_spawnPos, ["Man"], 1])<1) then {
+				if (count (nearestObjects [_spawnPos, ["Man"], 1])<1 && {(isNil "MCC_fnc_MWbudget") || {(["take", [_side, 1, ["gen", _budgetPool] select (_budgetPlaced < GARRISON_OBJ_MINIMUM)]] call MCC_fnc_MWbudget) > 0}}) then {
 					_type = _unitsArray select round (random 4);
 					if !(_groupUnits) then {_group = creategroup _side};
+					_budgetPlaced = _budgetPlaced + 1;
 					_unit = _group createUnit [_type select 0,_spawnPos,[],0.5,"NONE"];
 					waituntil {alive _unit};
 					_unit setpos _spawnPos;

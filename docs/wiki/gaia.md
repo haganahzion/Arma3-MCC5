@@ -30,9 +30,13 @@ Some menus also offer **Default**, **BIS Defence** and **BIS Patrol**. GAIA only
 
 ## Putting groups under GAIA
 
-### In Zeus: GAIA: Control Group
+### In Zeus: right-click menu
 
-Drop **GAIA: Control Group** on an AI group, or select groups and place it. GAIA takes over and works through the side's tasks, then patrols. This works for any side, including friendly AI. The leader can't be a player. See [Zeus tools](zeus-tools.md#gaia-control-group).
+Right-click an AI soldier and pick **GAIA: Control Group**, **GAIA: Attack Area** or **GAIA: Defend Area**. **Player Control Group** gives the group back to you. See [Zeus tools](zeus-tools.md#right-click-menu-on-ai-units).
+
+### In Zeus: GAIA: Control Group module
+
+Or drop the **GAIA: Control Group** module on an AI group, or select groups and place it. GAIA takes over and works through the side's tasks, then patrols. This works for any side, including friendly AI. The leader can't be a player. See [Zeus tools](zeus-tools.md#gaia-control-group).
 
 ### In Zeus: Assign AI to zone
 
@@ -75,7 +79,8 @@ Use it to let friendly AI squads play a Mission Wizard mission next to you.
 
 With **Smart Vehicle Use** on (default), GAIA groups use vehicles like this:
 
-- Long trips: infantry going further than **Find Ride Distance** (1500 m) look for an empty friendly vehicle within **Vehicle Search Radius** (300 m) of the leader that fits the whole group. A unit other than the leader drives, so the leader can get out with his men.
+- Long trips: infantry going further than **Find Ride Distance** (500 m) look for an empty land vehicle within **Vehicle Search Radius** (300 m) of the leader. Any side's empty vehicle counts, as long as it isn't locked, can move and has fuel. An AI drives (never a player, and not the leader when another AI can). If the vehicle fits at least 60% of the AI, they get in; the rest walk on as their own GAIA group with the same order. Players in the group are ordered in too, but the vehicle leaves without them after about 90 seconds.
+- After a fight: a group goes back to normal and to its job about 30 seconds after the last known enemy within 500 m. Groups that follow tasks only join fights within 400 m of their route or inside their task's zone.
 - At the objective: at **Dismount Distance** (400 m) from the objective, the whole group gets out, leader included.
   - A borrowed vehicle is left parked. The group remembers it.
   - A group's own vehicle (motorized or mechanized): passengers and leader get out, the crew stays in to give fire support.

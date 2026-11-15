@@ -29,6 +29,7 @@ class missionWizard
 	class customTasks			{description = "Manage custom tasks.";};
 	class MWspawnAnimals		{description = "spawn animals in the area.";};
 	class MWinitMission			{description = "Init generated mission.";};
+	class MWbudget				{description = "Hard cap on the enemy AI the Mission Wizard creates";};
 	class populateObjective		{description = "Populate a zone with enemies.";};
 	class createConfigs			{description = "Create configs class for the MW";};
 	class campaignInit			{description = "Init campaign";};

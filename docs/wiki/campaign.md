@@ -34,7 +34,7 @@ You can also start a campaign in game with the Zeus module **Campaign init**. It
 | **Civilian Faction** | Faction class name of the civilians | `CIV_F` |
 | **Number of Missions** | Missions until the campaign ends: 5, 10, 15 or unlimited | 10 |
 | **Difficulty** | Easy, Medium, Hard | Medium |
-| **Intro** | Cinematic, Pop-Up, None | Pop-Up |
+| **Intro** | Cinematic, Pop-Up (the operation screen with or without the camera), None | Pop-Up |
 | **Starting Tickets** | Respawn tickets for each player side | 100 |
 | **Missions Rotation** | After each set of missions MCC picks a new location | 3 |
 | **Tile Size** | MCC divides the map into tiles of this size (meters) | 400 |

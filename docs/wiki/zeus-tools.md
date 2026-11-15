@@ -26,15 +26,31 @@ Turn it off with **Zeus for MCC Users** in MCC 5 Mission Settings, or the CBA se
 - **Ctrl+Delete**: the MCC keybind "Open Zeus (MCC)". You can change it in CBA keybinds (MCC section). If you have no Zeus, you get "MCC: you have no Zeus access" in chat.
 - **Y**: the normal Arma Zeus key.
 
-## The MCC 5 button
+## Where the MCC tools are
 
-At the top of the Zeus screen there is a green **MCC 5** button.
+Every MCC tool is a Zeus module. Open the **Modules** tab on the right of the Zeus screen and look under the categories that start with **MCC**.
 
-1. Click **MCC 5**. A list opens with every MCC Zeus module, as "Category: Name".
-2. Double-click a module.
-3. It is placed at the center of the screen and opens its options, as if you had dragged it from the module tree.
+- Most modules: drag one onto the map where you want it. Its options open.
+- Modules that act on one unit, group or object: drag the module and drop it **onto** that unit. The tables below say which ones.
 
-Some modules act on one unit, group or object. For those, drag the module from **Modules > MCC** in the Zeus module tree and drop it **onto** the unit. The tables below say which ones.
+## Right-click menu on AI units
+
+Right-click an AI soldier (the leader or anyone in the squad) to open the MCC menu for his whole group:
+
+| Option | What it does |
+|---|---|
+| GAIA: Control Group | GAIA takes the group, works through your side's tasks (nearest first), then patrols. |
+| GAIA: Attack Area | GAIA attacks and patrols the nearest zone with the group. A zone is made if there is none. |
+| GAIA: Defend Area | GAIA holds the nearest zone with the group. |
+| Player Control Group | GAIA lets go of the group and clears its waypoints. You (or the players) control it again. |
+
+How it works:
+- Click, don't hold. Holding the right button still moves the camera.
+- The menu opens when nothing is selected, or when the unit you right-click is in a group you have selected. All selected groups get the order.
+- If you have one group selected and right-click a different unit, Zeus gives the normal waypoint instead.
+- The top line shows the group name and who controls it now (GAIA or Player).
+- Groups led by a player can't be given to GAIA.
+- With **ZEN** (Zeus Enhanced) loaded, the same options are in the ZEN right-click menu under **MCC 5**. ZEN only opens its menu when no AI is selected, so click empty ground first to clear the selection.
 
 Most modules open a dialog, do their job and then delete themselves.
 

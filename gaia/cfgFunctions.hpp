@@ -34,6 +34,7 @@ class GAIA
         class breadcrumbNear {};
         class breadcrumbPrune {};
         class cacheRestoreTick {};
+        class contactTick {};
         class dsSetup {};
         class getClassInfo {};
         class getGroups {};

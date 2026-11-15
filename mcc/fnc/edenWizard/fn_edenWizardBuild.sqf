@@ -236,10 +236,20 @@ if (_opts get "briefing") then {
 //------------------------------------------------------------ Intro ------------------------------------------------------------
 private _intro = _opts get "intro";
 if (_intro < 2) then {
-	private _music = ["", format ["playMusic %1;", str selectRandom ["LeadTrack01_F","LeadTrack02_F","LeadTrack03_F","LeadTrack04a_F","LeadTrack05_F","LeadTrack06_F","AmbientTrack03_F","BackgroundTrack03_F","BackgroundTrack01_F","LeadTrack01_F_EPA","LeadTrack02_F_EPA","EventTrack01_F_EPA","EventTrack03_F_EPA"]]] select (_intro == 0);
+	private _music = ["", selectRandom ["LeadTrack01_F","LeadTrack02_F","LeadTrack03_F","LeadTrack04a_F","LeadTrack05_F","LeadTrack06_F","AmbientTrack03_F","BackgroundTrack03_F","BackgroundTrack01_F","LeadTrack01_F_EPA","LeadTrack02_F_EPA","EventTrack01_F_EPA","EventTrack03_F_EPA"]] select (_intro == 0);
+	private _introData = [
+		["OPERATION", "BLACK OPS"] select (_opts get "stealth"),
+		_opName,
+		_locName,
+		_factionName,
+		_results apply {_x select 0},
+		[_center select 0, _center select 1, 0],
+		_music,
+		_intro == 0
+	];
 	private _init = format [
-		"if (hasInterface) then {0 = [] spawn {waitUntil {sleep 0.5; !isNull player && {time > 3}}; if (side group player == %1) then {%2 [%3, %4, %5] spawn BIS_fnc_infoText;};};};",
-		_sideCode, _music, str _opTitle, str ([_locName, worldName] select (_locName == "")), str format ["%1 objective(s)", count _results]
+		"if (isServer) then {0 = [] spawn {waitUntil {sleep 0.5; time > 3}; [%1, %2] call MCC_fnc_operationIntroStart;};};",
+		str _introData, _sideCode
 	];
 	["Logic", "Logic", _center getPos [8, 90], [["Name", ["intro"] call MCC_fnc_edenWizardName], ["Init", _init]]] call MCC_fnc_edenWizardCreate;
 };

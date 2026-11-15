@@ -291,13 +291,13 @@ my_pv_handler =
 									if (typeName _p_mcc_spawnfaction == "SIDE") then {_p_mcc_spawnfaction = str _p_mcc_spawnfaction};
 
 									if (_p_mcc_spawnfaction=="GUER") then
-										{_unitspawned 	=	[_p_safepos, _spawndirection, _p_mcc_spawnname, resistance] call MCC_fnc_spawnVehicle;};
+										{_unitspawned 	=	[_p_safepos, _spawndirection, _p_mcc_spawnname, resistance, true, true, getText (configFile >> "CfgVehicles" >> _p_mcc_spawnname >> "faction")] call MCC_fnc_spawnVehicle;};
 									if (_p_mcc_spawnfaction=="WEST") then
-										{ _unitspawned 	=	[_p_safepos, _spawndirection, _p_mcc_spawnname, WEST] call MCC_fnc_spawnVehicle;};
+										{ _unitspawned 	=	[_p_safepos, _spawndirection, _p_mcc_spawnname, WEST, true, true, getText (configFile >> "CfgVehicles" >> _p_mcc_spawnname >> "faction")] call MCC_fnc_spawnVehicle;};
 									if (_p_mcc_spawnfaction=="EAST") then
-										{ _unitspawned 	=	[_p_safepos, _spawndirection, _p_mcc_spawnname, EAST] call MCC_fnc_spawnVehicle;};
+										{ _unitspawned 	=	[_p_safepos, _spawndirection, _p_mcc_spawnname, EAST, true, true, getText (configFile >> "CfgVehicles" >> _p_mcc_spawnname >> "faction")] call MCC_fnc_spawnVehicle;};
 									if (_p_mcc_spawnfaction=="CIV") then
-										{ _unitspawned 	=	[_p_safepos, _spawndirection, _p_mcc_spawnname, civilian] call MCC_fnc_spawnVehicle;};
+										{ _unitspawned 	=	[_p_safepos, _spawndirection, _p_mcc_spawnname, civilian, true, true, getText (configFile >> "CfgVehicles" >> _p_mcc_spawnname >> "faction")] call MCC_fnc_spawnVehicle;};
 
 									//If UAV or UGV
 									if (_vehicleClass == "autonomous") then
@@ -305,6 +305,9 @@ my_pv_handler =
 											createVehicleCrew (_unitspawned select 0);
 											(group (_unitspawned select 0)) setvariable ["MCC_canbecontrolled",true,true];
 										};
+
+									//Mission Wizard unit cap (no effect when no wizard budget is active)
+									if (!isNil "MCC_fnc_MWbudget" && {!isNil "_unitspawned"}) then {["trim", [crew (_unitspawned select 0), "gen"]] call MCC_fnc_MWbudget};
 
 									//Curator
 									{_x addCuratorEditableObjects [[(_unitspawned select 0)],true]} forEach allCurators;
@@ -413,6 +416,9 @@ my_pv_handler =
 										{_unitspawned=[_p_safepos, east, _p_mcc_spawnfaction,[],[],[0.1,(missionNamespace getVariable ["MCC_AI_Skill",0.5])]] call MCC_fnc_spawnGroup;};
 									if (_p_mcc_grouptype=="CIV") then
 										{_unitspawned=[_p_safepos, civilian, _p_mcc_spawnfaction,[],[],[0.1,(missionNamespace getVariable ["MCC_AI_Skill",0.5])]] call MCC_fnc_spawnGroup;};
+
+									//Mission Wizard unit cap (no effect when no wizard budget is active)
+									if (!isNil "MCC_fnc_MWbudget" && {!isNil "_unitspawned"}) then {["trim", [_unitspawned, "gen"]] call MCC_fnc_MWbudget};
 
 									{
 										_x setSkill ["aimingspeed", (missionNamespace getVariable ["MCC_AI_Aim",0.1])];

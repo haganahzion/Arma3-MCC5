@@ -2,7 +2,9 @@
 	Editor-time Mission Wizard: fills the main mission zone (Eden mirror of MCC_fnc_populateObjective): infantry patrols,
 	CQB garrisons and civilians, light vehicles, armor, artillery, static weapons, roadblocks, IEDs, suicide bombers,
 	armed civilians, animals and the motorized QRF. Every part is wrapped on its own, a failing part is logged and the
-	rest still runs. Uses the generation context MCC5MW_ctx.
+	rest still runs. Uses the generation context MCC5MW_ctx. Enemy forces come from the enemy faction only; a part the
+	faction has nothing for is skipped. Also places a logic that gives GAIA the unit cap (MCC_MW_maxEnemyAI), so GAIA
+	reinforcements never take the enemy side over it.
 
 	Params:
 		0: HASHMAP - main zone (MCC_fnc_edenWizardZone)
@@ -11,7 +13,11 @@
 */
 params [["_zone", createHashMap, [createHashMap]]];
 
+#define POP_CAP_INIT "if (isServer) then {MCC_MW_maxEnemyAI = %1};"
+
 private _ctx = missionNamespace getVariable ["MCC5MW_ctx", createHashMap];
+//The objectives are built: nothing is kept back any more
+_ctx set ["reserve", 0];
 private _opts = _ctx get "opts";
 private _enemy = _ctx get "enemy";
 private _player = _ctx get "player";
@@ -129,11 +135,11 @@ private _artillery = _opts get "artillery";
 if (_artillery > 0) then {
 	["artillery", {
 		private _classes = if (_artillery == 1) then {_enemy get "mortars"} else {_enemy get "artySP"};
-		//Fall back to the other kind, then to the Mission Wizard artillery setting for the enemy side
+		//Fall back to the other kind, then to the enemy faction's entries of the Mission Wizard artillery setting
 		if (_classes isEqualTo []) then {_classes = if (_artillery == 1) then {_enemy get "artySP"} else {_enemy get "mortars"}};
 		if (_classes isEqualTo []) then {
 			_classes = (["MCC_MWArtillery", "MWArtillery", ["B_MBT_01_arty_F","B_MBT_01_mlrs_F","O_MBT_02_arty_F","O_Mortar_01_F","I_Mortar_01_F"]] call MCC_fnc_edenWizardSetting)
-				select {getNumber (configFile >> "CfgVehicles" >> _x >> "side") == (_enemy get "sideNum")};
+				select {getText (configFile >> "CfgVehicles" >> _x >> "faction") == (_enemy get "faction")};
 		};
 		if (_classes isEqualTo []) exitWith {true};
 		private _count = [1 + floor random 2, 1] select (_artillery == 2);
@@ -336,3 +342,10 @@ if ((_opts get "reinforcement") == 2) then {
 		true
 	}] call _fnc_part;
 };
+
+//------------------------------------------------------------ Unit cap for GAIA ------------------------------------------------------------
+_ctx set ["curLayer", _layers getOrDefault ["tasks", _ctx get "layer"]];
+["Logic", "Logic", _center getPos [12, 270], [
+	["Name", ["unitCap"] call MCC_fnc_edenWizardName],
+	["Init", format [POP_CAP_INIT, _ctx getOrDefault ["maxUnits", 0]]]
+]] call MCC_fnc_edenWizardCreate;

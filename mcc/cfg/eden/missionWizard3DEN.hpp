@@ -596,7 +596,7 @@ class MCC5_MW
 				class MCC5MW_intro
 				{
 					displayName = "Intro";
-					tooltip = "Mission start: music and operation title, title only, or nothing.";
+					tooltip = "Mission start: the operation screen. Cinematic flies a camera over the area with music; title card shows it over the player's own view. Every AI group holds fire until the screen ends.";
 					property = "MCC5MW_intro";
 					control = "Combo";
 					expression = "";
@@ -604,8 +604,8 @@ class MCC5_MW
 					typeName = "NUMBER";
 					class Values
 					{
-						class V0 {name = "Cinematic (music + title)"; value = 0;};
-						class V1 {name = "Pop-up title"; value = 1;};
+						class V0 {name = "Cinematic (camera, music, operation screen)"; value = 0;};
+						class V1 {name = "Title card (operation screen only)"; value = 1;};
 						class V2 {name = "None"; value = 2;};
 					};
 				};

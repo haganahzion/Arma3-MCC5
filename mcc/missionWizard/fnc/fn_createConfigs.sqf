@@ -7,6 +7,17 @@
 private ["_Cfgside","_i","_j","_Cfgfaction","_k","_Cfgtype","_cfgname","_CfgfactionName","_groupName","_groupDisplayname","_CfgGroup","_cfgentry"];
 _faction = [_this, 0, "OPF_F", [""]] call BIS_fnc_param;
 
+//A CfgGroups group is used only when every unit and vehicle in it is of the faction
+private _fnc_allOfFaction = {
+	private _units = "isClass _x" configClasses _this;
+	(_units isNotEqualTo []) && {
+		(_units findIf {
+			private _class = getText (_x >> "vehicle");
+			!(isClass (configFile >> "CfgVehicles" >> _class)) || {(toLowerANSI getText (configFile >> "CfgVehicles" >> _class >> "faction")) != (toLowerANSI _faction)}
+		}) < 0
+	}
+};
+
 //Create the groups type array
 #define CONFIG (configFile >> "CfgGroups" )
 MCC_MWGroupArrayMen = [];			//vehicleClass = "Men";
@@ -52,7 +63,7 @@ for "_i" from 0 to ((count CONFIG) - 1)  do
 							if (isClass(_CfgGroup)) then
 							{
 
-								if (((configname(configFile >> "CfgFactionClasses" >> _faction) == configname(_cfgfaction)) || ((getText (_CfgGroup >> "faction")) == (configname(configFile >> "CfgFactionClasses" >> _faction))) || getText (_CfgGroup >> "faction") == _faction)) then
+								if (((configname(configFile >> "CfgFactionClasses" >> _faction) == configname(_cfgfaction)) || ((getText (_CfgGroup >> "faction")) == (configname(configFile >> "CfgFactionClasses" >> _faction))) || getText (_CfgGroup >> "faction") == _faction) && {_CfgGroup call _fnc_allOfFaction}) then
 								{
 									//Work around to get units faction before putting them to types
 									_groupName 		  = configname(_CfgGroup );

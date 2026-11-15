@@ -66,12 +66,12 @@ The tasks and briefing are created for the side of the Player Faction. Your unit
 MCC users get Zeus automatically. By default that is everyone. A mission maker can limit it with the **Access Rights** module. See [Multiplayer and security](multiplayer-and-security.md).
 
 1. Press **Ctrl+Delete** (the MCC keybind) or **Y** (the normal Zeus key).
-2. Click the green **MCC 5** button at the top of the Zeus screen.
-3. Double-click a tool in the list. It is placed at the center of the screen and opens its options.
+2. Open the **Modules** tab on the right. The MCC tools are in the categories that start with **MCC**.
+3. Drag a tool onto the map. Its options open.
 
-For tools that act on one unit, like **Make Hostage** or **GAIA: Control Group**, drag them from **Modules > MCC** onto the unit instead.
+For tools that act on one unit, like **Make Hostage**, drop the module onto the unit.
 
-A fun first try: select an AI squad of your side in Zeus, then drop **GAIA: Control Group** on it. GAIA takes over that squad and works through your side's tasks.
+A fun first try: right-click an AI soldier of your side and pick **GAIA: Control Group**. GAIA takes over his squad and works through your side's tasks. Pick **Player Control Group** to take it back.
 
 All Zeus tools are listed on the [Zeus tools](zeus-tools.md) page.
 

@@ -1,7 +1,10 @@
 /*=================================================== MCC_fnc_edenWizardSpawnGroup ===================================================
 	Editor-time Mission Wizard: places one AI group as Eden entities in the wizard layer and (optionally) puts it under
 	GAIA control in a wizard zone. The source is a CfgGroups group (create3DENComposition), a list of unit classes, or a
-	single vehicle class (created with its crew). Respects the unit cap (MCC5MW_ctx "units" / "maxUnits").
+	single vehicle class (created with its crew). Hard unit cap: never places more AI than MCC5MW_ctx "maxUnits" minus
+	"units" (AI already placed) minus "reserve" (kept for objectives still to come). An infantry group is cut down to the
+	units that still fit; a group with vehicles that does not fit is skipped. Crew of another faction than the enemy
+	faction (vehicle config "crew") is swapped for the faction's own men at mission start (MCC_fnc_factionCrew).
 
 	Params:
 		0: CONFIG, ARRAY or STRING - CfgGroups group config / array of unit classes / vehicle class
@@ -22,20 +25,53 @@ params [
 	["_leaderInit", "", [""]]
 ];
 
+#define SG_DEFAULT_MAX_UNITS 200
+#define SG_CREW_FIX_INIT "if (isServer) then {[this, '%1'] spawn MCC_fnc_factionCrew};"
+
 private _ctx = missionNamespace getVariable ["MCC5MW_ctx", createHashMap];
-private _maxUnits = _ctx getOrDefault ["maxUnits", 200];
+private _maxUnits = _ctx getOrDefault ["maxUnits", SG_DEFAULT_MAX_UNITS];
+private _faction = (_ctx getOrDefault ["enemy", createHashMap]) getOrDefault ["faction", ""];
 if (_dir < 0) then {_dir = random 360};
 
-//Estimated size for the unit cap
-private _estimate = switch (true) do {
-	case (_source isEqualType configNull): {count ("isClass _x" configClasses _source)};
-	case (_source isEqualType []): {count _source};
-	default {3};
-};
-if ((_ctx getOrDefault ["units", 0]) + _estimate > _maxUnits) exitWith {
+private _unitsBefore = _ctx getOrDefault ["units", 0];
+private _left = _maxUnits - _unitsBefore - (_ctx getOrDefault ["reserve", 0]);
+if (_left < 1) exitWith {
 	_ctx set ["capped", true];
 	[grpNull, []]
 };
+
+//Men a class brings: 1 for a soldier, the crew seats (no cargo) for a vehicle
+private _fnc_size = {
+	params ["_class"];
+	if (_class isKindOf "CAManBase") exitWith {1};
+	[_class, false] call BIS_fnc_crewCount
+};
+
+switch (true) do {
+	case (_source isEqualType configNull): {
+		private _classes = ("isClass _x" configClasses _source) apply {getText (_x >> "vehicle")};
+		private _size = 0;
+		{_size = _size + ([_x] call _fnc_size)} forEach _classes;
+		if (_size > _left) then {
+			//Infantry only: the same men, cut down to what fits
+			_source = if ((_classes findIf {!(_x isKindOf "CAManBase")}) < 0) then {_classes select [0, _left]} else {""};
+			_ctx set ["capped", true];
+		};
+	};
+	case (_source isEqualType []): {
+		if (count _source > _left) then {
+			_source = _source select [0, _left];
+			_ctx set ["capped", true];
+		};
+	};
+	default {
+		if (([_source] call _fnc_size) > _left) then {
+			_source = "";
+			_ctx set ["capped", true];
+		};
+	};
+};
+if (_source isEqualTo "" || {_source isEqualTo []}) exitWith {[grpNull, []]};
 
 private _objects = [];
 private _layer = _ctx getOrDefault ["curLayer", -1];
@@ -54,7 +90,6 @@ switch (true) do {
 			if (_layer >= 0) then {_x set3DENLayer _layer};
 			(_ctx getOrDefault ["entities", []]) pushBack _x;
 		} forEach _objects;
-		_ctx set ["units", (_ctx getOrDefault ["units", 0]) + ({_x isKindOf "CAManBase"} count _objects)];
 	};
 
 	//Unit classes: first unit makes the group, the others join it
@@ -80,10 +115,43 @@ switch (true) do {
 	};
 };
 
+//Remove what was placed (cap exceeded or nothing usable), keep the counters right
+private _fnc_remove = {
+	params ["_list"];
+	if (_list isEqualTo []) exitWith {};
+	_ctx set ["entities", (_ctx getOrDefault ["entities", []]) - _list];
+	_objects = _objects - _list;
+	delete3DENEntities _list;
+};
+
+//Count every man really placed; more than the estimate (config crew differs from the seats) is cut back
 private _men = _objects select {_x isKindOf "CAManBase"};
+if (count _men > _left) then {
+	private _onFoot = _men select {isNull objectParent _x};
+	reverse _onFoot;
+	[_onFoot select [0, (count _men - _left) min (count _onFoot)]] call _fnc_remove;
+	_men = _objects select {_x isKindOf "CAManBase"};
+	if (count _men > _left) then {[+_objects] call _fnc_remove};
+	_men = _objects select {_x isKindOf "CAManBase"};
+	_ctx set ["capped", true];
+};
+_ctx set ["units", _unitsBefore + count _men];
+
 if (_men isEqualTo []) exitWith {
-	if (_objects isNotEqualTo []) then {delete3DENEntities _objects};
+	[+_objects] call _fnc_remove;
 	[grpNull, []]
+};
+
+//Crew of another faction: the faction's own men take the seats at mission start
+if (_faction != "") then {
+	{
+		private _veh = _x;
+		if (((crew _veh) findIf {!(getText (configOf _x >> "faction") == _faction)}) > -1) then {
+			private _init = (_veh get3DENAttribute "Init") param [0, ""];
+			if !(_init isEqualType "") then {_init = ""};
+			_veh set3DENAttribute ["Init", _init + format [SG_CREW_FIX_INIT, _faction]];
+		};
+	} forEach (_objects select {!(_x isKindOf "CAManBase")});
 };
 
 private _group = group (_men select 0);

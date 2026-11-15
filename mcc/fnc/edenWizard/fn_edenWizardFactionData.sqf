@@ -7,16 +7,22 @@
 	Returns: HASHMAP - keys:
 		"side" SIDE, "sideNum" NUMBER (0 east, 1 west, 2 resistance, 3 civilian), "name" STRING
 		"men", "officers" - ARRAY of CfgVehicles soldier classes
-		"carsArmed", "cars", "armor", "artySP", "staticMG", "mortars", "air" - ARRAY of CfgVehicles classes
-		"grpInf", "grpMot", "grpMech", "grpAir", "grpStatic" - ARRAY of CfgGroups group CONFIGs
+		"faction" STRING - the faction class
+		"carsArmed", "cars", "armor", "artySP", "staticMG", "mortars", "air", "aa" - ARRAY of CfgVehicles classes
+		("aa": land vehicles and statics with an air-only missile, also listed in their own kind)
+		"grpInf", "grpMot", "grpMech", "grpAir", "grpStatic" - ARRAY of CfgGroups group CONFIGs, only groups where
+		every unit and vehicle belongs to the faction
 	Example: private _data = ["OPF_F"] call MCC_fnc_edenWizardFactionData;
 */
+#define FD_CACHE_VAR "MCC5MW_factionData"
+#define FD_AIRLOCK_AIR_ONLY 2
+
 params [["_faction", "OPF_F", [""]]];
 
-private _cache = uiNamespace getVariable "MCC5MW_factionData";
+private _cache = uiNamespace getVariable FD_CACHE_VAR;
 if (isNil "_cache") then {
 	_cache = createHashMap;
-	uiNamespace setVariable ["MCC5MW_factionData", _cache];
+	uiNamespace setVariable [FD_CACHE_VAR, _cache];
 };
 
 private _cached = _cache getOrDefault [toLowerANSI _faction, []];
@@ -27,6 +33,7 @@ private _factionCfg = configFile >> "CfgFactionClasses" >> _faction;
 private _sideNum = getNumber (_factionCfg >> "side");
 if !(_sideNum in [0, 1, 2, 3]) then {_sideNum = 0};
 
+_data set ["faction", _faction];
 _data set ["sideNum", _sideNum];
 _data set ["side", [east, west, resistance, civilian] select _sideNum];
 _data set ["name", [getText (_factionCfg >> "displayName"), _faction] select (getText (_factionCfg >> "displayName") == "")];
@@ -41,6 +48,7 @@ private _artySP = [];
 private _staticMG = [];
 private _mortars = [];
 private _air = [];
+private _aa = [];
 
 //A turret weapon that is not a horn
 private _fnc_armed = {
@@ -51,6 +59,17 @@ private _fnc_armed = {
 		if ((_weapons findIf {!("horn" in toLowerANSI _x) && {_x != ""}}) > -1) exitWith {_armed = true};
 	} forEach ("isClass _x" configClasses (_cfg >> "Turrets"));
 	_armed
+};
+
+//A turret magazine whose ammo can only lock air targets (CfgAmmo airLock 2)
+private _fnc_antiAir = {
+	params ["_cfg"];
+	private _isAA = false;
+	{
+		private _mags = getArray (_x >> "magazines");
+		if ((_mags findIf {getNumber (configFile >> "CfgAmmo" >> getText (configFile >> "CfgMagazines" >> _x >> "ammo") >> "airLock") == FD_AIRLOCK_AIR_ONLY}) > -1) exitWith {_isAA = true};
+	} forEach ("isClass _x" configClasses (_cfg >> "Turrets"));
+	_isAA
 };
 
 {
@@ -70,9 +89,11 @@ private _fnc_armed = {
 		case (_class isKindOf "StaticMortar"): {_mortars pushBack _class};
 		case (_class isKindOf "StaticWeapon"): {
 			if ([_x] call _fnc_armed) then {_staticMG pushBack _class};
+			if ([_x] call _fnc_antiAir) then {_aa pushBack _class};
 		};
 		case (_class isKindOf "Tank" || {_class isKindOf "Wheeled_APC_F"}): {
 			if (getNumber (_x >> "artilleryScanner") == 1) then {_artySP pushBack _class} else {_armor pushBack _class};
+			if ([_x] call _fnc_antiAir) then {_aa pushBack _class};
 		};
 		case (_class isKindOf "Car"): {
 			if (getNumber (_x >> "artilleryScanner") == 1) then {
@@ -80,6 +101,7 @@ private _fnc_armed = {
 			} else {
 				if ([_x] call _fnc_armed) then {_carsArmed pushBack _class} else {_cars pushBack _class};
 			};
+			if ([_x] call _fnc_antiAir) then {_aa pushBack _class};
 		};
 		case (_class isKindOf "Air"): {
 			if !(_class isKindOf "ParachuteBase") then {_air pushBack _class};
@@ -96,6 +118,7 @@ _data set ["artySP", _artySP];
 _data set ["staticMG", _staticMG];
 _data set ["mortars", _mortars];
 _data set ["air", _air];
+_data set ["aa", _aa];
 
 //------------------------------------------------ CfgGroups ------------------------------------------------
 private _grpInf = [];
@@ -109,15 +132,16 @@ private _grpStatic = [];
 	if (configName _sideCfg != "Empty") then {
 		{
 			private _factionGroupsCfg = _x;
-			private _isFaction = configName _factionGroupsCfg == _faction;
+			private _isFaction = (toLowerANSI configName _factionGroupsCfg) == (toLowerANSI _faction);
 			{
 				{
 					private _grpCfg = _x;
 					private _grpFaction = getText (_grpCfg >> "faction");
 					if (_isFaction || {_grpFaction == _faction}) then {
 						private _units = ("isClass _x" configClasses _grpCfg) apply {getText (_x >> "vehicle")};
-						_units = _units select {isClass (configFile >> "CfgVehicles" >> _x)};
-						if (_units isNotEqualTo []) then {
+						//Mixed groups (a unit or vehicle of another faction, or a class that is not loaded) are left out
+						private _ownUnits = _units select {isClass (configFile >> "CfgVehicles" >> _x) && {getText (configFile >> "CfgVehicles" >> _x >> "faction") == _faction}};
+						if (_units isNotEqualTo [] && {count _ownUnits == count _units}) then {
 							switch (true) do {
 								case ((_units findIf {_x isKindOf "Ship"}) > -1): {};
 								case ((_units findIf {_x isKindOf "Air"}) > -1): {_grpAir pushBack _grpCfg};
@@ -145,8 +169,8 @@ _data set ["grpMech", _grpMech];
 _data set ["grpAir", _grpAir];
 _data set ["grpStatic", _grpStatic];
 
-diag_log format ["MCC Mission Wizard: faction %1 side %2 - men %3, inf groups %4, mot %5, mech %6, armed cars %7, armor %8, statics %9, mortars %10",
-	_faction, _sideNum, count _men, count _grpInf, count _grpMot, count _grpMech, count _carsArmed, count _armor, count _staticMG, count _mortars];
+diag_log format ["MCC Mission Wizard: faction %1 side %2 - men %3, inf groups %4, mot %5, mech %6, armed cars %7, armor %8, statics %9, mortars %10, artillery %11, aa %12, air %13",
+	_faction, _sideNum, count _men, count _grpInf, count _grpMot, count _grpMech, count _carsArmed, count _armor, count _staticMG, count _mortars, count _artySP, count _aa, count _air];
 
 _cache set [toLowerANSI _faction, _data];
 _data

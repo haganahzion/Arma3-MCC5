@@ -6,6 +6,8 @@
 //_hostageRescue = Boolean, true - catch him alive, False - kill him
 // Return - nothing
 //===============================================================================================================================================================
+#define HVT_OFFICER_TOKENS ["officer", "commander"]
+#define HVT_GUARD_PICK 4
 #define	MCC_UNTIE_ICON "\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_unbind_ca.paa"
 
 private ["_objPos","_isCQB","_hostageRescue","_buildingPos","_spawnPos","_unitsArray","_faction","_type","_group","_side","_unit","_building","_unitPlaced","_time","_array","_sidePlayer","_factionPlayer","_walking","_preciseMarkers","_selectedBuilding","_fnc_findHVTClass"];
@@ -43,33 +45,29 @@ MCC_MWcreateHostage =
 _fnc_findHVTClass = {
 	params ["_faction","_side","_random"];
 
-	private ["_unitsArray","_HVTClasses","_hvtClass"];
+	private _soldiers = [_faction ,"soldier"] call MCC_fnc_makeUnitsArray;
+	if (isNil "_soldiers") then {_soldiers = []};
+	_soldiers = _soldiers apply {_x select 0};
+	private _list = [];
 
-	_hvtClass = "";
-
-	//Random unit or from MCC_MWHVT variable
-	if (_random) then {
-		_unitsArray	= [_faction ,"soldier"] call MCC_fnc_makeUnitsArray;
-		while {_hvtClass == ""} do {_hvtClass = (_unitsArray call BIS_fnc_selectRandom) select 0};
-
-	} else {
-		_HVTClasses = missionNamespace getVariable ["MCC_MWHVT",["B_officer_F","O_officer_F","I_officer_F","C_Nikos"]];
-
-		//Find the right side HVT
-		{
-			if (([(getNumber(configFile >> "cfgVehicles" >> _x >> "side"))] call BIS_fnc_sideType) == _side) exitWith {
-				_hvtClass = _x;
-			};
-		} forEach _HVTClasses;
-
-		//Can't find - select random
-		if (_hvtClass == "") then {
-			_unitsArray	= [_faction ,"soldier"] call MCC_fnc_makeUnitsArray;
-			while {_hvtClass == ""} do {_hvtClass = (_unitsArray call BIS_fnc_selectRandom) select 0};
+	//MCC_MWHVT entries of this faction, else the faction's officers, else any of its soldiers
+	if (!_random) then {
+		_list = (missionNamespace getVariable ["MCC_MWHVT", []]) select {
+			_x isEqualType "" && {isClass (configFile >> "CfgVehicles" >> _x)} && {(toLowerANSI getText (configFile >> "CfgVehicles" >> _x >> "faction")) == (toLowerANSI _faction)}
+		};
+		if (_list isEqualTo []) then {
+			_list = _soldiers select {private _lower = toLowerANSI _x; (HVT_OFFICER_TOKENS findIf {_x in _lower}) > -1};
 		};
 	};
+	if (_list isEqualTo []) then {_list = _soldiers};
+	if (_list isEqualTo []) exitWith {""};
 
-	_hvtClass
+	selectRandom _list
+};
+
+private _checkFaction = [_faction, _factionPlayer] select _hostageRescue;
+if (([_checkFaction, _side, true] call _fnc_findHVTClass) == "") exitWith {
+	diag_log format ["MCC Mission Wizard: faction %1 has no men for the HVT objective, skipped", _checkFaction];
 };
 
 if (_isCQB) then {
@@ -101,6 +99,7 @@ if (_isCQB) then {
 
 				//find HVT class
 				_type = [_faction, _side, false] call _fnc_findHVTClass;
+				["take", [_side, 1, "obj"]] call MCC_fnc_MWbudget;
 				_unit = [_spawnPos, _type, _sidePlayer,"Armed Civilian",random 360,true] call MCC_fnc_ACSingle;
 				waituntil {alive _unit};
 
@@ -110,7 +109,7 @@ if (_isCQB) then {
 			_unitPlaced = true;
 
 			//Lets spawn some body guards
-			[getpos _unit,30,0,2,_faction, _side] remoteExec ["MCC_fnc_garrison", 2];
+			[getpos _unit,30,0,2,_faction, _side, false, false, "obj"] remoteExec ["MCC_fnc_garrison", 2];
 		};
 	};
 } else {
@@ -120,7 +119,7 @@ if (_isCQB) then {
 
 	//Open area
 	_objPos = [_objPos] call MCC_fnc_buildRandomComposition;
-	[_objPos,30,0,4,_faction, _side] remoteExec ["MCC_fnc_garrison",2];
+	[_objPos,30,0,4,_faction, _side, false, false, "obj"] remoteExec ["MCC_fnc_garrison",2];
 
 	_group = creategroup _side;
 
@@ -143,6 +142,7 @@ if (_isCQB) then {
 
 		//find HVT class
 		_type = [_faction, _side, false] call _fnc_findHVTClass;
+		["take", [_side, 1, "obj"]] call MCC_fnc_MWbudget;
 
 		//Find an empry spot
 		_spawnPos = _objPos findEmptyPosition [0,100,_type];
@@ -171,11 +171,13 @@ if (_isCQB) then {
 
 	//Lets spawn some body guards
 	_unitsArray 	= [_faction ,"soldier"] call MCC_fnc_makeUnitsArray;
-	private _guardsNumber = floor random 5;
+	if (isNil "_unitsArray") then {_unitsArray = []};
+	private _guardsNumber = [floor random 5, 0] select (_unitsArray isEqualTo []);
 
 	for [{_i=0},{_i< _guardsNumber},{_i=_i+1}] do {
+		if ((["take", [_side, 1, "obj"]] call MCC_fnc_MWbudget) < 1) exitWith {};
 
-		_type = _unitsArray select floor (random 4);
+		_type = _unitsArray select floor (random (HVT_GUARD_PICK min (count _unitsArray)));
 		_spawnPos = (getpos _unit) findEmptyPosition [0,100,(_type select 0)];
 		_unit = _group createUnit [_type select 0,_spawnPos,[],0.5,"NONE"];
 		waituntil {alive _unit};

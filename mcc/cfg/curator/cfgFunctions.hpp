@@ -60,6 +60,7 @@ class curator
 	class gaiaControlGroups {description = "Server: put groups under GAIA control";};
 	class gaiaNearestZone {description = "Nearest MCC zone to a position";};
 	class gaiaTaskTick {description = "Server: point a task-following GAIA group at its next task";};
-	class curatorMenuButton {postInit = 1; description = "Client: MCC 5 button and module list on the Zeus screen";};
+	class curatorGroupControl {description = "Zeus: give AI groups to GAIA or back to player control";};
+	class curatorContextMenu {postInit = 1; description = "Client: Zeus right-click menu for AI groups (ZEN menu when loaded)";};
 	class curatorClientInit {postInit = 1; description = "Client: Open Zeus keybind and MCC curator event handlers";};
 };

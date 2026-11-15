@@ -16,9 +16,10 @@ Description:
 		         Groups still cached by the old custom stage 1 are uncached.
 		Stage 2: no player within GAIA_CACHE_STAGE_2 -> GAIA_fnc_cacheFar
 		         (serialize and delete, restored by GAIA_fnc_cacheRestoreTick).
-	Vehicles:
-		GAIA groups (with a GAIA_ZONE_INTEND) are passed to GAIA_fnc_vehicleTick
-		when that function exists (it exits for groups that are not local).
+	Contact and vehicles:
+		GAIA groups (with a GAIA_ZONE_INTEND) are passed to GAIA_fnc_contactTick
+		(back to their own job after a fight) and GAIA_fnc_vehicleTick when those
+		functions exist (both exit for groups that are not local).
 	Headless client groups:
 		GAIA_class / GAIA_Order / GAIA_OrderPosition are sent to the owning
 		headless client when they change, so its vehicle tick sees the orders.
@@ -90,12 +91,12 @@ if (!isNull _group && {!local _group} && {(_group getVariable ["GAIA_ZONE_INTEND
 	};
 };
 
-//------------------------------- Vehicles -------------------------------
+//------------------------------- Contact and vehicles -------------------------------
 if (
-	!isNil "GAIA_fnc_vehicleTick"
-	&& {!isNull _group}
+	!isNull _group
 	&& {(units _group) isNotEqualTo []}
 	&& {(_group getVariable ["GAIA_ZONE_INTEND", []]) isNotEqualTo []}
 ) then {
-	[_group] call GAIA_fnc_vehicleTick;
+	if (!isNil "GAIA_fnc_contactTick") then {[_group] call GAIA_fnc_contactTick};
+	if (!isNil "GAIA_fnc_vehicleTick") then {[_group] call GAIA_fnc_vehicleTick};
 };

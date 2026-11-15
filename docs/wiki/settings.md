@@ -183,7 +183,7 @@ Long class list defaults are not repeated here. Hover over the setting in Eden o
 | Setting | What it does | Default | CBA variable |
 |---|---|---|---|
 | Smart Vehicle Use | AI groups borrow empty friendly vehicles for long trips, get out at the objective (leader included) and get back in after a fight | On | `MCC_GAIA_vehiclesEnabled` |
-| Find Ride Distance | Infantry going further than this (meters) look for an empty vehicle. Range 500 to 5000. | 1500 | `MCC_GAIA_rideDistance` |
+| Find Ride Distance | Infantry going further than this (meters) look for an empty vehicle. Range 200 to 5000. | 500 | `MCC_GAIA_rideDistance` |
 | Dismount Distance | Groups get out of their vehicle this far (meters) from the objective. Range 100 to 1500. | 400 | `MCC_GAIA_dismountDistance` |
 | Vehicle Search Radius | How far (meters) from the leader a group looks for an empty vehicle. Range 50 to 1000. | 300 | `MCC_GAIA_rideSearchRadius` |
 | Unstick Vehicles | Tanks and armed cars that have not moved for about a minute re-plan their route, back up, then get a new order (off when HBQ Driving AI handles it) | On | `MCC_GAIA_UNSTICK` |

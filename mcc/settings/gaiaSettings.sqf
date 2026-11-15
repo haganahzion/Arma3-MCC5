@@ -127,9 +127,9 @@
 [
     "MCC_GAIA_rideDistance",
     "SLIDER",
-   	["Find Ride Distance","Infantry going further than this (meters) look for an empty vehicle"],
+   	["Find Ride Distance","Infantry going further than this (meters) look for an empty vehicle nearby (and only when the drive is at least 200 m longer than the Dismount Distance)"],
    	["MCC GAIA", "Vehicles"],
-    [500, 5000, 1500, 0],
+    [200, 5000, 500, 0],
     true
 ] call CBA_fnc_addSetting;
 

@@ -243,7 +243,19 @@ class compat
 	class compatApply {description = "Swap a class-list setting for the mod preset if it is at vanilla default / expand auto";};
 	class compatSlugMagazines {description = "Cached CfgMagazines scan for shotgun slug magazines";};
 	class compatGroupUnits {description = "cfgMCCRtsGroups units for a side with RHS/CUP variants";};
+	class factionCrew {description = "Replace vehicle crew of another faction with the given faction's own men";};
 	class compatInit {postInit = 1; description = "Apply mod presets to class-list settings, re-apply on CBA_SettingChanged";};
+};
+
+class intro
+{
+	#ifdef MCCMODE
+	file = "\mcc_sandbox_mod\mcc\fnc\intro";
+	#else
+	file = "mcc\fnc\intro";
+	#endif
+	class operationIntroStart {description = "Server: operation intro with hold fire for every AI group until it ends";};
+	class operationIntro {description = "Client: operation intro screen";};
 };
 
 class edenWizard

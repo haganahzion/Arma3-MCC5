@@ -10,7 +10,11 @@
 //	_zoneMarker				String, Zone number the reinforcement's cargo will patrol that zone.
 //	_faction					String, Faction name.
 //	_startPosDir				Array, spawn and de-spawn location for the reinforcement.
+//	_maxUnits				Number (optional), most units (crew and cargo) to create, -1 (default) = no limit, other negatives = none
 //===========================================================================================================================================================================
+#define REINF_NO_CAP -1
+#define REINF_UNLIMITED 1e6
+
 private ["_unitsArray","_endPos","_side","_size","_zoneMarker","_faction","_startPosDir","_vehiclesArray","_groupVehicles","_limit",
          "_counter","_vehicleClass","_nearRoads","_vehicle","_vehiclesTypesArray","_cargoyGroupArray"];
 _endPos 				= _this select 0;
@@ -19,6 +23,11 @@ _size 					=  if (TypeName  (_this select 2) == "STRING") then {call compile (_t
 _zoneMarker 			=  if (TypeName  (_this select 3) == "STRING") then {(_this select 3)} else {str (_this select 3)};
 _faction				= _this select 4;
 _startPosDir			= _this select 5;
+private _maxUnits	= param [6, REINF_NO_CAP, [0]];
+private _noCap		= _maxUnits == REINF_NO_CAP;
+private _unitsLeft	= [_maxUnits max 0, REINF_UNLIMITED] select _noCap;
+
+if (_unitsLeft == 0) exitWith {diag_log format ["MCC: reinforcement skipped, no units left under the cap (%1)", _faction]};
 
 if (TypeName _side == "STRING") then
 {
@@ -68,11 +77,17 @@ while {_counter <=_limit && {_attempts < 50}} do
 	_attempts = _attempts + 1;
 	_vehicleClass = (_vehiclesTypesArray call BIS_fnc_selectRandom) select 0;
 
-	if ((getNumber (configfile >> "CfgVehicles" >> _vehicleClass >> "transportSoldier") > 2) || (count (configfile >> "CfgVehicles" >> _vehicleClass >> "Turrets") >0)) then
+	//Skip vehicles whose crew does not fit under the cap
+	if (([_vehicleClass, false] call BIS_fnc_crewCount) <= _unitsLeft && {(getNumber (configfile >> "CfgVehicles" >> _vehicleClass >> "transportSoldier") > 2) || (count (configfile >> "CfgVehicles" >> _vehicleClass >> "Turrets") >0)}) then
 	{
 		_isFlat = _startPosDir findEmptyPosition [10, 100];
 		if (count _isFlat == 0) then {_isFlat = _startPosDir};
-		_vehicle = [_isFlat , ([_isFlat, _endPos] call BIS_fnc_dirTo), _vehicleClass, _groupVehicles] call MCC_fnc_spawnVehicle;
+		_vehicle = [_isFlat , ([_isFlat, _endPos] call BIS_fnc_dirTo), _vehicleClass, _groupVehicles, true, true, _faction] call MCC_fnc_spawnVehicle;
+		if (!isNil "MCC_fnc_MWbudget") then {["trim", [crew (_vehicle select 0), "gen"]] call MCC_fnc_MWbudget};
+		private _crewNow = {alive _x} count (crew (_vehicle select 0));
+		if (_crewNow > _unitsLeft) then {{(_vehicle select 0) deleteVehicleCrew _x} forEach ((crew (_vehicle select 0)) select [_unitsLeft, _crewNow]); _crewNow = _unitsLeft};
+		if (_crewNow == 0) exitWith {deleteVehicle (_vehicle select 0)};
+		_unitsLeft = _unitsLeft - _crewNow;
 		_vehiclesArray set [count _vehiclesArray, (_vehicle select 0)];
 		_counter = _counter + 1;
 
@@ -86,7 +101,7 @@ _groupVehicles setFormation "COLUMN";
 
 _cargoyGroupArray = [];
 {
-	[_x]  call MCC_fnc_populateVehicle;
+	if (_unitsLeft > 0) then {_unitsLeft = _unitsLeft - ([_x, [_unitsLeft, REINF_NO_CAP] select _noCap] call MCC_fnc_populateVehicle)};
 } foreach _vehiclesArray;
 
 sleep 1;
