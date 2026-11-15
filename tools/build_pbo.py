@@ -56,7 +56,7 @@ def main():
                  'logoOver = "\\mcc_sandbox_mod\\data\\mod.paa";\ntooltip = "MCC Sandbox 5";\n'
                  'overview = "Mission Control Center: build and run missions on the fly with Zeus and Eden. GAIA AI commander.";\n'
                  'author = "shay_gman";\n')
-    for doc in ("INSTALL.md", "LICENSE.md"):
+    for doc in ("INSTALL.md", "LICENSE.md", "COMMUNITY_RULES.md"):
         src = os.path.join(ROOT, doc)
         if os.path.exists(src):
             with open(src, "rb") as a, open(os.path.join(mod, doc), "wb") as b:

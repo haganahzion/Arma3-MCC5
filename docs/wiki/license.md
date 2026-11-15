@@ -17,6 +17,10 @@ MCC 5 is built on MCC Sandbox by **Shay_gman & Spirit**. Their credit must stay 
 
 MCC 5 is open source. The full source is on GitHub: [github.com/haganahzion/Arma3-MCC5](https://github.com/haganahzion/Arma3-MCC5).
 
+## Community rules
+
+The MCC 5 Discord, our servers and MCC 5 support have their own [community rules](https://github.com/haganahzion/Arma3-MCC5/blob/mcc5/COMMUNITY_RULES.md): no selling it, ask before reuploading, no monetized servers without permission, and keep the credits. Breaking them can get you removed from the community and its support. They don't change what the license allows.
+
 ## Full text
 
 The full license is in `LICENSE.md` in the mod (also inside the release zip), and at [gnu.org/licenses/gpl-3.0](https://www.gnu.org/licenses/gpl-3.0.html).
