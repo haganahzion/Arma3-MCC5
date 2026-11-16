@@ -239,7 +239,7 @@ Long class list defaults are not repeated here. Hover over the setting in Eden o
 
 | Setting | What it does | Default | CBA variable |
 |---|---|---|---|
-| Ambient Fire | Explosive may cause sporadic fires that will spread with the wind need a restart to disable | On | `MCC_ambientFireSettingIndex` |
+| Ambient Fire | Explosive may cause sporadic fires that will spread with the wind need a restart to disable | Off | `MCC_ambientFireSettingIndex` |
 | Vehicle fire chance | Chance a destroyed vehicle will start a fire. Range 0 to 100. | 50 | `MCC_fnc_ambientFireInitVehicleBurnChance` |
 | Explosives rounds fire chance | Chance an explosive ammunition start a new fire also effect the chance of non explosive ammunition to start a fire. Range 0 to 100. | 3 | `MCC_fnc_ambientFireInitExplosivesBurnChance` |
 | Burning crew escape chance | Chance of each crew member in a destroyed vehicle's to catch on fire running out of the vehicle. Range 0 to 100. | 50 | `MCC_fnc_ambientFireInitCrewBurnChance` |
@@ -305,8 +305,8 @@ Long class list defaults are not repeated here. Hover over the setting in Eden o
 
 | Setting | What it does | Default | CBA variable |
 |---|---|---|---|
-| Breaching Ammo | Magazine classes. Shooting this ammo from less than 10 meters will unlock doors. "auto" = every shotgun slug magazine found in the loaded mods | `["auto"]` | `MCC_breacingAmmo` |
-| Non Lethal Ammo | Magazine classes. Shooting this ammo at a unit closer than 30 meters stuns it instead of killing it. "auto" = every shotgun slug magazine found in the loaded mods | `["auto"]` | `MCC_nonLeathalAmmo` |
+| Breaching Ammo | Magazine classes. Shooting this ammo from less than 10 meters will unlock doors. "auto" = every shotgun slug magazine found in the loaded mods. Empty = off | `[]` (off) | `MCC_breacingAmmo` |
+| Non Lethal Ammo | Magazine classes. Shooting this ammo at a unit closer than 30 meters stuns it instead of killing it. "auto" = every shotgun slug magazine found in the loaded mods. Empty = off | `[]` (off) | `MCC_nonLeathalAmmo` |
 
 ### MCC Medical System
 
@@ -357,8 +357,8 @@ Long class list defaults are not repeated here. Hover over the setting in Eden o
 
 | Setting | What it does | Default | CBA variable |
 |---|---|---|---|
-| View Distance | Sets the view distance. Range 200 to 15000. | 5000 | `MCC_Settings_ViewDistance` |
-| Grass Detail | Sets the terrain grid (grass) detail. Range 1 to 50. | 10 | `MCC_Settings_grassDetail` |
+| View Distance | Sets the view distance in meters. 0 keeps the player's own video setting. Range 0 to 15000. | 0 (keep) | `MCC_Settings_ViewDistance` |
+| Grass Detail | Terrain and grass detail: Keep game setting, Lowest (no grass), Low, Standard, High, Ultra. Keep game setting never changes the player's own video settings. | Keep game setting | `MCC_Settings_terrainDetail` |
 | Action Menu | Show MCC action in mouse wheel actions | On | `MCC_showActionKey` |
 | Allow 3rd Person | Force first person camera | Always | `MCC_Settings_forceCamera` |
 | PvP Interface | Shows the opposing sides and the tickets left. | Off | `MCC_UIModuleTickets` |
@@ -399,7 +399,7 @@ MCC keybinds are CBA keybinds. Change them in **Options > Controls > Configure A
 | Open Zeus (MCC) | Ctrl+Delete | Only when you have Zeus |
 | Commander Console | Ctrl+End | You must be your side's commander |
 | Teleport to Team | Alt+T | When **Teleport to Team** allows it |
-| Squad Management | P | |
+| Squad Management | none (set your own key) | |
 | Squad Leader PDA | Ctrl+Page Down | You must be a team leader |
 | Interaction | Left Windows key | With **Interaction System** on |
 | Interaction Self | Ctrl+Left Windows key | With **Interaction System** on |
@@ -416,6 +416,6 @@ Without ACE, MCC shows "Assing MCC Interaction Key !!!" on screen until the Inte
 - **Ambient Fire**: the description says it needs a restart to disable.
 - **Purchase air drop** and **Purchase CAS**: work only after a mission restart.
 - **Enable MCC Medic System** and **Complex System**: need a mission restart. With ACE loaded, the MCC medical settings module is ignored. See [Mod support](mod-support.md).
-- **Breaching Ammo** and **Non Lethal Ammo**: the default `["auto"]` means every shotgun slug magazine found in your loaded mods. Add your own classes next to "auto" to keep both.
+- **Breaching Ammo** and **Non Lethal Ammo**: off by default. Enter `"auto"` for every shotgun slug magazine found in your loaded mods, or list your own magazine classes.
 - **Convoy HVT** lists: left at default, RHS and CUP entries are added when those mods are loaded. Add "auto" to a custom list to keep them.
 - To see MCC timings and errors, turn on **GAIA Debug**. See [Troubleshooting](troubleshooting.md).

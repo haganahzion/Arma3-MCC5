@@ -65,7 +65,15 @@ if (_group getVariable ["mcc_gaia_cache", false]) then {
 	};
 
 	//Stage 2: far from every player -> serialize and delete
-	if !([getPosATL _leader, missionNamespace getVariable ["GAIA_CACHE_STAGE_2", 2000]] call GAIA_fnc_isNearPlayer) then {
+	//Not for groups whose state a restore would lose or that are busy: task followers, fights, MCC CP groups
+	if (
+		!(_group getVariable ["GAIA_followTasks", false])
+		&& {!(_group getVariable ["GAIA_taskMarch", false])}
+		&& {!(_group getVariable ["GAIA_inContact", false])}
+		&& {!(_group getVariable ["MCC_CPGroup", false])}
+		&& {behaviour _leader != "COMBAT"}
+		&& {!([getPosATL _leader, missionNamespace getVariable ["GAIA_CACHE_STAGE_2", 2000]] call GAIA_fnc_isNearPlayer)}
+	) then {
 		[_group] call GAIA_fnc_cacheFar;
 	};
 };

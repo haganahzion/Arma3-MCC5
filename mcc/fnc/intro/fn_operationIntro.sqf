@@ -21,6 +21,15 @@
 #define LATE_JOIN_TIME 300
 #define WATCHDOG_TIME 60
 #define LAYER_NAME "MCC_opIntro"
+// Own layer for the black fades: other scripts (respawn, role selection, other mods) fade on the default layer
+// at mission start, and sharing it made the screen flash
+#define LAYER_BLACK "MCC_opIntroBlack"
+// Wait this long (seconds) for the player to be alive with no other camera or dialog open; after that the intro
+// plays as a title card over the player's own view instead of taking the camera
+#define READY_WAIT 15
+// Seconds the colour grading takes to fade in and out (switching it instantly is a visible flash)
+#define PP_FADE 1
+#define NVG_SUN_LIMIT 0.2
 #define FONT_MONO "EtelkaMonospacePro"
 #define FONT_BOLD "PuristaBold"
 #define FONT_MEDIUM "PuristaMedium"
@@ -31,7 +40,9 @@
 #define HEX_DIM "#9AA39A"
 #define COLOR_HOLD [0.75, 0.15, 0.1, 0.9]
 #define COLOR_FREE [0.2, 0.6, 0.2, 0.9]
-#define TYPE_DELAY 0.025
+#define TYPE_DELAY 0.04
+// Characters added per typing step (fewer redraws)
+#define TYPE_STEP 2
 #define CAM_DIST_START 420
 #define CAM_DIST_END 260
 #define CAM_HEIGHT_START 170
@@ -59,6 +70,12 @@ waitUntil {sleep 0.2; !isNull player && {!isNull (findDisplay 46)} && {time > 1}
 if ((missionNamespace getVariable ["MCC_opIntroShown", 0]) == _id) exitWith {};
 MCC_opIntroShown = _id;
 
+// Don't take the camera from a respawn screen, a role selection dialog or another script's camera
+private _fnc_ready = {alive player && {!dialog} && {cameraOn == vehicle player} && {isNull curatorCamera}};
+private _readyBy = time + READY_WAIT;
+waitUntil {sleep 0.2; (call _fnc_ready) || {time > _readyBy}};
+if !(call _fnc_ready) then {_cinematic = false};
+
 private _fnc_done = {player setVariable ["MCC_opIntroDone", _id, true]};
 if (_side != sideUnknown && {side group player != _side}) exitWith {call _fnc_done};
 if (time > LATE_JOIN_TIME) exitWith {call _fnc_done};
@@ -67,7 +84,7 @@ if (_center isEqualTo []) then {_center = getPosATL player};
 _center = [_center select 0, _center select 1, 0];
 
 //------------------------------------------------------------ Cleanup (also run by the watchdog) ------------------------------------------------------------
-MCC_opIntroState = createHashMapFromArray [["id", _id], ["finished", false], ["hud", shownHUD], ["music", musicVolume]];
+MCC_opIntroState = createHashMapFromArray [["id", _id], ["finished", false], ["hud", shownHUD], ["music", musicVolume], ["cinematic", _cinematic]];
 
 MCC_fnc_operationIntroCleanup = {
 	private _state = missionNamespace getVariable ["MCC_opIntroState", createHashMap];
@@ -82,9 +99,21 @@ MCC_fnc_operationIntroCleanup = {
 	if (!isNull _cam) then {
 		_cam cameraEffect ["terminate", "back"];
 		camDestroy _cam;
+		camUseNVG false;
 	};
-	{ppEffectDestroy _x} forEach (_state getOrDefault ["pp", []]);
+	// Fade the colour grading back to normal, then remove it
+	private _pp = _state getOrDefault ["pp", []];
+	{
+		_x ppEffectAdjust [1, 1, 0, [0, 0, 0, 0], [1, 1, 1, 1], [0.299, 0.587, 0.114, 0]];
+		_x ppEffectCommit PP_FADE;
+	} forEach _pp;
+	_pp spawn {
+		uiSleep PP_FADE;
+		{ppEffectDestroy _x} forEach _this;
+	};
 	(LAYER_NAME call BIS_fnc_rscLayer) cutText ["", "PLAIN"];
+	// Cinematic: the screen is black here (normal end or watchdog), fade the player's view in
+	if (_state getOrDefault ["cinematic", false]) then {(LAYER_BLACK call BIS_fnc_rscLayer) cutText ["", "BLACK IN", 1.5]};
 	showHUD (_state getOrDefault ["hud", true]);
 	player setVariable ["MCC_opIntroDone", _state getOrDefault ["id", 0], true];
 };
@@ -163,32 +192,29 @@ private _fnc_ctrl = {
 private _fnc_type = {
 	params ["_ctrl", "_fmt", "_text"];
 	private _n = count _text;
-	for "_i" from 1 to _n do {
-		_ctrl ctrlSetStructuredText parseText format [_fmt, [_text select [0, _i]] call _fnc_esc, ["_", ""] select (_i == _n)];
+	for "_i" from TYPE_STEP to (_n + TYPE_STEP - 1) step TYPE_STEP do {
+		private _shown = _i min _n;
+		_ctrl ctrlSetStructuredText parseText format [_fmt, [_text select [0, _shown]] call _fnc_esc, ["_", ""] select (_shown == _n)];
 		sleep TYPE_DELAY;
 	};
 };
 
-// Look
+// Look: light colour grading, faded in (no film grain: it flickers)
+private _black = LAYER_BLACK call BIS_fnc_rscLayer;
 private _pp = [];
 private _cc = -1;
 private _prio = 1501;
 while {_cc = ppEffectCreate ["ColorCorrections", _prio]; _cc < 0} do {_prio = _prio + 1};
 _cc ppEffectEnable true;
-_cc ppEffectAdjust [1, 1.08, -0.01, [0.1, 0.12, 0.1, 0.08], [1, 0.95, 0.85, 0.75], [0.299, 0.587, 0.114, 0]];
+_cc ppEffectAdjust [1, 1, 0, [0, 0, 0, 0], [1, 1, 1, 1], [0.299, 0.587, 0.114, 0]];
 _cc ppEffectCommit 0;
+_cc ppEffectAdjust [1, 1.06, -0.01, [0.1, 0.12, 0.1, 0.06], [1, 0.96, 0.88, 0.8], [0.299, 0.587, 0.114, 0]];
+_cc ppEffectCommit (PP_FADE * 2);
 _pp pushBack _cc;
-private _grain = -1;
-_prio = 2001;
-while {_grain = ppEffectCreate ["FilmGrain", _prio]; _grain < 0} do {_prio = _prio + 1};
-_grain ppEffectEnable true;
-_grain ppEffectAdjust [0.06, 1, 1, 0.1, 1, false];
-_grain ppEffectCommit 0;
-_pp pushBack _grain;
 MCC_opIntroState set ["pp", _pp];
 
 showHUD false;
-cutText ["", "BLACK FADED", 999];
+if (_cinematic) then {_black cutText ["", "BLACK FADED", 999]};
 
 if (_cinematic) then {
 	private _dir = random 360;
@@ -201,7 +227,7 @@ if (_cinematic) then {
 	_cam cameraEffect ["internal", "back"];
 	showCinemaBorder false;
 	cameraEffectEnableHUD false;
-	camUseNVG (sunOrMoon < 0.3);
+	camUseNVG (sunOrMoon < NVG_SUN_LIMIT);
 	_cam camSetTarget _center;
 	_cam camSetFov 0.75;
 	_cam camCommit 0;
@@ -211,7 +237,7 @@ if (_cinematic) then {
 };
 
 if (_music != "") then {playMusic _music};
-cutText ["", "BLACK IN", 2.5];
+if (_cinematic) then {_black cutText ["", "BLACK IN", 2.5]};
 
 // Letterbox
 private _top = ["RscText", [_sx, _sy - _barH, _sw, _barH], 0] call _fnc_ctrl;
@@ -308,7 +334,7 @@ sleep 1.5;
 
 // Out
 if (_cinematic) then {
-	cutText ["", "BLACK OUT", 1];
+	_black cutText ["", "BLACK OUT", 1];
 	sleep 1;
 };
 {
@@ -322,7 +348,6 @@ _bottom ctrlCommit 1;
 sleep 1;
 
 call MCC_fnc_operationIntroCleanup;
-if (_cinematic) then {cutText ["", "BLACK IN", 1.5]};
 
 if (_music != "") then {
 	[MCC_opIntroState getOrDefault ["music", 0.5]] spawn {

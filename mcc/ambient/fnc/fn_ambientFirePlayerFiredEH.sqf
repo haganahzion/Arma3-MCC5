@@ -9,7 +9,8 @@
 if (!hasInterface) exitWith {};
 
 player addEventHandler ["firedMan", {
-							if ((missionNamespace getVariable ["MCC_ambientFire",false]) && (missionNamespace getVariable ["MCC_ambientFireSettingIndex",true])) then {
+							//Only explosive ammo can start a fire: plain bullets never start a script
+							if ((missionNamespace getVariable ["MCC_ambientFire",false]) && {missionNamespace getVariable ["MCC_ambientFireSettingIndex",false]} && {(getNumber (configFile >> "CfgAmmo" >> (_this select 4) >> "explosive")) > 0}) then {
 								_this spawn {
 									params [
 										        "_unit",

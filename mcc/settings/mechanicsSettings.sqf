@@ -28,7 +28,11 @@ if (count (allMissionObjects "MCC_Module_settingsMechanics") == 0) then {
         false,
         true,
         {
-        	player enableFatigue !MCC_disableFatigue
+        	//Only when turned on: the default must not switch stamina back on in missions (or ACE) that turned it off
+        	if (hasInterface && {!isNull player} && {MCC_disableFatigue || {missionNamespace getVariable ["MCC_fatigueSet", false]}}) then {
+        		player enableStamina !MCC_disableFatigue;
+        		MCC_fatigueSet = true;
+        	};
         }
     ] call CBA_fnc_addSetting;
 
@@ -147,9 +151,9 @@ if (count (allMissionObjects "MCC_Module_settingsMechanics") == 0) then {
     [
         "MCC_breacingAmmo",
         "EDITBOX",
-        ["Breaching Ammo","Magazine classes. Shooting this ammo from less then 10 meters will unlock doors. ""auto"" = every shotgun slug magazine found in the loaded mods"],
+        ["Breaching Ammo","Magazine classes. Shooting this ammo from less then 10 meters will unlock doors. ""auto"" = every shotgun slug magazine found in the loaded mods. Empty (default) = off"],
         ["MCC Mechanics","Ammo Type"],
-        '["auto"]',
+        '[]',
         true,
         {
             params ["_value"];
@@ -162,9 +166,9 @@ if (count (allMissionObjects "MCC_Module_settingsMechanics") == 0) then {
     [
         "MCC_nonLeathalAmmo",
         "EDITBOX",
-        ["Non Lethal Ammo","Magazine classes. Shooting this ammo at a unit closer than 30 meters stuns it instead of killing it. ""auto"" = every shotgun slug magazine found in the loaded mods"],
+        ["Non Lethal Ammo","Magazine classes. Shooting this ammo at a unit closer than 30 meters stuns it instead of killing it. ""auto"" = every shotgun slug magazine found in the loaded mods. Empty (default) = off"],
         ["MCC Mechanics","Ammo Type"],
-        '["auto"]',
+        '[]',
         true,
         {
             params ["_value"];

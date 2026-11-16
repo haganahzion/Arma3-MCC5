@@ -55,7 +55,7 @@ if (!isNull _newDriver) then {
 };
 
 _group setVariable ["GAIA_dismounted", true];
-_group setVariable ["GAIA_boardUntil", -1];
+_group setVariable ["GAIA_boardUntil", -1, true];
 if (_isRide) then {_group leaveVehicle _veh};
 
 if (missionNamespace getVariable ["MCC_GAIA_debug", false]) then {

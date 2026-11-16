@@ -8,6 +8,9 @@
 	Params: none
 	Returns: nothing
 //==================================================================================================================================================================*/
+// Zeus camera must move this far (meters) before its position is sent again
+#define ZEUS_CAM_SEND_MOVE 100
+
 if (!hasInterface) exitWith {};
 
 if (!isNil "CBA_fnc_addKeybind") then {
@@ -21,6 +24,16 @@ if (!isNil "CBA_fnc_addKeybind") then {
 		openCuratorInterface;
 		true
 	}, {}, [211, [false, true, false]], false] call CBA_fnc_addKeybind;
+};
+
+// Vehicles a player gets into are the player's: GAIA never takes them as a ride (GAIA_fnc_findRide)
+if (!isNil "CBA_fnc_addClassEventHandler") then {
+	["CAManBase", "GetInMan", {
+		params ["_unit", "", "_vehicle"];
+		if (_unit == player && {!(_vehicle getVariable ["MCC_playerUsed", false])}) then {
+			_vehicle setVariable ["MCC_playerUsed", true, true];
+		};
+	}] call CBA_fnc_addClassEventHandler;
 };
 
 [] spawn {
@@ -38,8 +51,20 @@ if (!isNil "CBA_fnc_addKeybind") then {
 		private _cur = getAssignedCuratorLogic player;
 		if (!isNull _cur && {!(_cur in _known)} && {!(_cur getVariable ["MCC_curatorClientEHs", false])}) then {
 			_cur setVariable ["MCC_curatorClientEHs", true];
-			_cur addEventHandler ["CuratorObjectDoubleClicked", {missionNamespace setVariable ["BIS_fnc_initCuratorAttributes_target", (_this select 1)]; _this spawn MCC_fnc_curatorInitLine}];
+			if ((_cur isEqualTo (missionNamespace getVariable ["MCC_curator", objNull]) || {_cur getVariable ["MCC_autoCurator", false]}) && {!isClass (configFile >> "CfgPatches" >> "zen_main")}) then {
+				_cur addEventHandler ["CuratorObjectDoubleClicked", {missionNamespace setVariable ["BIS_fnc_initCuratorAttributes_target", (_this select 1)]; _this spawn MCC_fnc_curatorInitLine}];
+			};
 			_cur addEventHandler ["CuratorObjectPlaced", {if (local (_this select 1)) then {missionNamespace setVariable ["MCC_curatorMouseOver", curatorMouseOver]}}];
+		};
+
+		//Zeus camera position for the server (GAIA keeps groups near it awake), sent only when it moved
+		private _camPos = if (isNull curatorCamera) then {[]} else {getPosATL curatorCamera};
+		private _sent = player getVariable ["MCC_zeusCamPos", []];
+		if (
+			(_camPos isEqualTo [] && {_sent isNotEqualTo []})
+			|| {_camPos isNotEqualTo [] && {_sent isEqualTo [] || {(_camPos distance2D _sent) > ZEUS_CAM_SEND_MOVE}}}
+		) then {
+			player setVariable ["MCC_zeusCamPos", _camPos, true];
 		};
 
 		sleep 5;

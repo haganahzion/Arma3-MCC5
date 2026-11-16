@@ -7,7 +7,14 @@
     ["Save Gear","Players will respawn with the gear they had when they died"],
     ["MCC Respawn","Respawn"],
     false,
-    true
+    true,
+    {
+        params ["_value"];
+        //A Mission Settings module decides when one is placed
+        if ((allMissionObjects "MCC_Module_settings") isEqualTo [] && {(allMissionObjects "MCC_Module_settingsCurator") isEqualTo []}) then {
+            MCC_saveGear = _value;
+        };
+    }
 ] call CBA_fnc_addSetting;
 
 //Delet players body

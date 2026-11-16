@@ -11,7 +11,8 @@ private ["_group"];
 _group 			= _this select 0; 
 if (isNull _group) exitWith {};
 _units  		= units _group;
-_vehicles		=  [_group] call  BIS_fnc_groupVehicles;
+//Only vehicles crewed by this group alone (a transport of another group is not deleted with this one)
+_vehicles		=  ([_group] call  BIS_fnc_groupVehicles) select {((crew _x) findIf {alive _x && {group _x != _group}}) < 0};
 _sf 				= [];
 _uv 				= [];
 _crew 			= [];

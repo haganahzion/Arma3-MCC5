@@ -50,6 +50,8 @@
 #define GAIA_CONTACT_TICK_INTERVAL	5
 // Seconds without contact before a group counts as out of the fight and goes back to its own job
 #define GAIA_CONTACT_CLEAR_TIME		30
+// Seconds after GAIA calmed a group down in which COMBAT behaviour alone is not counted as contact
+#define GAIA_CONTACT_CALM_COOLDOWN	90
 // Behaviour a group gets back after the fight when it is still in COMBAT
 #define GAIA_CONTACT_CALM_BEHAVIOUR	"AWARE"
 // Orders that come from contact (attack, flank, support by fire and hold all use "DoAttack")

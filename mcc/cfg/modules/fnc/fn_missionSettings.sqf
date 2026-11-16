@@ -16,8 +16,8 @@ if (_module isKindOf "MCC_Module_settings") exitWith {
 
 	//Save gear
 	_var 	= _module getvariable ["saveGear",1];
-	missionNamespace setVariable ["MCC_saveGearIndex",_var];
 	MCC_saveGear = (_var isEqualTo 1);
+	missionNamespace setVariable ["MCC_saveGearIndex",MCC_saveGear];
 
 	//Messeges
 	_var 	= _module getvariable ["messages",1];
@@ -124,7 +124,7 @@ _resualt = ["Settings MCC",[
  						["Purchasable Supply Drops",(missionNamespace getVariable ["MCC_defaultSupplyDropsEnabled",true])],
  						["Purchasable CAS",(missionNamespace getVariable ["MCC_defaultCASEnabled",true])],
  						["Disable Zeus Edit",(missionNamespace getVariable ["MCC_CuratorEditDisabled",false])],
- 						["Reduce Tickets on Respawn",(missionNamespace getVariable ["MCC_reduceTicketsOnDeath",true])],
+ 						["Reduce Tickets on Respawn",(missionNamespace getVariable ["MCC_reduceTicketsOnDeath",false])],
  						["Artilery Computer",true],
  						["Time Acceleration",20],
  						["Resistance Hostile To",["All","East","West"]]

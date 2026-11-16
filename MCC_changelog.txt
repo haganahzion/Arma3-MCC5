@@ -1,3 +1,11 @@
+Changelog v5.1.0:
+Fixed:
+	- uiSettings: View Distance (0 = keep) and Grass/Terrain Detail (LIST, "Keep game setting" default) no longer call setViewDistance 5000 / setTerrainGrid 40 on every client at init
+	- Operation intro: own fade layer (MCC_opIntroBlack), waits up to 15 s for no dialog / other camera / respawn screen (else title card), colour grading faded in/out, no film grain, fewer text redraws; hold fire re-applied during the intro; listen host sees it with remoteExec whitelists
+	- GAIA: far cache uses real players without headless clients plus Zeus camera positions, never caches task / marching / fighting / CP groups, deletes only vehicles crewed by the group alone; a group is picked for one CA per cycle; CA in-zone multiplier and target radius fixed; per-CA minimum response 1-2 kept in one hashmap; no nearestPosition on an empty CA list; ambient smoke only after a >20% loss and not for marching / LAMBS groups; no rides in vehicles a player used; allowGetIn restored when a ride is dropped; task watchdog sees headless client fights and boarding; AWARE/COMBAT ping-pong cooldown; group maintenance only for GAIA groups
+	- Mission Wizard: end trigger only on all tasks SUCCEEDED, new fail trigger (LOOSE); MWreinforcement off-by-one and endless road search; JIP hostage untie action; garrison random class; building search radius capped; HVT CQB/empty position fallbacks; CQB flag no longer lost for later objectives
+	- Load-time: Save Gear follows its setting (default off); extra ticket on death off by default; stamina, artillery computer and time multiplier only changed when the setting differs from default; breaching / non-lethal ammo default empty; Ambient Fire default off, burn chance fixed, non-explosive shots skipped; MCC double-click edit only on MCC curators and not with ZEN; start location markers only with MCC start locations; force camera loop only when enforcing, survives respawn; Squad Management key unbound by default, MCC self interaction off with ACE; respawn anchor object fixed
+
 Changelog v5.0.5:
 Fixed:
 	- GAIA's cancel orders pass and ambient smoke/flares ran over every group of a side: groups of Zeus, the mission and other mods (CAS, LZ insertion, reinforcement mods) lost their waypoints in COMBAT or after MCC_GAIA_MAX_ORDER_AGE; now GAIA registered groups only

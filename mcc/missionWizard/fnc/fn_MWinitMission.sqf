@@ -441,6 +441,8 @@ private _usedObjTypes = [];
 	if (_objType != "None" && _objType != "") then {
 
 		MCC_MWObjectivesNames = nil;
+		//CQB is the mission option for every objective (an objective below may turn it off for itself only)
+		_isCQB = _arrayDefines select 0;
 
 		//Random Mission: prefer a type that is not used yet in this mission
 		if (_objType == "Random") then {

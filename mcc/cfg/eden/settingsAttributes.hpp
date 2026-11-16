@@ -1946,22 +1946,32 @@ class MCC5S_Cat_MCC_User_Interface
 		class MCC5S_MCC_Settings_ViewDistance
 		{
 			displayName = "View Distance";
-			tooltip = "Your view distance in meters\nEmpty = use addon setting. Number 200 to 15000 (addon default: 5000).\nCBA setting: MCC_Settings_ViewDistance";
+			tooltip = "Your view distance in meters. 0 = keep your own game setting (default)\nEmpty = use addon setting. Number 0 to 15000 (addon default: 0).\nCBA setting: MCC_Settings_ViewDistance";
 			property = "MCC5S_MCC_Settings_ViewDistance";
 			expression = "";
 			control = "Edit";
 			typeName = "STRING";
 			defaultValue = """""";
 		};
-		class MCC5S_MCC_Settings_grassDetail
+		class MCC5S_MCC_Settings_terrainDetail
 		{
 			displayName = "Grass Detail";
-			tooltip = "Grass detail, higher shows more grass\nEmpty = use addon setting. Number 1 to 50 (addon default: 10).\nCBA setting: MCC_Settings_grassDetail";
-			property = "MCC5S_MCC_Settings_grassDetail";
+			tooltip = "Terrain and grass detail. Keep game setting (default) never changes your own video settings\n(addon default: Keep game setting)\nCBA setting: MCC_Settings_terrainDetail";
+			property = "MCC5S_MCC_Settings_terrainDetail";
 			expression = "";
-			control = "Edit";
-			typeName = "STRING";
-			defaultValue = """""";
+			control = "Combo";
+			typeName = "NUMBER";
+			defaultValue = "-1";
+			class Values
+			{
+				class V0 {name = "Use addon setting"; value = -1;};
+				class V1 {name = "Keep game setting"; value = 0;};
+				class V2 {name = "Lowest (no grass)"; value = 50;};
+				class V3 {name = "Low"; value = 25;};
+				class V4 {name = "Standard"; value = 12.5;};
+				class V5 {name = "High"; value = 6.25;};
+				class V6 {name = "Ultra"; value = 3.125;};
+			};
 		};
 		class MCC5S_MCC_showActionKey
 		{

@@ -10,7 +10,7 @@
 ["MCC", "t2t", ["Teleport to Team", ""], {if ((player getVariable ["cpReady",true]) && !(player getvariable ["MCC_medicUnconscious",false]) && (isnull curatorcamera)) then {[objNull] spawn MCC_fnc_s_mcc_SpawnToPosition;true}}, {}, [20, [false,false,true]],false] call cba_fnc_addKeybind;
 
 //Squad dialog
-["MCC", "squadDialog", ["Squad Management", ""], {if ((player getVariable ["cpReady",true]) && !(player getvariable ["MCC_medicUnconscious",false]) && (isnull curatorcamera)) then {[nil,nil,nil,nil,2] spawn MCC_fnc_s_mcc_PopupMenu;true}}, {}, [25, [false,false,false]],false] call cba_fnc_addKeybind;
+["MCC", "squadDialog", ["Squad Management", ""], {if ((player getVariable ["cpReady",true]) && !(player getvariable ["MCC_medicUnconscious",false]) && (isnull curatorcamera)) then {[nil,nil,nil,nil,2] spawn MCC_fnc_s_mcc_PopupMenu;true}}, {}, [0, [false,false,false]],false] call cba_fnc_addKeybind;
 
 //SQL PDA
 ["MCC", "sqlPDA", ["Squad Leader PDA", "Player must be team leader"], {if ((player getVariable ["cpReady",true]) && !(player getvariable ["MCC_medicUnconscious",false]) && (isnull curatorcamera)) then {[nil,nil,nil,nil,3] spawn MCC_fnc_s_mcc_PopupMenu;true}}, {}, [209, [false,true,false]],false] call cba_fnc_addKeybind;
@@ -19,7 +19,7 @@
 ["MCC", "interactionKey", ["Interaction", "Interact with objects/units in MCC"], {if (missionNameSpace getVariable ["MCC_interaction",false] && (isnull curatorcamera)) then {[false] call MCC_fnc_CBAInteractionKeybind}}, {[true] call MCC_fnc_CBAInteractionKeybind}, [219, [false,false,false]],false] call cba_fnc_addKeybind;
 
 //Self Interaction
-["MCC", "selfInteraction", ["Interaction Self", ""], {if ((missionNameSpace getVariable ["MCC_interaction",false]) && (player getVariable ["cpReady",true]) && !(player getvariable ["MCC_medicUnconscious",false]) && (isnull curatorcamera)) then {[player] spawn MCC_fnc_interactSelf;true}}, {(uiNamespace getVariable ["MCC_INTERACTION_MENU",displayNull]) closeDisplay 1;MCC_interactionKey_down = false;true}, [219, [false,true,false]],false] call cba_fnc_addKeybind;
+["MCC", "selfInteraction", ["Interaction Self", ""], {if (!(missionNamespace getVariable ["MCC_isACE",false]) && (missionNameSpace getVariable ["MCC_interaction",false]) && (player getVariable ["cpReady",true]) && !(player getvariable ["MCC_medicUnconscious",false]) && (isnull curatorcamera)) then {[player] spawn MCC_fnc_interactSelf;true}}, {(uiNamespace getVariable ["MCC_INTERACTION_MENU",displayNull]) closeDisplay 1;MCC_interactionKey_down = false;true}, [219, [false,true,false]],false] call cba_fnc_addKeybind;
 
 //Vault
 ["MCC", "vaultOver", ["Climb Over", "Climb over obstacles"], {if ((player getVariable ["cpReady",true]) && !(player getvariable ["MCC_medicUnconscious",false]) && (missionNameSpace getVariable ["MCC_coverVault",true]) && !(player getVariable ["MCC_vaultOver",false]) && (player getVariable ["MCC_wallAhead",""]) != "" && (isnull curatorcamera)) then {[] spawn MCC_fnc_vault;true}}, {}, [47, [false,false,true]],false] call cba_fnc_addKeybind;

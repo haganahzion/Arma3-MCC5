@@ -43,10 +43,15 @@ missionNamespace setVariable ["MCC_opIntroId", _id, true];
 			private _group = _x;
 			if (side _group != sideLogic
 				&& {(units _group) findIf {!isPlayer _x && {alive _x}} > -1}
-				&& {_held findIf {(_x select 0) isEqualTo _group} < 0}
 			) then {
-				_held pushBack [_group, combatMode _group];
-				[_group, HOLD_MODE] call _fnc_setMode;
+				private _i = _held findIf {(_x select 0) isEqualTo _group};
+				if (_i < 0) then {
+					_held pushBack [_group, combatMode _group];
+					[_group, HOLD_MODE] call _fnc_setMode;
+				} else {
+					// Something (GAIA, a waypoint) changed it during the intro: hold again
+					if (combatMode _group != HOLD_MODE) then {[_group, HOLD_MODE] call _fnc_setMode};
+				};
 			};
 		} forEach allGroups;
 	};

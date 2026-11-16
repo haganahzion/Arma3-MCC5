@@ -37,8 +37,15 @@ if (isServer) then {
 	//Player list + far cache restore, once per second
 	if (_now >= GAIA_PF_NEXT_SECOND) then {
 		GAIA_PF_NEXT_SECOND = _now + 1;
-		private _players = playableUnits select {isPlayer _x};
-		if (playableUnits isEqualTo []) then {_players = [player]};
+		//Real players (no headless clients) and the camera positions of players in Zeus
+		//(MCC_zeusCamPos, sent by MCC_fnc_curatorClientInit), so nothing is cached in front of a Zeus
+		private _humans = allPlayers - (entities "HeadlessClient_F");
+		private _players = +_humans;
+		{
+			private _cam = _x getVariable ["MCC_zeusCamPos", []];
+			if (_cam isNotEqualTo []) then {_players pushBack _cam};
+		} forEach _humans;
+		if (_humans isEqualTo [] && {hasInterface}) then {_players = [player]};
 		GAIA_PLAYER_LIST = _players;
 		GAIA_PLAYER_LIST_TIME = _now;
 		[] call GAIA_fnc_cacheRestoreTick;

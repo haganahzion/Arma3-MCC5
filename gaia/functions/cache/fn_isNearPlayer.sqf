@@ -14,15 +14,9 @@ private _players = [];
 if (isServer && {!isNil "GAIA_PLAYER_LIST_TIME"} && {(time - GAIA_PLAYER_LIST_TIME) < 2}) then {
 	_players = GAIA_PLAYER_LIST;
 } else {
-	// Create a list of all players
-	if (count(playableUnits)==0) then
-	{
-		_players = [player];
-	}
-	else
-	{
-		_players = playableUnits select {isPlayer _x};
-	};
+	// Players without headless clients (the list may also hold Zeus camera positions on the server)
+	_players = allPlayers - (entities "HeadlessClient_F");
+	if (_players isEqualTo [] && {hasInterface}) then {_players = [player]};
 };
 
 // Check whether a player is in the given distance - return true if yes

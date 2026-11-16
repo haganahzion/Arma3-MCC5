@@ -31,7 +31,9 @@ if (MCC_isMode) then {
 //if (isnil "MCC_allowedPlayers") then {MCC_allowedPlayers = ["all"]};
 
 //-------------------- Save Gear --------------------------------------------------
-if (isnil "MCC_saveGear") then {MCC_saveGear = true};
+//Off unless the mission maker turns on Save Gear (CBA setting MCC_saveGearIndex or the Mission Settings module):
+//restoring gear on respawn overrides mission respawn loadouts
+if (isnil "MCC_saveGear") then {MCC_saveGear = (missionNamespace getVariable ["MCC_saveGearIndex", false]) isEqualTo true};
 
 //--------------------Gain XP (in role selection)--------------------------------
 //CP_gainXP = true;						//Gain XP from killing, leading, healing, driving, flying or completing objectives?
@@ -468,7 +470,7 @@ HW_arti_number_shells_per_hourIndex		= 0;
 MCC_resistanceHostileIndex				= 0;
 
 MCC_artilleryComputerIndex				= 1;
-MCC_saveGearIndex						= 0;
+if (isNil "MCC_saveGearIndex") then {MCC_saveGearIndex = false};
 MCC_MessagesIndex						= 1;
 
 
@@ -800,7 +802,7 @@ if ( isServer ) then {
 	_dummyObject setVariable ["mccIgnore",true];
 	_dummyObject setpos [-9999, -9999, -1];
 	_name = "MCC_respawnAnchor";
-	call compile (_name + " = _dummy");
+	call compile (_name + " = _dummyObject");
 	publicVariable _name;
 
 	//======================================= Mission EH ===========================================================================================================
@@ -929,7 +931,10 @@ if (hasInterface) then {
 
 		{
 			_dummy = _x;
-			_dummy addEventHandler ["CuratorObjectDoubleClicked", {missionnamespace setvariable ["BIS_fnc_initCuratorAttributes_target",(_this select 1)];_this spawn MCC_fnc_curatorInitLine}];
+			//MCC's edit window on double click: MCC's own curators only, and not with ZEN (it has its own attribute windows)
+			if ((_dummy isEqualTo (missionNamespace getVariable ["MCC_curator", objNull]) || {_dummy getVariable ["MCC_autoCurator", false]}) && {!isClass (configFile >> "CfgPatches" >> "zen_main")}) then {
+				_dummy addEventHandler ["CuratorObjectDoubleClicked", {missionnamespace setvariable ["BIS_fnc_initCuratorAttributes_target",(_this select 1)];_this spawn MCC_fnc_curatorInitLine}];
+			};
 			_dummy addEventHandler ["CuratorObjectPlaced", {if (local (_this select 1)) then {missionNamespace setVariable ["MCC_curatorMouseOver",curatorMouseOver]}}];
 
 			//Add curator presets

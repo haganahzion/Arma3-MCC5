@@ -28,6 +28,15 @@ params [["_group", grpNull, [grpNull]]];
 
 if (isNull _group) exitWith {};
 
+//GAIA's groups only (in a zone, with GAIA respawn, or cached by GAIA): groups of players, Zeus, the mission and other
+//mods are never stored or deleted by GAIA
+if (
+	isNil {_group getVariable "GAIA_ZONE_INTEND"}
+	&& {(_group getVariable ["MCC_GAIA_RESPAWN", -1]) < 0}
+	&& {!(_group getVariable ["GAIA_CACHED_FAR", false])}
+	&& {!(_group getVariable ["GAIA_DEAD_PROCESSED", false])}
+) exitWith {};
+
 private _isDead = (
 	(({alive _x} count (units _group)) == 0)
 	&& {!(_group getVariable ["MCC_CPGroup", false])}

@@ -74,7 +74,7 @@ if (_buildingscount < 1) exitwith {hint "No buildings found"};	//No available bu
 			if (random 30 < _intanse) then {
 				//No other unit in the spawn position?
 				if (count (nearestObjects [_spawnPos, ["Man"], 1])<1 && {(isNil "MCC_fnc_MWbudget") || {(["take", [_side, 1, ["gen", _budgetPool] select (_budgetPlaced < GARRISON_OBJ_MINIMUM)]] call MCC_fnc_MWbudget) > 0}}) then {
-					_type = _unitsArray select round (random 4);
+					_type = selectRandom _unitsArray;
 					if !(_groupUnits) then {_group = creategroup _side};
 					_budgetPlaced = _budgetPlaced + 1;
 					_unit = _group createUnit [_type select 0,_spawnPos,[],0.5,"NONE"];

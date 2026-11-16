@@ -59,6 +59,9 @@ if (_cpActivated) then {
 
 
 //--- Update markers---
+//Only when MCC start locations are in use: otherwise this would replace the mission's own respawn marker
+if (isNil "MCC_START_WEST" && {isNil "MCC_START_EAST"} && {isNil "MCC_START_GUER"} && {isNil "MCC_START_CIV"}) exitWith {};
+
 //Player side
 switch (_playerSideNr) do {
     case 0: {

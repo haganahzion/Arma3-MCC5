@@ -73,7 +73,7 @@ switch (_side) do
 
 			if (count(_x getVariable ["GAIA_TargetInfo",[]])>0) then
 			{
-				if ((((_x getVariable ["GAIA_TargetInfo",[]])select 1) distance _CA)<100) then
+				if ((((_x getVariable ["GAIA_TargetInfo",[]])select 1) distance _CA) < (missionNamespace getVariable ["MCC_GAIA_CA_SIZE", 200])) then
 				 {
 				 		if (_x iskindof "CAMANBASE") then
 				 		{_TargetList	= _TargetList+ [_x];}
@@ -92,7 +92,7 @@ switch (_side) do
 	_Points = _CACost select 2 ;
 
 	//Calculate with multipliers
-	if !isnil(_Zone) then {_points = _points *3} else {_points = _points *2};
+	if (_Zone != "") then {_points = _points *3} else {_points = _points *2};
 
 	_CACost set [2,_Points ];
 

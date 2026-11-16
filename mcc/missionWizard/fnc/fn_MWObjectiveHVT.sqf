@@ -70,9 +70,13 @@ if (([_checkFaction, _side, true] call _fnc_findHVTClass) == "") exitWith {
 	diag_log format ["MCC Mission Wizard: faction %1 has no men for the HVT objective, skipped", _checkFaction];
 };
 
+//No building with room inside close by: place the HVT outside
+private _hvtBuildings = if (_isCQB) then {[_objPos, 100] call MCC_fnc_MWFindbuildingPos} else {[]};
+if (_hvtBuildings isEqualTo []) then {_isCQB = false};
+
 if (_isCQB) then {
 
-	_selectedBuilding = ([_objPos, 100] call MCC_fnc_MWFindbuildingPos) call BIS_fnc_selectRandom;
+	_selectedBuilding = selectRandom _hvtBuildings;
 	_building = _selectedBuilding select 0;
 	_buildingPos = _selectedBuilding select 1;
  	if (isnil "_buildingPos") exitWith {debuglog "MCC MW - MWObjectiveHVT - No building pos foudn"};
@@ -129,6 +133,7 @@ if (_isCQB) then {
 
 		//Find an empry spot
 		_spawnPos = _objPos findEmptyPosition [0,100,_type];
+		if (_spawnPos isEqualTo []) then {_spawnPos = _objPos getPos [5 + random 10, random 360]};
 		_unit = [_sidePlayer,_spawnPos,_type] call MCC_MWcreateHostage;
 
 		//Start Briefings
@@ -146,6 +151,7 @@ if (_isCQB) then {
 
 		//Find an empry spot
 		_spawnPos = _objPos findEmptyPosition [0,100,_type];
+		if (_spawnPos isEqualTo []) then {_spawnPos = _objPos getPos [5 + random 10, random 360]};
 
 		//walking HVT?
 		_walking = if (random 1 < 0.5) then {true} else {false};
@@ -179,6 +185,7 @@ if (_isCQB) then {
 
 		_type = _unitsArray select floor (random (HVT_GUARD_PICK min (count _unitsArray)));
 		_spawnPos = (getpos _unit) findEmptyPosition [0,100,(_type select 0)];
+		if (_spawnPos isEqualTo []) then {_spawnPos = _objPos getPos [5 + random 10, random 360]};
 		_unit = _group createUnit [_type select 0,_spawnPos,[],0.5,"NONE"];
 		waituntil {alive _unit};
 

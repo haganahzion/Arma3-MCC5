@@ -42,15 +42,24 @@ if (_group getVariable ["GAIA_taskMarch", false]) then {
 		_group setVariable ["GAIA_marchCloseAt", time];
 	};
 	private _wantMarch = (time - (_group getVariable ["GAIA_marchCloseAt", -1e6])) > GAIA_MARCH_CALM_TIME;
-	if (_wantMarch isNotEqualTo _marchAI) then {[_group, _wantMarch] call GAIA_fnc_marchAI};
+	if (_wantMarch isNotEqualTo _marchAI) then {
+		[_group, _wantMarch] call GAIA_fnc_marchAI;
+		// Public: the server's task watchdog (MCC_fnc_gaiaTaskTick) must not re-path a group that is fighting,
+		// also when the group lives on a headless client
+		_group setVariable ["GAIA_marchFighting", !_wantMarch, true];
+	};
 } else {
 	if (_marchAI) then {[_group, false] call GAIA_fnc_marchAI};
+	if (!isNil {_group getVariable "GAIA_marchFighting"}) then {_group setVariable ["GAIA_marchFighting", nil, true]};
 };
 
 private _contact = count (_leader targets [true, GAIA_CONTACT_RADIUS, [], GAIA_CONTACT_MAX_AGE]) > 0;
 private _was = _group getVariable ["GAIA_inContact", false];
 
-if (_contact || {!_was && {behaviour _leader == "COMBAT"}}) exitWith {
+// COMBAT alone counts as contact, except right after GAIA calmed the group down (the engine flips it back to COMBAT
+// for old enemies, which would loop AWARE / COMBAT and keep GAIA's orders blocked)
+private _combatCounts = (time - (_group getVariable ["GAIA_calmedAt", -1e6])) > GAIA_CONTACT_CALM_COOLDOWN;
+if (_contact || {!_was && {_combatCounts} && {behaviour _leader == "COMBAT"}}) exitWith {
 	_group setVariable ["GAIA_lastContact", time];
 	if (!_was) then {_group setVariable ["GAIA_inContact", true, true]};
 };
@@ -59,7 +68,10 @@ if (time - (_group getVariable ["GAIA_lastContact", 0]) < GAIA_CONTACT_CLEAR_TIM
 
 // The fight is over
 _group setVariable ["GAIA_inContact", false, true];
-if (behaviour _leader == "COMBAT") then {_group setBehaviour GAIA_CONTACT_CALM_BEHAVIOUR};
+if (behaviour _leader == "COMBAT") then {
+	_group setBehaviour GAIA_CONTACT_CALM_BEHAVIOUR;
+	_group setVariable ["GAIA_calmedAt", time];
+};
 
 if (_group getVariable ["GAIA_followTasks", false]) then {
 	_group setVariable ["GAIA_contactEnded", true, true];

@@ -1,3 +1,5 @@
+#define QRF_ROAD_TRIES 200
+#define QRF_PLAYER_DIST 1000
 //======================================================MCC_fnc_MWreinforcement=========================================================================================================
 // Create a reinforcment type
 // Example:[_reinforcement,_side, _missionCenterTriggerPos,_missionCenterTriggerArea,_cond] call MCC_fnc_MWreinforcement;
@@ -69,7 +71,7 @@ _tlist = (_side countSide (list _trigger)) max 1;
 
 private ["_dir","_distance","_newPos","_script_handler","_rfc"];
 
-for "_i" from 0 to (count _cond) step 1 do
+for "_i" from 0 to ((count _cond) - 1) step 1 do
 {
 	//Create Zone
 	_found = false;
@@ -77,19 +79,26 @@ for "_i" from 0 to (count _cond) step 1 do
 	_rfc = if (_reinforcement == 3) then {[1,2] call BIS_fnc_selectRandom} else {_reinforcement};
 	if (_rfc == 2 && (count MCC_MWunitsArrayCar) <= 0) then {_rfc = 1};
 
-	while {!_found} do
+	//A road away from the players; limited tries, then any dry spot away from the players
+	private _tries = 0;
+	private _players = allPlayers - (entities "HeadlessClient_F");
+	while {!_found && {_tries < QRF_ROAD_TRIES}} do
 	{
+		_tries = _tries + 1;
 		_dir = floor random 360;
 		_distance = (floor (random 1000)) + (if (_rfc == 0) then {2000} else {1000});
 		_newPos = [_missionCenterTriggerPos, _distance, _dir] call BIS_fnc_relPos;
-		_newPos = getposATL ((_newPos nearRoads 200) select 0);
-		if (!isNil "_newPos") then
+		private _roads = _newPos nearRoads 200;
+		if (_roads isNotEqualTo []) then
 		{
-			_found = true;
-			{
-				if (isPlayer _x && (_x distance _newPos < 1000)) then {_found = false};
-			} forEach allUnits;
+			_newPos = getPosATL (_roads select 0);
+			_found = (_players findIf {(_x distance _newPos) < QRF_PLAYER_DIST}) < 0;
 		};
+		if (_tries % 20 == 0) then {sleep 0.1};
+	};
+	if (!_found) then {
+		_newPos = [_missionCenterTriggerPos, 1000, 2500, 5, 0, 0.5, 0] call BIS_fnc_findSafePos;
+		if (count _newPos == 2) then {_newPos pushBack 0};
 	};
 
 	while {(1-(_side countSide (list _trigger))/_tlist) < (_cond select _i)} do {sleep 10};

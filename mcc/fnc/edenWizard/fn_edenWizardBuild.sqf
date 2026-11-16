@@ -278,17 +278,33 @@ if ((_opts get "playerStart") == 1) then {
 private _taskIds = _ctx get "taskIds";
 if (_taskIds isNotEqualTo []) then {
 	private _parent = _ctx getOrDefault ["parentTask", ""];
-	private _onAct = "if (isServer) then {" + (["", format ["[%1, 'SUCCEEDED'] call BIS_fnc_taskSetState; ", str _parent]] select (_parent != "")) + "'cp_mission_accomplished_1' remoteExec ['playSound', 0];};";
+	// Success: every task SUCCEEDED. Failure: every task is over and at least one FAILED or was CANCELED
+	// (BIS_fnc_taskCompleted is true for failed tasks too, so it can't decide success on its own)
+	private _allDone = format ["(%1 findIf {!(_x call BIS_fnc_taskCompleted)}) < 0", str _taskIds];
+	private _allWon = format ["(%1 findIf {(_x call BIS_fnc_taskState) != 'SUCCEEDED'}) < 0", str _taskIds];
+	private _onWin = "if (isServer) then {" + (["", format ["[%1, 'SUCCEEDED'] call BIS_fnc_taskSetState; ", str _parent]] select (_parent != "")) + "'cp_mission_accomplished_1' remoteExec ['playSound', 0];};";
+	private _onLose = "if (isServer) then {" + (["", format ["[%1, 'FAILED'] call BIS_fnc_taskSetState; ", str _parent]] select (_parent != "")) + "};";
 	private _attrs = [
 		["name", ["endTrg"] call MCC_fnc_edenWizardName],
 		["text", format ["%1: all objectives done", _opTitle]],
 		["size3", [0, 0, -1]],
 		["ActivationBy", "NONE"],
-		["condition", format ["time > 10 && {(%1 findIf {!(_x call BIS_fnc_taskCompleted)}) < 0}", str _taskIds]],
-		["onActivation", _onAct]
+		["condition", format ["time > 10 && {%1} && {%2}", _allDone, _allWon]],
+		["onActivation", _onWin]
 	];
 	if (_opts get "endMission") then {_attrs pushBack ["TriggerType", "END1"]};
 	["Trigger", "EmptyDetector", _center getPos [12, 0], _attrs] call MCC_fnc_edenWizardCreate;
+
+	private _attrsLose = [
+		["name", ["failTrg"] call MCC_fnc_edenWizardName],
+		["text", format ["%1: an objective failed", _opTitle]],
+		["size3", [0, 0, -1]],
+		["ActivationBy", "NONE"],
+		["condition", format ["time > 10 && {%1} && {!(%2)}", _allDone, _allWon]],
+		["onActivation", _onLose]
+	];
+	if (_opts get "endMission") then {_attrsLose pushBack ["TriggerType", "LOOSE"]};
+	["Trigger", "EmptyDetector", _center getPos [12, 6], _attrsLose] call MCC_fnc_edenWizardCreate;
 };
 
 _ctx set ["curLayer", _root];

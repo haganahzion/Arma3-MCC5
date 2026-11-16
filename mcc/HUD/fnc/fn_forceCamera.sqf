@@ -9,8 +9,11 @@
 
 params ["_mode"];
 
-//Force Camera
-player setVariable ["MCC_forceCameraMode",_mode];
+//Force Camera (kept in missionNamespace so it still works after respawn)
+missionNamespace setVariable ["MCC_forceCameraMode",_mode];
+
+//3 = third person allowed everywhere: nothing to enforce, no loop
+if (_mode >= 3) exitWith {};
 
 [] spawn {
 
@@ -22,7 +25,7 @@ player setVariable ["MCC_forceCameraMode",_mode];
 
 		waitUntil {cameraView == "External"};
 
-		switch (player getVariable ["MCC_forceCameraMode",3]) do {
+		switch (missionNamespace getVariable ["MCC_forceCameraMode",3]) do {
 
 			//Always
 		    case 0: {

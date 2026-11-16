@@ -23,15 +23,16 @@ if (MCC_isACE) then {
 	format ["Untie %1",name _hostage],
 	MCC_UNTIE_ICON,
 	MCC_UNTIE_ICON,
-	"(alive _target) && (_target distance _this < 5)",
-	"(alive _target) && (_target distance _this < 5)",
+	"(alive _target) && {!(_target getVariable ['MCC_hostageFreed', false])} && {(_target distance _this) < 5}",
+	"(alive _target) && {!(_target getVariable ['MCC_hostageFreed', false])} && {(_target distance _this) < 5}",
 	{
 		//Start action
 		[name _target,"Oh thank you, Please hurry up!"] remoteExec ["BIS_fnc_showSubtitle", _caller];
 	},
 	{},
 	{
-		//Success
+		//Success (the flag hides the action for everyone, also for players who join later)
+		_target setVariable ["MCC_hostageFreed", true, true];
 		_null = [_target, player, 0,[0]] spawn MCC_fnc_s_hostage;
 		[name _target,"Thank you!"] remoteExec ["BIS_fnc_showSubtitle", _caller];
 	},
@@ -44,7 +45,7 @@ if (MCC_isACE) then {
 	0,
 	true,
 	false
-] remoteExec ["bis_fnc_holdActionAdd", 0];
+] remoteExec ["bis_fnc_holdActionAdd", 0, _hostage];
 
 
 

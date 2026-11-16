@@ -54,7 +54,7 @@
     "CHECKBOX",
     ["Ambient Fire","Explosive may cause sporadic fires that will spread with the wind need a restart to disable"],
     [localize "STR_GENERAL_MCCGENERAL", "Ambient Fire"],
-    true,
+    false,
     true,
     {
         params ["_value"];
@@ -124,7 +124,11 @@
     true,
     {
         params ["_value"];
-        enableEngineArtillery _value;
+        //The default leaves the engine (and ACE artillery tables) alone; once MCC turned it off it can turn it back on
+        if (!_value || {missionNamespace getVariable ["MCC_artilleryComputerSet", false]}) then {
+            enableEngineArtillery _value;
+            MCC_artilleryComputerSet = true;
+        };
     },
     true
 ] call CBA_fnc_addSetting;
@@ -153,7 +157,11 @@
     true,
     {
         params ["_value"];
-        if (isServer) then {setTimeMultiplier _value};
+        //1 is the engine default: leave the mission's own time speed alone, unless MCC changed it before
+        if (isServer && {_value != 1 || {missionNamespace getVariable ["MCC_timeMultiplierSet", false]}}) then {
+            setTimeMultiplier _value;
+            MCC_timeMultiplierSet = true;
+        };
     }
 ] call CBA_fnc_addSetting;
 

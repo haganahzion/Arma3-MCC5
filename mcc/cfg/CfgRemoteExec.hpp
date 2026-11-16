@@ -428,4 +428,4 @@ class MCC_fnc_curatorConvoyServer {allowedTargets=2;};
 class MCC_fnc_curatorMakeHostage {allowedTargets=0;};
 class MCC_fnc_curatorBriefingLocal {allowedTargets=0;};
 class MCC_fnc_gaiaControlGroups {allowedTargets=2;};
-class MCC_fnc_operationIntro {allowedTargets=1;};
+class MCC_fnc_operationIntro {allowedTargets=0;};

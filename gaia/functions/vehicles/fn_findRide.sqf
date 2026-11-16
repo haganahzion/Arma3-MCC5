@@ -40,6 +40,8 @@ private _partial = objNull;
 		&& {({alive _x} count crew _v) == 0}
 		&& {isNull _claim || {_claim isEqualTo _group} || {({alive _x} count units _claim) == 0}}
 		&& {!(_v getVariable ["GAIA_noRide", false])}
+		// A vehicle a player has used is the player's (set by MCC_fnc_curatorClientInit)
+		&& {!(_v getVariable ["MCC_playerUsed", false])}
 		// Seats assigned to units of another group: someone else's vehicle
 		&& {(fullCrew [_v, "", true]) findIf {private _a = _x param [5, objNull]; !isNull _a && {alive _a} && {group _a != _group}} == -1}
 	) then {

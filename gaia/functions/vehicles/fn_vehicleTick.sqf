@@ -69,8 +69,10 @@ if (!isNull _veh && {!alive _veh || {!canMove _veh}}) then {
 	_veh setVariable ["GAIA_claimedBy", grpNull, true];
 	_group setVariable ["GAIA_groupVehicle", objNull];
 	_group setVariable ["GAIA_isRide", false];
-	_group setVariable ["GAIA_boardUntil", -1];
+	_group setVariable ["GAIA_boardUntil", -1, true];
 	_group leaveVehicle _veh;
+	// GAIA_fnc_dismount barred them from getting in again; without a ride that has to go
+	(units _group) allowGetIn true;
 	_veh = objNull;
 };
 
@@ -104,12 +106,12 @@ if (isNull _veh) exitWith {
 if (_mounted && {_dist < _dismountDist} && {!(_group getVariable ["GAIA_dismounted", false])}) exitWith {
 	[_group, _veh] call GAIA_fnc_dismount;
 	_group setVariable ["GAIA_stuck", nil];
-	_group setVariable ["GAIA_boardUntil", -1];
+	_group setVariable ["GAIA_boardUntil", -1, true];
 };
 
 // 3. Boarding took too long: drive off without the ones still outside (the assigned driver is always waited for)
 if (_boardUntil > 0 && {time > _boardUntil}) then {
-	_group setVariable ["GAIA_boardUntil", -1];
+	_group setVariable ["GAIA_boardUntil", -1, true];
 	private _late = (units _group) select {
 		alive _x && {vehicle _x == _x} && {_x != _leader} && {assignedVehicle _x == _veh}
 		&& {toLowerANSI ((assignedVehicleRole _x) param [0, ""]) != "driver"}
@@ -132,6 +134,7 @@ if (_onFoot isNotEqualTo [] && {_boardUntil < 0} && {_calm >= GAIA_CALM_TICKS} &
 		_group setVariable ["GAIA_groupVehicle", objNull];
 		_group setVariable ["GAIA_isRide", false];
 		_group leaveVehicle _veh;
+		(units _group) allowGetIn true;
 	};
 };
 

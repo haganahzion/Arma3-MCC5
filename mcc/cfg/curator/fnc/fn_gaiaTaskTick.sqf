@@ -163,11 +163,11 @@ if (_dist < _lastDist - GAIA_MARCH_PROGRESS) exitWith {
 private _busy = (
 	vehicle _leader != _leader
 	|| {(_group getVariable ["GAIA_boardUntil", -1]) > 0}
-	|| {(time - (_group getVariable ["GAIA_marchCloseAt", -1e6])) < GAIA_MARCH_CALM_TIME}
+	|| {_group getVariable ["GAIA_marchFighting", false]}
 );
 if (_busy) exitWith {_group setVariable ["GAIA_marchProgress", [time, _dist]]};
 if (time - _since > GAIA_MARCH_STUCK_TIME) then {
 	[_group, _dest] call _fnc_march;
-	{if (!isPlayer _x) then {_x doFollow leader _group}} forEach (units _group);
+	{if (!isPlayer _x && {local _x}) then {_x doFollow leader _group}} forEach (units _group);
 	if (_debug) then {diag_log format ["GAIA tasks: %1 stuck on the way to task %2, new path", _group, _task]};
 };

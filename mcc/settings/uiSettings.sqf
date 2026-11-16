@@ -3,27 +3,29 @@ if (count (allMissionObjects "MCC_Module_inGameUI") == 0) then {
     [
         "MCC_Settings_ViewDistance",
         "SLIDER",
-        [localize "STR_UI_VIEWDISTANCE", localize "STR_UI_SETVIEWDISTANCE"],
+        [localize "STR_UI_VIEWDISTANCE", "Your view distance in meters. 0 = keep your own game setting (default)"],
         "MCC User Interface",
-        [200, 15000, 5000, 0],
+        [0, 15000, 0, 0],
         false,
         {
             params ["_value"];
-            setViewDistance _value;
+            //0 = leave the player's own video setting alone
+            if (_value > 0) then {setViewDistance _value};
         }
     ] call CBA_fnc_addSetting;
 
     //Grass
     [
-        "MCC_Settings_grassDetail",
-        "SLIDER",
-        [localize "STR_UI_GRASSDETAIL",localize "STR_UI_SETGRASSDETAIL"],
+        "MCC_Settings_terrainDetail",
+        "LIST",
+        [localize "STR_UI_GRASSDETAIL", "Terrain and grass detail. Keep game setting (default) never changes your own video settings"],
         "MCC User Interface",
-        [1, 50, 10, 0],
+        [[0, 50, 25, 12.5, 6.25, 3.125], ["Keep game setting", "Lowest (no grass)", "Low", "Standard", "High", "Ultra"], 0],
         false,
         {
             params ["_value"];
-            setTerrainGrid (50 - _value);
+            //setTerrainGrid also sets terrain mesh detail: only when the player or mission maker picks a level
+            if (_value > 0) then {setTerrainGrid _value};
         }
     ] call CBA_fnc_addSetting;
 

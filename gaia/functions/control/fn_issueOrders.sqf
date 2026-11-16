@@ -121,6 +121,9 @@ private _lambsGroups	= _allSideGroups select {
 	([_x] call GAIA_fnc_hasLambsWaypoint) || {_x getVariable ["GAIA_taskMarch", false]}
 };
 
+//Groups given to a CA in this call (see _GroupHasOrdersThisRound)
+private _pickedThisCall = [];
+
 //Conflict Area cost, computed once per CA per cycle
 private _caCostCache = createHashMap;
 private _fnc_caCost = {
@@ -244,7 +247,7 @@ private _fnc_caCost = {
 						  and
 						 (behaviour(leader _x)=="COMBAT")
 						 and
-						 !((([([_CA,leader _x] call BIS_fnc_nearestPosition)] call _fnc_caCost) select 0 )in ["Helicopter","Autonomous"])
+						 {_CA isEqualTo [] || {!((([([_CA,leader _x] call BIS_fnc_nearestPosition)] call _fnc_caCost) select 0 )in ["Helicopter","Autonomous"])}}
 					)
 			then {[_x] call GAIA_fnc_removeWaypoints;/*player globalchat "5"+(_x getVariable  ["GAIA_Order",""]);*/};
 
@@ -314,12 +317,14 @@ private _fnc_caCost = {
 
 	//Dynamic set max response to CA variable
 	//If not set, then set it (so we dont determine this each cycle again). Based on CA priority the numbers might not be met.
-	 _CAvar = "CA" + str(_SelectCA);
-	 _MinimumResponse = missionNamespace getVariable [_CAvar,0];
-	 if (_MinimumResponse==0) then
+	 //1 or 2 groups, kept per CA position for the mission (one hashmap instead of a missionNamespace variable per CA)
+	 if (isNil "GAIA_CA_MIN_RESPONSE") then {GAIA_CA_MIN_RESPONSE = createHashMap};
+	 _MinimumResponse = GAIA_CA_MIN_RESPONSE getOrDefault [_SelectCA, -1];
+	 if (_MinimumResponse < 1) then
    	{
-  		missionNamespace setVariable [_CAvar, (round(random(2))) ];
-  		_MinimumResponse = missionNamespace getVariable [_CAvar,1];
+  		_MinimumResponse = 1 + floor random 2;
+  		if (count GAIA_CA_MIN_RESPONSE > 500) then {GAIA_CA_MIN_RESPONSE = createHashMap};
+  		GAIA_CA_MIN_RESPONSE set [_SelectCA, _MinimumResponse];
    	};
 
 
@@ -451,7 +456,9 @@ private _fnc_caCost = {
 
 
 				//Did we already give this group an order or was it last round?
-				_GroupHasOrdersThisRound	= ((_x getVariable  ["GAIA_Ordertime",0]) > _StartTimeIssueOrders);
+				//Also groups already picked for another CA in this call: doAttack does not renew the order time when the
+				//group already attacks that CA, so without this a group could be counted for two CAs and zig-zag
+				_GroupHasOrdersThisRound	= ((_x getVariable  ["GAIA_Ordertime",0]) > _StartTimeIssueOrders) || {_x in _pickedThisCall};
 
 				//Is this group fleeing?
 				_GroupIsFleeing						= fleeing (leader _x);
@@ -498,6 +505,7 @@ private _fnc_caCost = {
 								  					 )										: {
 
 								  					 														_responders pushBack _x;
+								  					 														_pickedThisCall pushBackUnique _x;
 								  					 														_PointsSpend = _PointsSpend + _Grpcost;
 								  					 														_NrGrpsSend	 = _NrGrpsSend + 1;
 								  																	};
@@ -519,6 +527,7 @@ private _fnc_caCost = {
 								  					 )										: {
 
 								  					 														_responders pushBack _x;
+								  					 														_pickedThisCall pushBackUnique _x;
 								  					 														_PointsSpend = _PointsSpend + _Grpcost;
 								  					 														_NrGrpsSend	 = _NrGrpsSend + 1;
 								  																	};
@@ -899,6 +908,10 @@ private "_IsNightCache";
 					   	(count(_x getVariable  ["GAIA_Portfolio",[]])>0)
 					   	and
 					   	((_x getVariable  ["GAIA_Order",""]) != "DoFortify")
+					   	and
+					   	!(_x in _lambsGroups)
+					   	and
+					   	(_CA isNotEqualTo [])
 		   			)
 
 		   	 then
@@ -927,7 +940,8 @@ private "_IsNightCache";
 					   		{
 
 					   			//did we have more then 20% loss? go smoke it
-					   			if ((_x getVariable ["GAIA_PreviousPoints",1])>(_x getVariable ["GAIA_points",1])) then
+					   			//Smoke only after a real loss (more than 20% of the group's points)
+					   			if ((((_x getVariable ["GAIA_PreviousPoints",1]) - (_x getVariable ["GAIA_points",1])) / ((_x getVariable ["GAIA_PreviousPoints",1]) max 1)) > 0.2) then
 					   			//if (((((_x getVariable ["GAIA_PreviousPoints",1])-(_x getVariable ["GAIA_points",1]))/(_x getVariable ["GAIA_PreviousPoints",1]))*100)>20) then
 					   				{
 

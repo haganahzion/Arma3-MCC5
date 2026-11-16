@@ -1,3 +1,4 @@
+#define MAX_SEARCH_RADIUS 1500
 /*======================================================MCC_fnc_MWFindbuildingPos==========================================================================================
 	 return all buildings found a given radius sorted by distance from the center and their building positions in array [[BUILDING1,[POS1,POS2,POS3]],[BUILDING2,[POS1,POS2,POS3]]]
 
@@ -22,7 +23,9 @@ if (typeName _objPos == typeName objNull) then {
 
 
 
-while {count _foundBuildings == 0} do
+//Grow the radius until buildings are found, up to MAX_SEARCH_RADIUS (empty / VR maps return [])
+private _maxRadius = _radius + MAX_SEARCH_RADIUS;
+while {count _foundBuildings == 0 && {_radius <= _maxRadius}} do
 {
 	_buildingsArray	= nearestObjects  [_objPos,["House","Ruins","Church","FuelStation","Strategic"],_radius];	//Let's find the buildings in the area
 	_radius = _radius + 50; 	//increase by 50 meters in nothing is found.

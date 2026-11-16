@@ -31,8 +31,9 @@ if (missionNamespace getvariable ["MCC_saveGear",false]) then {
 
 WaitUntil {alive player};
 
-//Reduce tickets
-if (([playerSide] call BIS_fnc_respawnTickets > 0) && (missionNamespace getVariable ["MCC_reduceTicketsOnDeath",true])) then {
+//Reduce tickets: only when the mission maker turns it on in MCC Mission Settings (the respawn "Tickets" template
+//already takes one, so doing it always took two per death)
+if ((missionNamespace getVariable ["MCC_reduceTicketsOnDeath",false]) && {[playerSide] call BIS_fnc_respawnTickets > 0}) then {
 	[playerSide,-1] call BIS_fnc_respawnTickets
 };
 

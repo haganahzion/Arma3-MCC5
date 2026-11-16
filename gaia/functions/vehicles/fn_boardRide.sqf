@@ -58,7 +58,7 @@ if (_seated isNotEqualTo []) then {
 	_group addVehicle _veh;
 	_seated allowGetIn true;
 	_seated orderGetIn true;
-	_group setVariable ["GAIA_boardUntil", time + GAIA_RIDE_BOARD_TIMEOUT];
+	_group setVariable ["GAIA_boardUntil", time + GAIA_RIDE_BOARD_TIMEOUT, true];
 };
 
 _left

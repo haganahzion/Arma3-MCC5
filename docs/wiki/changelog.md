@@ -3,6 +3,14 @@
 A short summary of what changed in MCC 5. The full list is in `MCC_changelog.txt` (sections R34 and R35) in the mod.
 
 
+## v5.1.0
+
+- MCC no longer changes terrain detail, grass or view distance on load (they default to "keep game setting").
+- Operation screen no longer flashes.
+- GAIA: fixes for split attacks, threat counting, smoke, player vehicles, Zeus camera caching, group deletion.
+- Mission Wizard: failed objectives end the mission as a loss, reinforcement hang and errors fixed, late joiners can free hostages, placement fixes.
+- Off by default now: save gear on respawn, extra ticket loss, stun slugs, ambient fire. Stamina, artillery computer and time speed are only changed when you change the setting.
+
 ## v5.0.5
 
 - GAIA only manages its own groups. Zeus and other mods' groups (CAS, helicopter LZ drops, reinforcements) keep their waypoints in a fight.

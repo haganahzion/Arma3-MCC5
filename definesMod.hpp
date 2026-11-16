@@ -1,5 +1,5 @@
 #define MCCPATH "\mcc_sandbox_mod\"
-#define MCCVersion "(v5.0.5)"
+#define MCCVersion "(v5.1.0)"
 #define MCCMODE true
 
 class RscMapControl;

@@ -28,7 +28,8 @@ MCC_fnc_ambientFireEntityKilled = {
 	private ["_vehicle","_crewBurning"];
 	_vehicle = param [0,objNull,[objNull]];
 
-	if (random 100 < (missionNamespace getVariable ["MCC_fnc_ambientFireInitVehicleBurnChance",50]) || !(missionNamespace getVariable ["MCC_ambientFireSettingIndex",true])) exitWith {};
+	//Burn chance in percent: a roll above it means no fire
+	if (random 100 >= (missionNamespace getVariable ["MCC_fnc_ambientFireInitVehicleBurnChance",50]) || !(missionNamespace getVariable ["MCC_ambientFireSettingIndex",false])) exitWith {};
 
 	if ((_vehicle isKindOf "Landvehicle") or (_vehicle isKindOf "Air")) then {
 
