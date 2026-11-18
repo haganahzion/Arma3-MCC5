@@ -90,7 +90,7 @@ if (_isDownloadIntel) then {
 
 //Pick Item
 _init = '_this call MCC_fnc_pickItem';
-[[netID _object,_object], _init] remoteExec ["MCC_fnc_setVehicleInit",0];
+[[[netID _object,_object], _init], 0, false] remoteExec ["MCC_fnc_requestVehicleInit", 2];
 
 {_x addCuratorEditableObjects [[_object],false]} forEach allCurators;
 

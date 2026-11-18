@@ -9,6 +9,8 @@ MCC has two layers of protection. You can use either or both.
    allowed to use MCC. Who is allowed comes from the "MCC Access Rights" module (player UIDs or
    synced units, plus admins if the module allows them). Without that module everyone is allowed,
    so Strict mainly matters together with the module. Single player is not affected.
+   In both modes, object init code and object names sent through MCC are only accepted from the
+   server, logged-in admins, and MCC users who are Zeus at that moment.
    Missions that do not use Eden attributes can add this line to description.ext instead:
        MCC_networkSecurity = 1;
 

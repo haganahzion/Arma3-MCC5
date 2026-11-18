@@ -37,7 +37,7 @@ removeallweapons _sb;
 
 _dummy = MCC_dummy createVehicle (getpos _sb);
 _init = '_this hideobject true;';
-[[netid _dummy,_dummy], _init] remoteExec ["MCC_fnc_setVehicleInit", 0, true];
+[[[netid _dummy,_dummy], _init], 0, true] remoteExec ["MCC_fnc_requestVehicleInit", 2];
 
 _dummy attachto [_sb,[0,0,0]];
 

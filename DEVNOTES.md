@@ -40,6 +40,8 @@ Say clearly in replies that changes are untested in game.
   to regenerate `mcc/cfg/eden/settingsAttributes.hpp` and `mcc/fnc/eden/edenSettingsMap.sqf`.
 
 ## Balance check (run on every changed file before committing)
+Run `python3 tools/balance_check.py` (changed and untracked files vs HEAD; `--rev <ref>` to compare with another revision).
+Tests for the tools: `python3 -m pytest tools/tests -q`.
 Strip `//` and `/* */` comments and `"strings"` (with `""` escapes), then count `[]`, `{}`, `()`. Compare with the
 same count on `git show HEAD:<file>` (some original files are already "unbalanced" because of strings in single quotes).
 
@@ -75,6 +77,8 @@ same count on `git show HEAD:<file>` (some original files are already "unbalance
   by Zeus modules (dynamic dialog, save/load screen, convoy/hostage scripts). Don't delete without checking.
 
 ## Rules for new code
+- Object init code / object names: send to the server with `MCC_fnc_requestVehicleInit` / `MCC_fnc_requestVehicleName`,
+  never remoteExec `MCC_fnc_setVehicleInit` / `MCC_fnc_setVehicleName` directly (they only accept the server).
 - Network: never send code. Use `remoteExec` to a named function or engine command, add it to
   `mcc/cfg/CfgRemoteExec.hpp` (functions) or `mcc/cfg/CfgRemoteExecCommands.hpp` (commands). Guard powerful
   remote-callable functions with `if !(["MCC_fnc_x"] call MCC_fnc_remoteAllowed) exitWith {};`.

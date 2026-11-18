@@ -1,15 +1,17 @@
 //==================================================================MCC_fnc_setVehicleName======================================================================================
-// Sets vehicle name
-// Example: [[netid _unit,_unit], _name] remoteExec ["MCC_fnc_setVehicleName", 0, true];
+// Sets vehicle name. Over the network it only runs when the server sent it; send requests through the server:
+// Example: [[netid _unit,_unit], _name] remoteExec ["MCC_fnc_requestVehicleName", 2];
 // Params:
-//	_unit: object, vehicle we want to set its init.
-//	_name: string, the new name
+//	_unit: [netId, object], vehicle we want to name.
+//	_name: string, the new name (checked by MCC_fnc_requestVehicleName)
 //==============================================================================================================================================================================
-private ["_unit","_unitname"];
-
-_unit = if (((_this select 0) select 0) == "") then {(_this select 0) select 1} else {objectFromNetID ((_this select 0) select 0)};
-_unitname = _this select 1;
+if (isRemoteExecuted && {!(remoteExecutedOwner in [2, clientOwner])}) exitWith {
+	diag_log format ["MCC network security: refused MCC_fnc_setVehicleName from owner %1", remoteExecutedOwner];
+};
+params [["_ref", [], [[]]], ["_unitname", "", [""]]];
+private _unit = if ((_ref param [0, ""]) isEqualTo "") then {_ref param [1, objNull]} else {objectFromNetID (_ref select 0)};
+if (isNull _unit || {_unitname isEqualTo ""}) exitWith {};
 
 _unit setVehicleVarName _unitname;
-_unit setVariable ["text",_unitname,true];
-_unit call compile format ["%1=_This; PublicVariable ""%1""",_unitname];
+missionNamespace setVariable [_unitname, _unit];
+if (isServer) then {_unit setVariable ["text",_unitname,true]};

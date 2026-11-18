@@ -10,6 +10,9 @@ class security
 	class networkSecurity {description = "Returns the mission's MCC network security level (0 Normal, 1 Strict)";};
 	class isAuthorizedOwner {description = "Server only: may this owner id use MCC";};
 	class remoteAllowed {description = "Guard for remote-executed functions in Strict mode";};
+	class isTrustedSender {description = "May this owner send init code or object names (server, admin, MCC user who is Zeus)";};
+	class requestVehicleInit {description = "Server: check the sender, then run an object init on the targets";};
+	class requestVehicleName {description = "Server: check the sender and name, then name an object everywhere";};
 	class setAuthorizedOwners {description = "Clients: store authorized owners sent by the server";};
 	class securityInit {postInit = 1; description = "Server: publish owners allowed to use MCC";};
 };

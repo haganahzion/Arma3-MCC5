@@ -20,7 +20,7 @@ if (_action == 0) then
 	sleep 1;
 	[_hostage] join _caller;
 	_nul = _caller addaction [format ["Disband %1", name _hostage],MCC_path + "mcc\general_scripts\hostages\hostage.sqf",[1,_hostage],6,false,true,"","_target == _this"];
-	[[netID _hostage,_hostage], _init] remoteExec ["MCC_fnc_setVehicleInit",0,true];
+	[[[netID _hostage,_hostage], _init], 0, true] remoteExec ["MCC_fnc_requestVehicleInit", 2];
 	[_hostage] spawn MCC_fnc_deleteHelper;
 };
 

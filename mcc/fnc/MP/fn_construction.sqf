@@ -1,13 +1,13 @@
 //==================================================================MCC_fnc_construction========================================================================================
 // Example:[_conType, _pos , _side, _dir] call MCC_fnc_construction;
+// _dir: number, or a number as text. Never compiled.
 //==============================================================================================================================================================================
 private ["_conType","_pos","_time","_side","_reqCrates","_vehicleType","_baseAnchor","_markerName","_markerType","_text","_complete","_newObjects","_const",
          "_bagFence","_dir","_availableCrates","_cratesArray"];
 
-_conType	=_this select 0;
-_pos	 	=_this select 1;
-_side	 	=_this select 2;
-_dir	 	=call compile (_this select 3);
+params [["_conType", "", [""]], ["_pos", [0,0,0], [[]], [2,3]], ["_side", sideUnknown, [west]], ["_dirIn", 0, [0, ""]]];
+if !(_conType in ["fob","hmg","hmgh","gmg","gmgh","at","aa","mortar","bunker","wall"]) exitWith {};
+_dir = if (_dirIn isEqualType "") then {parseNumber _dirIn} else {_dirIn};
 
 #define REQUIRE_MEMBERS 0
 #define ANCHOR_ITEM "Land_TreeBin_F"

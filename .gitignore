@@ -1,2 +1,3 @@
 build/
 .wrangler/
+__pycache__/

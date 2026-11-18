@@ -72,7 +72,7 @@ if (count _arrayGroups > 0) then
 			if (_objectData select 7 != "") then
 			{
 				_vehicle setVariable ["vehicleinit",(_objectData select 7),true];
-				[[netID _vehicle,_vehicle], _objectData select 7] remoteExec ["MCC_fnc_setVehicleInit",0];
+				[[[netID _vehicle,_vehicle], _objectData select 7], 0, false] remoteExec ["MCC_fnc_requestVehicleInit", 2];
 			};
 
 			if (_objectData select 8) then
@@ -157,7 +157,7 @@ if ((count _arrayVehicles) > 0) then
 		if (_objectData select 4 != "") then
 		{
 			_vehicle setVariable ["vehicleinit",(_objectData select 4),true];
-			[[netID _vehicle,_vehicle], (_objectData select 4)] remoteExec ["MCC_fnc_setVehicleInit", 0];
+			[[[netID _vehicle,_vehicle], (_objectData select 4)], 0, false] remoteExec ["MCC_fnc_requestVehicleInit", 2];
 		};
 
 		clearWeaponCargoGlobal _vehicle;

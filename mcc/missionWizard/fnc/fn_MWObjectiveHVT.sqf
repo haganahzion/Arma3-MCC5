@@ -166,7 +166,7 @@ if (_isCQB) then {
 			MCC_tempName = format ["MCC_objectUnits_%1", ["MCC_objectUnitsCounter",1] call bis_fnc_counter];
 			_init = FORMAT [";%1 = _this;",MCC_tempName];
 
-			[[netid _unit,_unit], _init] remoteExec ["MCC_fnc_setVehicleInit", 0, true];
+			[[[netid _unit,_unit], _init], 0, true] remoteExec ["MCC_fnc_requestVehicleInit", 2];
 
 		} else {
 			_unit = [_spawnPos, _type, _sidePlayer,"Armed Civilian",random 360,true] call MCC_fnc_ACSingle;
