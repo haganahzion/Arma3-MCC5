@@ -5,6 +5,9 @@ Security:
 	- Construction no longer compiles the direction sent by the client; build type and arguments are checked
 	- Mission maker login: the server checks the sender is the player it names and takes admin rights from the engine, not from the client
 	- Server security refresh code kept in localNamespace, so a client can't replace it with publicVariable
+Fixed:
+	- Wind sound MCC_wind1 pointed at a missing file (wind0.5.ogg), so it was silent
+	- The wiki site folder is no longer packed into the PBO
 Added:
 	- tools/balance_check.py: the DEVNOTES bracket balance check as a script, with tests in tools/tests
 

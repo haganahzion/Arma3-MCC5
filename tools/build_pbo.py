@@ -9,7 +9,7 @@ import hashlib, os, struct, sys, time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PREFIX = "mcc_sandbox_mod"
-SKIP_DIRS = {".git", ".github", "tools", "docs"}
+SKIP_DIRS = {".git", ".github", "tools", "docs", "site", ".wrangler", "build"}
 SKIP_FILES = {"$PBOPREFIX$", ".gitignore", ".gitattributes", "README.md", "DEVNOTES.md", "VERSION"}
 
 def collect():
