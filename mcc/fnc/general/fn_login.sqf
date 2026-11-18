@@ -9,6 +9,18 @@ _p_mcc_player = _this select 0;
 _p_mcc_player_name = _this select 1;
 _p_mcc_request = _this select 2;
 _isAdmin = _this select 3;
+
+// Over the network, trust only what the server can see: the sender must be the player it names,
+// admin rights come from the engine, and the sender must be allowed to use MCC.
+if (isRemoteExecuted && {remoteExecutedOwner != clientOwner}) then {
+	if (isNull _p_mcc_player || {(owner _p_mcc_player) != remoteExecutedOwner} || {!([remoteExecutedOwner] call MCC_fnc_isAuthorizedOwner)}) exitWith {
+		diag_log format ["MCC network security: refused MCC_fnc_login from owner %1", remoteExecutedOwner];
+		_p_mcc_player = objNull;
+	};
+	_p_mcc_player_name = name _p_mcc_player;
+	_isAdmin = (admin remoteExecutedOwner) > 0;
+};
+if (isNull _p_mcc_player) exitWith {};
 _mccChat = missionNamespace getVariable ["MCC_Chat",true];
 _missionMaker = missionNamespace getVariable ["mcc_missionmaker",""];
 

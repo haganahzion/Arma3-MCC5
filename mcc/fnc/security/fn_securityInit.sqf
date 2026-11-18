@@ -5,7 +5,8 @@
 */
 if (!isServer || {!isMultiplayer}) exitWith {};
 
-MCC_fnc_securityRefresh = {
+// Kept in localNamespace: a missionNamespace variable could be overwritten by any client with publicVariable.
+localNamespace setVariable ["MCC_securityRefresh", {
 	private _owners = [];
 	{
 		private _owner = (getUserInfo _x) param [1, -1];
@@ -17,15 +18,15 @@ MCC_fnc_securityRefresh = {
 		// Sent with remoteExec, not publicVariable, so clients can check it came from the server.
 		[_owners] remoteExec ["MCC_fnc_setAuthorizedOwners", -2, "MCC_authorizedOwnersJIP"];
 	};
-};
+}];
 
-addMissionEventHandler ["PlayerConnected", {[] spawn {sleep 1; call MCC_fnc_securityRefresh}}];
-addMissionEventHandler ["PlayerDisconnected", {call MCC_fnc_securityRefresh}];
+addMissionEventHandler ["PlayerConnected", {[] spawn {sleep 1; call (localNamespace getVariable "MCC_securityRefresh")}}];
+addMissionEventHandler ["PlayerDisconnected", {call (localNamespace getVariable "MCC_securityRefresh")}];
 
 // Admin logins and MCC access-rights changes have no event, so also refresh every 10 seconds.
 [] spawn {
 	while {true} do {
-		call MCC_fnc_securityRefresh;
+		call (localNamespace getVariable "MCC_securityRefresh");
 		sleep 10;
 	};
 };

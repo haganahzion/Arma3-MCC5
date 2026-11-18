@@ -3,6 +3,8 @@ Security:
 	- Object init code and object names (Zeus init line, Mission Wizard, IEDs, hostages, spawns) now go through the server (MCC_fnc_requestVehicleInit / MCC_fnc_requestVehicleName). The server only accepts them from itself, admins and MCC users who are Zeus at that moment, in every Network Security mode; clients only run init code sent by the server. Before, any client could run code on every machine in Normal mode
 	- Object names must be plain variable names, can't use mod prefixes (MCC_, GAIA_, BIS_, CBA_, ACE_...) and can't replace a variable that holds something else; names are set without compile
 	- Construction no longer compiles the direction sent by the client; build type and arguments are checked
+	- Mission maker login: the server checks the sender is the player it names and takes admin rights from the engine, not from the client
+	- Server security refresh code kept in localNamespace, so a client can't replace it with publicVariable
 Added:
 	- tools/balance_check.py: the DEVNOTES bracket balance check as a script, with tests in tools/tests
 
