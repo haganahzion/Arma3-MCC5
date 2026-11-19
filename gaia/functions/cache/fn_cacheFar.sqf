@@ -81,6 +81,7 @@ if (((count (waypoints _group)) - currentWaypoint _group)>0) then
 	_waypoints = [_array, currentwaypoint _group];
 };
 
+private _respawnVar = [_group] call GAIA_fnc_respawnKey;
 _sf = 	[_gv  
 				,_uv  
 				,side _group
@@ -91,8 +92,11 @@ _sf = 	[_gv
 				,formation _group
 				,_waypoints
 				,(_group getVariable  ["MCC_GAIA_RESPAWN",-1])
-				, (missionNamespace getVariable [ "GAIA_RESPAWN_" + str(_group),[] ])
+				, (missionNamespace getVariable [_respawnVar, []])
+				, (_group getVariable ["GAIA_UID", -1])
 				];
+//The respawn data travels with the cache entry; the restored group gets it back under the same id
+missionNamespace setVariable [_respawnVar, nil];
 
 _pos = position leader _group;
 

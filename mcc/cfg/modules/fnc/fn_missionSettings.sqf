@@ -95,7 +95,7 @@ if (_module isKindOf "MCC_Module_settings") exitWith {
 
 	//Armed Civilians Weapons (the attribute is a string; older missions may hold the array itself)
 	private _weapons = _module getvariable ["armedCiviliansWeapons",""];
-	if (_weapons isEqualType "") then {_weapons = if (_weapons == "") then {nil} else {call compile _weapons}};
+	if (_weapons isEqualType "") then {_weapons = if (_weapons == "") then {nil} else {[_weapons] call MCC_fnc_arrayFromString}};
 	if (isNil "_weapons" || {!(_weapons isEqualType [])} || {count _weapons == 0}) then {
 		_weapons = ["hgun_P07_F","hgun_Rook40_F","hgun_ACPC2_F","hgun_Pistol_heavy_01_F","hgun_Pistol_heavy_02_F","SMG_01_F","SMG_02_F","hgun_PDW2000_F"];
 	};
@@ -157,37 +157,9 @@ if (count _resualt == 0) exitWith {deleteVehicle _module};
            ];
 
 (_resualt select 19) remoteExec ["enableEngineArtillery",0];
-(_resualt select 20) remoteExec ["setTimeMultiplier",2];
+["timeMultiplier", [_resualt select 20]] remoteExec ["MCC_fnc_rxServerCommand", 2];
 
-//Resistance Hostility
-switch (_resualt select 21) do {
-
-	//East
-	case 1:
-	{
-		[resistance,[east, 0]] remoteExec ["setfriend",2];
-		[resistance,[west, 0.8]] remoteExec ["setfriend",2];
-		[east,[resistance, 0]] remoteExec ["setfriend",2];
-		[west,[resistance, 0.8]] remoteExec ["setfriend",2];
-	};
-
-	//West
-	case 2:
-	{
-		[resistance,[east, 0.8]] remoteExec ["setfriend",2];
-		[resistance,[west, 0]] remoteExec ["setfriend",2];
-		[east,[resistance, 0.8]] remoteExec ["setfriend",2];
-		[west,[resistance, 0]] remoteExec ["setfriend",2];
-	};
-
-	//All
-	default
-	{
-		[resistance,[east, 0.8]] remoteExec ["setfriend",2];
-		[resistance,[west, 0]] remoteExec ["setfriend",2];
-		[east,[resistance, 0.8]] remoteExec ["setfriend",2];
-		[west,[resistance, 0]] remoteExec ["setfriend",2];
-	};
-};
+//Resistance Hostility: 1 hostile to east, 2 and default hostile to west
+["resistanceHostility", [_resualt select 21]] remoteExec ["MCC_fnc_rxServerCommand", 2];
 
 deleteVehicle _module;

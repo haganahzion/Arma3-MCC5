@@ -132,12 +132,8 @@ if (count (allMissionObjects "MCC_Module_inGameUI") == 0) then {
         {
             params ["_value"];
 
-            if (_value) then {
-                if !(missionNamespace getVariable ["MCC_initSupression",false]) then {[] spawn MCC_fnc_supressionInit};
-            } else {
-                missionNamespace setVariable ["MCC_initSupression",false];
-                ["MCC_initSupression", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
-            };
+            //Effects keep running while hit direction effects are on
+            [_value, missionNamespace getVariable ["MCC_hitRadar",0]] call MCC_fnc_supressionStop;
         }
     ] call CBA_fnc_addSetting;
 
@@ -152,12 +148,8 @@ if (count (allMissionObjects "MCC_Module_inGameUI") == 0) then {
         {
             params ["_value"];
 
-            if (_value != 2) then {
-                if !(missionNamespace getVariable ["MCC_initSupression",false]) then {[] spawn MCC_fnc_supressionInit};
-            } else {
-                missionNamespace setVariable ["MCC_initSupression",false];
-                ["MCC_initSupression", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
-            };
+            //Off only stops the effects when suppression is off too
+            [missionNamespace getVariable ["MCC_suppressionOn",false], _value] call MCC_fnc_supressionStop;
         }
     ] call CBA_fnc_addSetting;
 

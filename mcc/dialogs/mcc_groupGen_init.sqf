@@ -30,7 +30,7 @@ uiNamespace setVariable ["MCC_groupGen_Dialog", _this select 0];
 (findDisplay groupGen_IDD) displayAddEventHandler ["KeyUp","if (_this select 1 == 211) then {MCC_UMUnit = 3; null = [12] spawn MCC_fnc_s_um};"];
 
 //Assign as Curator on init
-if (player != getAssignedCuratorUnit MCC_curator) then {[player, MCC_curator] remoteExec ["assignCurator", 2]};
+if (player != getAssignedCuratorUnit MCC_curator) then {player remoteExec ["MCC_fnc_assignCurator", 2]};
 
 //Track units if enabled
 if (MCC_trackMarker) then {

@@ -19,7 +19,7 @@ Description:
 		- every ~1 s: GAIA_fnc_hcBalance (headless client list, round robin
 		  transfer of newly spawned GAIA groups to the headless clients).
 	Headless client, every frame:
-		- GAIA_fnc_contactTick and GAIA_fnc_vehicleTick for GAIA_HC_BUDGET (default 3) of its LOCAL groups
+		- GAIA_fnc_contactTick, GAIA_fnc_vehicleTick and GAIA_fnc_reportTargets for GAIA_HC_BUDGET (default 3) of its LOCAL groups
 		  that have a GAIA_ZONE_INTEND (snapshot at most every 2 s).
 		- GAIA_fnc_groupMaintenance for GAIA_MAINT_BUDGET LOCAL groups.
 
@@ -103,6 +103,7 @@ if (!isServer && {!isNil "GAIA_fnc_vehicleTick"}) then {
 		if (!isNull _group && {local _group} && {(units _group) isNotEqualTo []} && {alive (leader _group)}) then {
 			if (!isNil "GAIA_fnc_contactTick") then {[_group] call GAIA_fnc_contactTick};
 			[_group] call GAIA_fnc_vehicleTick;
+			[_group] call GAIA_fnc_reportTargets;
 		};
 	};
 };

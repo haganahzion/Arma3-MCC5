@@ -1,24 +1,29 @@
 //==================================================================MCC_fnc_setValue======================================================================================
-// Sets variable with custom value on a specific player
+// Stores a value the server read from the player database (reply to MCC_fnc_getVariable).
+// Accepted only from the server. Only role selection and player save names are allowed:
+// "MCCplayerRank", "<role>Level", "<world>_<mission>_playerPos", "..._playerGear", "..._playerStats".
 // Input:
-//	_varName1: 	String - variable Name
+//	_varName: 	String - variable Name
 //	_value:		Anything - Value
-//	_id  			String - player ID where to set  the value
+//	_id  		String - player ID where to set the value
 //
 //Outout: <NOTHING>
 //
-// Example: [_varName1, _value1,_id] remoteExec ["MCC_fnc_setValue", 0];
+// Example: [_varName, _value, _id] remoteExec ["MCC_fnc_setValue", _player];
 //==============================================================================================================================================================================
-private ["_varName","_id","_value"];
-_varName 	= _this select 0;
-_value 		= _this select 1;
-_id			= _this select 2;
+#define MCC_SETVALUE_PATTERN "(MCCplayerRank|[A-Za-z0-9_]{1,64}Level|[A-Za-z0-9_.\-]{1,128}_player(Pos|Gear|Stats))"
 
-if (getPlayerUID player == _id) then {
-	if (typeName _value == "STRING") then {
-		call compile format ["%1 = '%2';",_varName,_value];
-	} else {
-		call compile format ["%1=%2;",_varName,_value];
-	};
+params [["_varName", "", [""]], "_value", ["_id", "", [""]]];
+
+// remoteExecutedOwner is 0 in single player and for calls from a headless client.
+if (isRemoteExecuted && {!(remoteExecutedOwner in [0, 2, clientOwner])}) exitWith {
+	diag_log format ["MCC network security: refused MCC_fnc_setValue from owner %1", remoteExecutedOwner];
 };
+if (getPlayerUID player != _id) exitWith {};
+if !(_varName regexMatch MCC_SETVALUE_PATTERN) exitWith {
+	diag_log format ["MCC: refused value name %1", str _varName];
+};
+private _old = missionNamespace getVariable _varName;
+if (!isNil "_old" && {_old isEqualType {}}) exitWith {};
 
+missionNamespace setVariable [_varName, _value];

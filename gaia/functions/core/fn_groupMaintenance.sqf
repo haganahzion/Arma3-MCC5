@@ -74,7 +74,7 @@ if (!isServer) exitWith {
 //Remote dead group already handled, waiting for its owner to delete it
 if (_group getVariable ["GAIA_DEAD_PROCESSED", false]) exitWith {};
 
-private _respawnVar = "GAIA_RESPAWN_" + str _group;
+private _respawnVar = [_group] call GAIA_fnc_respawnKey;
 private _gaiaRespawn = missionNamespace getVariable [_respawnVar, []];
 
 //Store ALL original group setups

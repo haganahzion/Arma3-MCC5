@@ -22,6 +22,7 @@
 
 private ["_object","_abondanDistance","_waitTime","_tickets","_destroyEffect","_code","_vehName","_vehDir","_vehPos","_vehtype","_abandoned","_respawnDisabled","_nearFOB"];
 if (!isServer) exitWith {};
+if !(["MCC_fnc_vehicleRespawn"] call MCC_fnc_remoteTrusted) exitWith {};
 
 _object = param [0,objNull,[objNull]];
 

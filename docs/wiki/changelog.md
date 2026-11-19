@@ -3,6 +3,10 @@
 A short summary of what changed in MCC 5. The full list is in `MCC_changelog.txt` (sections R34 and R35) in the mod.
 
 
+## v5.1.1
+
+- Security and Performance Improvements
+
 ## v5.1.0
 
 - MCC no longer changes terrain detail, grass or view distance on load (they default to "keep game setting").

@@ -1,17 +1,18 @@
 //==================================================================MCC_fnc_globalExecute======================================================================================
-// Global execute a command on selected clients or server
-// Example: [mode,code] remoteExec ["MCC_fnc_globalExecute", 0];
+// Runs code on selected machines. Used by the mission maker command line ("Global").
+// Over the network the code is only accepted from the server. Clients send it to the server with
+// MCC_fnc_requestGlobalExecute, which checks the sender first.
+// Example: [mode,code] remoteExec ["MCC_fnc_requestGlobalExecute", 2];
 // Params:
 //	mode: number, 0:clients only, 1: server only 2: all clients and server
 //	code: code, code to be executed
 //==============================================================================================================================================================================
-// Runs whatever code it is sent. Used by the mission maker command line ("Global").
-// In Strict network security only the server and players allowed to use MCC can trigger it.
-if !(["MCC_fnc_globalExecute"] call MCC_fnc_remoteAllowed) exitWith {};
-private ["_code","_type"];
+params [["_type", 2, [0]], ["_code", {}, [{}]]];
 
-_type 	= _this select 0;
-_code 	= _this select 1;
+// remoteExecutedOwner is 0 in single player and for calls from a headless client.
+if (isRemoteExecuted && {!(remoteExecutedOwner in [0, 2])}) exitWith {
+	diag_log format ["MCC network security: refused MCC_fnc_globalExecute from owner %1", remoteExecutedOwner];
+};
 
 switch (_type) do {
 	case 0:	//clients

@@ -4,6 +4,9 @@
 //     	_ctrl: CONTROL
 //		_res: resources Needed
 //==============================================================================================================================================================================
+// Runs only from the local RTS menu, on the player's own selection.
+if (isRemoteExecuted) exitWith {};
+
 private ["_ctrl","_answer","_obj"];
 disableSerialization;
 _ctrl = _this select 0;

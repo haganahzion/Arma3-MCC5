@@ -11,7 +11,7 @@ if (isnull _group) exitwith {};
 _group  setVariable ["GAIA_zone_intend", (_sf select 3),true];
 
 //Now the trick is to restore the original group variable before we got cached.
-_var2 = "GAIA_RESPAWN_" + str(_group);
+_var2 = [_group, _sf param [11, -1]] call GAIA_fnc_respawnKey;
 missionNamespace setVariable [_var2, (_sf select 10)];
 
 //I gues we were cached, because we just got uncached.

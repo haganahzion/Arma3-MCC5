@@ -1,6 +1,6 @@
 //===================================================================MCC_fnc_evacSpawn======================================================================================
 // Spawn a vehicle with crew and gunners, mark it as an evac vehicle
-// Example:[vehicleClass, position] remoteExec ["MCC_fnc_evacSpawn",0];
+// Example:[vehicleClass, position] remoteExec ["MCC_fnc_evacSpawn",2];
 // Params:
 // 	vehicleClass: string, vehicleClass to spawn
 // 	position: array, spawn position
@@ -11,6 +11,24 @@ _heliType 	= _this select 0; 	//Type of heli
 _pos 		= _this select 1;
 _campaignEvac = param [2, false, [false]];
 _dir	= param [3,0,[0]];
+
+// Remote calls: trusted senders, or a living player replacing their side's lost campaign evac helicopter
+// (MCC_fnc_rtsEvacHelicopterBuy).
+if (isRemoteExecuted && {!([remoteExecutedOwner] call MCC_fnc_isTrustedSender)}) then {
+	private _sender = [] call MCC_fnc_remoteSenderUnit;
+	private _stored = missionNamespace getVariable [format ["MCC_campaignEvac_%1", side group _sender], []];
+	private _storedHeli = _stored param [0, objNull, [objNull]];
+	private _ok = alive _sender
+		&& {_campaignEvac}
+		&& {_heliType isEqualType ""}
+		&& {_heliType == (_stored param [1, "", [""]])}
+		&& {!(alive _storedHeli && {canMove _storedHeli})};
+	if (!_ok) then {
+		diag_log format ["MCC network security: refused MCC_fnc_evacSpawn from owner %1", remoteExecutedOwner];
+		_heliType = "";
+	};
+};
+if !(_heliType isEqualType "" && {isClass (configFile >> "CfgVehicles" >> _heliType)}) exitWith {};
 
 //wait for mission start
 waitUntil {time >0};

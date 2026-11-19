@@ -38,6 +38,7 @@ params [
 ];
 
 if (!isServer) exitWith {};
+if !(["MCC_fnc_LHDspawn"] call MCC_fnc_remoteTrusted) exitWith {};
 
 //CLose Curator
 if ( !isNull(findDisplay 312) ) then {(findDisplay 312) closeDisplay 1};

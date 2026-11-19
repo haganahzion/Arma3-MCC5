@@ -74,7 +74,7 @@ if ((str (finddisplay mcc_playerConsole2_IDD) != "no display") && (alive MCC_Con
 		MCC_fakeUAV 		= "Camera" camCreate [10,10,10];
 		if (!isnil "MCC_fakeUAVCenter") then {deletevehicle MCC_fakeUAVCenter};
 		MCC_fakeUAVCenter	= "Sign_Sphere10cm_F" createvehicle [((getpos MCC_ConolseUAV) select 0),(getpos MCC_ConolseUAV) select 1, 0];
-		[MCC_fakeUAVCenter, true] remoteExec ["hideObjectGlobal", 2];
+		["hideObject", [MCC_fakeUAVCenter, true]] remoteExec ["MCC_fnc_rxServerCommand", 2];
 		MCC_fakeUAV cameraEffect ["INTERNAL", "BACK", "rendertarget9"];
 		MCC_fakeUAVFOV = 0.6;
 		MCC_fakeUAV camsetTarget MCC_fakeUAVCenter;

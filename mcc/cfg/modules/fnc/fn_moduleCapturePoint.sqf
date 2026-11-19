@@ -42,6 +42,9 @@ _units = param [1,[]];
 _activated = param [2,true,[true]];
 _mode = param [3,"init",[""]];
 
+//Module code and settings come from the mission; remote calls only from the server, admins or MCC users who are Zeus
+if !(["MCC_fnc_moduleCapturePoint"] call MCC_fnc_remoteTrusted) exitWith {};
+
 waitUntil {!isNil "MCC_initDone"};
 
 //--- Return all capture points
@@ -400,7 +403,7 @@ switch _mode do {
 			//Add resources
 			if (_step mod 5 == 0 && _owner != sideUnknown && _type <3) then {
 				private ["_array","_res","_resources"];
-				_array = call compile format ["MCC_res%1",_owner];
+				_array = missionNamespace getVariable [format ["MCC_res%1",_owner], [0,0,0,0,0]];
 
 				//get number of storage
 				_resources = ["resources",_owner] call MCC_fnc_rtsCalculateResourceTreshold;

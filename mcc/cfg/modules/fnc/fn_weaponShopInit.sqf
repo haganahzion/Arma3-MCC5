@@ -2,7 +2,6 @@
 // Sync with triggers to create MCC zones
 //==============================================================================================================================================================
 private ["_module","_text","_objects","_object","_box","_prices","_persistent","_persistentName","_pos","_resualt"];
-#define MCC_SHOP_ICON	"\a3\ui_f\data\IGUI\Cfg\Actions\reammo_ca.paa"
 
 _module = param [0, objNull, [objNull]];
 if (isNull _module) exitWith {};
@@ -45,23 +44,7 @@ if (_module isKindOf "MCC_Module_createShop") then {
 		{
 			_object = _x;
 
-			[
-				 _object,
-				 _text,
-				 MCC_SHOP_ICON,
-				 MCC_SHOP_ICON,
-				 "(alive _target) && (_target distance _this < 5)",
-				 "(alive _target) && (_target distance _this < 5)",
-				 {},
-				 {},
-				 {(_this select 3) spawn MCC_fnc_mainBoxInit},
-				 {},
-				 [_box,_prices],
-				 1,
-				 100,
-				 false,
-				 false
-			] remoteExec ["BIS_fnc_holdActionAdd", 0, _object];
+			[_object, "shop", [_text, _box, _prices]] remoteExec ["MCC_fnc_rxAddHoldAction", 2];
 		} forEach _objects;
 	};
 } else {
@@ -90,7 +73,7 @@ if (_module isKindOf "MCC_Module_createShop") then {
 
 	_object enableSimulation false;
 	_object allowDamage false;
-	[_object, true] remoteExec ["hideObjectGlobal",2];
+	["hideObject", [_object, true]] remoteExec ["MCC_fnc_rxServerCommand", 2];
 
 	_box = (typeOf _object) createVehicle _pos;
 	_box setPos _pos;
@@ -107,23 +90,7 @@ if (_module isKindOf "MCC_Module_createShop") then {
 	_prices = ((_resualt select 0)/10) max 0.1;
 
 	//Spawn action
-	[
-		 _box,
-		 "Open Shop",
-		 MCC_SHOP_ICON,
-		 MCC_SHOP_ICON,
-		 "(alive _target) && (_target distance _this < 5)",
-		 "(alive _target) && (_target distance _this < 5)",
-		 {},
-		 {},
-		 {_arguments spawn MCC_fnc_mainBoxInit},
-		 {},
-		 [_object,_prices],
-		 1,
-		 100,
-		 false,
-		 false
-	] remoteExec ["BIS_fnc_holdActionAdd", 0, _box];
+	[_box, "shop", ["Open Shop", _object, _prices]] remoteExec ["MCC_fnc_rxAddHoldAction", 2];
 };
 
 deleteVehicle _module;

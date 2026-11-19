@@ -40,6 +40,7 @@ _saveStartLoc = param [9, true, [false]];
 _saveRTSBuildngs = param [10, true, [false]];
 
 if (!isServer) exitWith {};
+if !(["MCC_fnc_saveServer"] call MCC_fnc_remoteTrusted) exitWith {};
 
 //Don't allow more then one instanse of server monitoring
 if (missionNamespace getVariable ["MCC_fnc_saveServerIsrunning",false]) exitWith {};

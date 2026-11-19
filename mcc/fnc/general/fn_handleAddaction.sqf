@@ -5,6 +5,9 @@
 //<out> Nothing
 //==============================================================================================================================================================================
 #define MCC_HELPER "UserTexture1m_F"
+//Objects inside this view cone (relative direction in degrees) can be interacted with
+#define MCC_INTERACT_DIR_LEFT 340
+#define MCC_INTERACT_DIR_RIGHT 20
 
 private ["_string","_respawnItems","_airports","_counter","_searchArray","_key","_text","_nul"];
 
@@ -82,10 +85,9 @@ _text spawn
 			if (count _objects > 0) then {
 				_selected = objnull;
 				{
-					_tested = ([_objects,[],{player distance _x},"ASCEND"] call BIS_fnc_sortBy) select _foreachIndex;
-					_dir	  = [player, _tested] call BIS_fnc_relativeDirTo;
-					if (_dir>340 || _dir < 20) exitWith {_selected = _tested};
-				} foreach _objects;
+					_dir	  = [player, _x] call BIS_fnc_relativeDirTo;
+					if (_dir>MCC_INTERACT_DIR_LEFT || _dir < MCC_INTERACT_DIR_RIGHT) exitWith {_selected = _x};
+				} foreach ([_objects,[],{player distance _x},"ASCEND"] call BIS_fnc_sortBy);
 
 				if (!isnull _selected) then {
 					//IED

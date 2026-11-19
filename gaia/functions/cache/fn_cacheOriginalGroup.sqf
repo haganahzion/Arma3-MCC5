@@ -95,7 +95,7 @@ if (({alive _x} count units _group) > 0) then
 
 
 
-		_var2 = "GAIA_RESPAWN_" + str(_group);
+		_var2 = [_group] call GAIA_fnc_respawnKey;
 		missionNamespace setVariable [_var2,[ _sf,((_group) getVariable ["MCC_GAIA_CACHE", false])]  ];
 
 

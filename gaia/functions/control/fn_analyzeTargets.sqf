@@ -1,3 +1,4 @@
+#include "..\gaiaDefines.hpp"
 if (!isServer) exitWith {};
 
 private [ "_condition", "_targetlist", "_mklist", "_ActualTargets", "_cntC", "_target", "_mkname", "_i","_vehicleClass","_HQ_side"];
@@ -45,7 +46,12 @@ _NewTargetInfo	= [];
 
 //How far around a group leader we look for targets (CBA setting MCC_GAIA_TARGET_RANGE, default 1000)
 private _targetRange = missionNamespace getVariable ["MCC_GAIA_TARGET_RANGE", 1000];
-if (isNil "GAIA_KNOWN_TARGETS") then {GAIA_KNOWN_TARGETS = []};
+//Target info is kept per side: what one side knows is not known by the others
+private _sideSuffix = [_HQ_side] call GAIA_fnc_sideSuffix;
+private _infoVar = GAIA_TARGET_INFO_VAR + _sideSuffix;
+private _knownFlag = GAIA_KNOWN_TARGET_FLAG + _sideSuffix;
+private _knownVar = GAIA_KNOWN_TARGETS_VAR + _sideSuffix;
+private _knownTargets = missionNamespace getVariable [_knownVar, []];
 
 {
    if (
@@ -76,14 +82,14 @@ if (isNil "GAIA_KNOWN_TARGETS") then {GAIA_KNOWN_TARGETS = []};
       	if 	(
       				_Target_Side!= _HQ_side
       			 	and
-      			 	((_Target_Side getFriend _HQ_side)<0.6)
+      			 	((_Target_Side getFriend _HQ_side)<GAIA_ENEMY_FRIENDSHIP)
       			 	and
       			 	alive(leader(group _Target))
       			 	and
       			 	!captive(_target)
 	     			 	and
       			 	//How sure are we? For now accuracy of 18 seems to work ok
-      			 	_Target_PosAcc < 18
+      			 	_Target_PosAcc < GAIA_TARGET_MAX_ACCURACY
       			 	and
       			 	(_Target iskindof "AllVehicles")
       			 	//and
@@ -93,15 +99,24 @@ if (isNil "GAIA_KNOWN_TARGETS") then {GAIA_KNOWN_TARGETS = []};
       		 	)
       		then
       		{
-      			_Target setVariable ["GAIA_TargetInfo", [time,_Target_Pos,_Target_posAcc], false];
+      			_Target setVariable [_infoVar, [time,_Target_Pos,_Target_posAcc], false];
 
-      			//Remember every object that holds target info (shared by all sides, like GAIA_TargetInfo)
-      			if !(_Target getVariable ["GAIA_isKnownTarget", false]) then {
-      				_Target setVariable ["GAIA_isKnownTarget", true, false];
-      				GAIA_KNOWN_TARGETS pushBack _Target;
+      			//Remember every object that holds target info of this side
+      			if !(_Target getVariable [_knownFlag, false]) then {
+      				_Target setVariable [_knownFlag, true, false];
+      				_knownTargets pushBack _Target;
       			};
       		};
-      }foreach (_unit neartargets _targetRange);
+      }foreach (
+      	//AI knowledge lives where the AI are local: headless client groups report theirs (GAIA_fnc_reportTargets)
+      	if (local _unit) then {
+      		_unit neartargets _targetRange
+      	} else {
+      		private _report = _x getVariable [GAIA_HC_TARGETS_VAR, []];
+      		_x setVariable [GAIA_HC_TARGETS_VAR, nil];
+      		_report
+      	}
+      );
    };
 } forEach (groups _HQ_side);
 
@@ -112,27 +127,28 @@ if (isNil "GAIA_KNOWN_TARGETS") then {GAIA_KNOWN_TARGETS = []};
 
 //Forget known targets that can no longer be listed: deleted, dead men (allUnits only holds living units)
 //and targets whose info is older then the auto clear time.
-GAIA_KNOWN_TARGETS = GAIA_KNOWN_TARGETS select {
+_knownTargets = _knownTargets select {
 	private _keep = (
 		!isNull _x
 		&& {alive _x || {!(_x isKindOf "CAManBase")}}
-		&& {(time - ((_x getVariable ["GAIA_TargetInfo",[-1e10]]) select 0)) < _TArgetAutoCleared}
+		&& {(time - ((_x getVariable [_infoVar,[-1e10]]) select 0)) < _TArgetAutoCleared}
 	);
-	if (!_keep && {!isNull _x}) then {_x setVariable ["GAIA_isKnownTarget", nil, false]};
+	if (!_keep && {!isNull _x}) then {_x setVariable [_knownFlag, nil, false]};
 	_keep
 };
+missionNamespace setVariable [_knownVar, _knownTargets];
 
 //if (MCC_GAIA_DEBUG) then {[_HQ_side,"HQ"] sidechat "Updating the targetlist."; };
 {
 	if 	(
-	      	(((side _x) getFriend _HQ_side)<0.6)
+	      	(((side _x) getFriend _HQ_side)<GAIA_ENEMY_FRIENDSHIP)
 	     )
 	then
 	{
 				 //[_HQ_side,"HQ"] sidechat "Found!";
 				 _OldTargetInfo	= [];
 				 _targetlist 		= [];
-      	 _OldTargetInfo = _x getVariable ["GAIA_TargetInfo",[]];
+      	 _OldTargetInfo = _x getVariable [_infoVar,[]];
       	 if (count(_OldTargetInfo)>0 ) then
       	 	{
       	 		_OldTarget_Time		= time - (_OldTargetInfo select 0);
@@ -147,10 +163,10 @@ GAIA_KNOWN_TARGETS = GAIA_KNOWN_TARGETS select {
       		};
 	};
 
-} forEach GAIA_KNOWN_TARGETS;
+} forEach _knownTargets;
 
 // Debug to be cleared case (name the unit a)
-//a  setVariable ["GAIA_TargetInfo", [(time -400),(position a),1], false];
+//a  setVariable [_infoVar, [(time -400),(position a),1], false];
 //_ToBeCleared = _ToBeCleared + [a];
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -163,12 +179,12 @@ for [{_i=0},{_i < count _ToBeCleared},{_i=_i+1}] do
 
 
 	//Get the position of this dude
-	_OldTargetInfo = (_ToBeCleared select _i) getVariable ["GAIA_TargetInfo",[]];
+	_OldTargetInfo = (_ToBeCleared select _i) getVariable [_infoVar,[]];
 
 	//Check if we are in clear range and if so, clear this dude
 	if ([(_OldTargetInfo select 1),_HQ_side,MCC_GAIA_CLEARRANGE] call GAIA_fnc_breadcrumbNear) then
 		{
-			(_ToBeCleared select _i) setVariable ["GAIA_TargetInfo", [(time-_TArgetAutoCleared),(_OldTargetInfo select 1),(_OldTargetInfo select 2)], false];
+			(_ToBeCleared select _i) setVariable [_infoVar, [(time-_TArgetAutoCleared),(_OldTargetInfo select 1),(_OldTargetInfo select 2)], false];
 		}
 
 };
@@ -230,7 +246,7 @@ if (MCC_GAIA_DEBUG and _HQ_side==(Side player)) then
 
 
 				};
-					_OldTargetInfo = _x getVariable ["GAIA_TargetInfo",[]];
+					_OldTargetInfo = _x getVariable [_infoVar,[]];
 					_mkname setMarkerPosLocal (_OldTargetInfo select 1);
 					_mkname setMarkerDirLocal  getDir _x;
 					_mkname setMarkerAlphaLocal (1 - getDammage _x);

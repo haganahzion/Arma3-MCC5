@@ -118,7 +118,7 @@ CP_currentUniforms = [];
 CP_currentInsignas =  getArray(_cfg >> _side >> "insigna");
 
 //Set playr level
-CP_currentLevel = call compile format ["%1Level select 0",_role];
+CP_currentLevel = ((missionNamespace getVariable [format ["%1Level",_role], []]) param [0]);
 
 //Set Primary weapon
 CP_currentWeapon = missionNamespace getVariable format ["CP_player%1_primary_%2_%3",_role,getplayerUID _unit,side _unit];
@@ -179,7 +179,7 @@ if (isnil "CP_currentInsigna") then {
 
 _unit setvariable ["CP_role", _role, true];
 _unit setvariable ["CP_roleImage", _image, true];
-_unit setvariable ["CP_roleLevel", call compile format ["%1Level select 0",_role], true];
+_unit setvariable ["CP_roleLevel", ((missionNamespace getVariable [format ["%1Level",_role], []]) param [0]), true];
 
 //Open subMenu if needed
 if (_select == 1) then {[4] spawn MCC_fnc_s_switchDialog};			//open weapon menu

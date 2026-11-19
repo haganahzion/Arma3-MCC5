@@ -17,6 +17,7 @@
 
 //==================================================================================================================================================================================*/
 IF (!isServer) exitWith {};
+if !(["MCC_fnc_savePlayer"] call MCC_fnc_remoteTrusted) exitWith {};
 
 private ["_player","_tempArray","_waitTime","_position","_gear","_stats"];
 

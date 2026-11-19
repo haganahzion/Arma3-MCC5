@@ -11,6 +11,7 @@ with uinamespace do
 	
 	//Work around for not showing sides
 	_fncName = _class;
+	if !(_fncName isEqualType "" && {_fncName regexMatch "[A-Za-z0-9_]{1,64}"}) exitWith {};
 		
 	_fncFile = preprocessfilelinenumbers format ["%2mcc\UI\rscommon\%1.sqf",_fncName, _path];
 	_fncFile = format ["scriptname '%1_%2'; _fnc_scriptName = '%1';",_fncName] + _fncFile;

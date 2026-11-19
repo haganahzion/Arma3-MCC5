@@ -15,5 +15,5 @@ waituntil {!isnil "_answer"};
 
 if (_answer) exitWith
 {
-	[[_variable, missionNameSpace],1] remoteExec ["bis_fnc_counter", 2];
+	[_variable, "yes"] remoteExec ["MCC_fnc_rxVote", 2];
 };

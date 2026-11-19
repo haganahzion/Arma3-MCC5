@@ -101,8 +101,10 @@ MCC_GAIA_TARGETS_CIV			= [[],[],[],[]];
 if (isNil "GAIA_REGISTRY") then {GAIA_REGISTRY = createHashMap;};
 //Groups flagged "mcc_gaia_cache" (rebuilt by GAIA_fnc_registrySweep)
 if (isNil "GAIA_CACHE_GROUPS") then {GAIA_CACHE_GROUPS = [];};
-//Objects that hold a GAIA_TargetInfo (read by GAIA_fnc_analyzeTargets)
-if (isNil "GAIA_KNOWN_TARGETS") then {GAIA_KNOWN_TARGETS = [];};
+//Objects that hold target info, per side (GAIA_KNOWN_TARGETS_WEST / _EAST / _INDEP / _CIV, see GAIA_fnc_analyzeTargets)
+{
+	if (isNil _x) then {missionNamespace setVariable [_x, []]};
+} forEach ["GAIA_KNOWN_TARGETS_WEST", "GAIA_KNOWN_TARGETS_EAST", "GAIA_KNOWN_TARGETS_INDEP", "GAIA_KNOWN_TARGETS_CIV"];
 //Breadcrumb spatial grid (GAIA_fnc_breadcrumbAdd / breadcrumbPrune / breadcrumbNear)
 if (isNil "GAIA_BC_GRID") then {GAIA_BC_GRID = createHashMap;};
 GAIA_BC_CELL					= 100;	//grid cell size (m)

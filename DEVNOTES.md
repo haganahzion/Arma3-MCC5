@@ -42,6 +42,8 @@ Say clearly in replies that changes are untested in game.
 ## Balance check (run on every changed file before committing)
 Run `python3 tools/balance_check.py` (changed and untracked files vs HEAD; `--rev <ref>` to compare with another revision).
 Tests for the tools: `python3 -m pytest tools/tests -q`.
+Also run `python3 tools/check_project.py` (registered function files, quoted mod file paths, remoteExec whitelist).
+CI runs all three on every push to `mcc5`; a release only builds when they pass.
 Strip `//` and `/* */` comments and `"strings"` (with `""` escapes), then count `[]`, `{}`, `()`. Compare with the
 same count on `git show HEAD:<file>` (some original files are already "unbalanced" because of strings in single quotes).
 

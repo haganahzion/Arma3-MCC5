@@ -22,6 +22,17 @@ params [
 //--- if not server exit
 if (!isServer) exitWith {};
 
+// Players call this from the MCC console (side CAS they have earned), so a remote call needs either a trusted
+// sender or a living player asking for a real aircraft class.
+if (isRemoteExecuted && {!([remoteExecutedOwner] call MCC_fnc_isTrustedSender)}) then {
+	private _sender = [] call MCC_fnc_remoteSenderUnit;
+	if (!alive _sender || {!(_planeClass isKindOf "Air")} || {(getNumber (configFile >> "CfgVehicles" >> _planeClass >> "scope")) < 2}) then {
+		diag_log format ["MCC network security: refused MCC_fnc_cas from owner %1", remoteExecutedOwner];
+		_planeClass = "";
+	};
+};
+if (_planeClass == "") exitWith {};
+
 _planeCfg = configfile >> "cfgvehicles" >> _planeClass;
 if !(isclass _planeCfg) exitwith {diag_log format ["MCC ERROE: MCC_fnc_cas Vehicle class '%1' not found", _planeClass], false};
 

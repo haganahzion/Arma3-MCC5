@@ -22,7 +22,6 @@ _handPos = player selectionPosition "LeftHand";
 _utility = _itemClass createvehicle (player modelToWorld [(_handPos select 0),(_handPos select 1)+1.8,(_handPos select 2)]);
 _utility setpos (player modelToWorld [(_handPos select 0),(_handPos select 1)+1,(_handPos select 2)]);
 _utility setdir getdir player;
-0 = [_utility,(owner player)] remoteExec ["setOwner", 2];
 
 if (_itemClass in ["MCC_ammoBox"]) then {
 	if (missionNamespace getVariable ["MCC_isACE",false]) then {

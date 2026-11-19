@@ -557,7 +557,7 @@ private _clearCandidates = _sideGroups select {("DoClear" in (_x getVariable  ["
 
 {
 	_Spot = _x;
-	_SpotInfo = (_Spot getVariable ["GAIA_TargetInfo",[]]);
+	_SpotInfo = (_Spot getVariable [GAIA_TARGET_INFO_VAR + ([_side] call GAIA_fnc_sideSuffix),[]]);
 	if (count(_SpotInfo)>0) then
 		{
 		 _SpotPos = _SpotInfo select 1;

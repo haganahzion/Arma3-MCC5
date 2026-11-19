@@ -38,6 +38,7 @@ _loadRTSBuildngs = param [8, true, [false]];
 _loadArtilleryTypes = param [9, false, [false]];
 
 if (!isServer) exitWith {};
+if !(["MCC_fnc_loadServer"] call MCC_fnc_remoteTrusted) exitWith {};
 
 {
 	//Load Tickets

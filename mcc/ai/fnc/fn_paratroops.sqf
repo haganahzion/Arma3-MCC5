@@ -25,9 +25,11 @@
 #define PARA_UNLIMITED 1e6
 private ["_away","_p_mcc_zone_markername","_heli","_heliCrew","_pos","_paraSide", "_paraType", "_helitype","_heli_pilot","_spawn","_heliPilot","_gunnersGroup","_type","_entry","_turrets","_path", "_timeOut","_unit", "_side", "_spawnParaGroup", "_paraGroupArray", "_paraGroup", "_paraMode", "_heliCrewCount","_p_mcc_spawnfaction", "_p_mcc_zone_behavior", "_mcc_awareness", "_newParaGroup", "_rampOutPos", "_flyHeight","_dropPos", "_rope", "_ropes","_vehicleClass"];
 
+if !(["MCC_fnc_paratroops"] call MCC_fnc_remoteTrusted) exitWith {};
+
 _pos 					= _this select 0;
 _paraSide				= param [1,"",["",east]];
-_paraType 				=  if (TypeName  (_this select 2) == "STRING") then {call compile (_this select 2)} else {(_this select 2)};
+_paraType 				=  if (TypeName  (_this select 2) == "STRING") then {parseNumber (_this select 2)} else {(_this select 2)};
 _p_mcc_zone_markername  = _this select 3;
 _p_mcc_zone_behavior	= _this select 4;
 _p_mcc_awareness		= _this select 5;
@@ -67,7 +69,7 @@ _actualRopes = [];
 
 //Only groups whose every unit is of the faction
 _paraGroupArray = _paraGroupArray select {
-	private _grpCfg = call compile _x;
+	private _grpCfg = [_x] call MCC_fnc_configFromString;
 	(_grpCfg isEqualType configNull) && {isClass _grpCfg} && {
 		(("isClass _x" configClasses _grpCfg) findIf {(toLowerANSI getText (configFile >> "CfgVehicles" >> getText (_x >> "vehicle") >> "faction")) != (toLowerANSI _p_mcc_spawnfaction)}) < 0
 	}
@@ -314,7 +316,7 @@ if (_cargoNum > 0) then {
 		if (_cargoNum <= 0) exitWith {};
 
 		if !( _customParaGroup ) then {
-			_unitspawned=[[100,100,5000], _side, (call compile _spawnParaGroup),[],[],[0.1,(missionNamespace getVariable ["MCC_AI_Skill",0.5])],[],[(6 min _cargoNum), 0]] call MCC_fnc_spawnGroup;
+			_unitspawned=[[100,100,5000], _side, ([_spawnParaGroup] call MCC_fnc_configFromString),[],[],[0.1,(missionNamespace getVariable ["MCC_AI_Skill",0.5])],[],[(6 min _cargoNum), 0]] call MCC_fnc_spawnGroup;
 			sleep 0.1;
 		} else {
 

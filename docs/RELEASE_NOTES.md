@@ -1,6 +1,6 @@
-![MCC 5](https://raw.githubusercontent.com/haganahzion/Arma3-MCC5/ARMA3-MCC5-v5.1.0/docs/mcc5_banner.png)
+![MCC 5](https://raw.githubusercontent.com/haganahzion/Arma3-MCC5/ARMA3-MCC5-v5.1.1/docs/mcc5_banner.png)
 
-# MCC Sandbox 5 for Arma 3 (v5.1.0)
+# MCC Sandbox 5 for Arma 3 (v5.1.1)
 
 **Wiki:** https://mcc5-wiki.pages.dev/ · **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3840123393
 
@@ -22,6 +22,9 @@ The full MCC 5 overhaul: a new Eden and Zeus interface, a rewritten GAIA AI comm
   - **Mission Wizard... / Generate Mission**: set the options, then the whole mission is built in the editor so you can see and edit it before playing (Ctrl+Z undoes it)
   - **Place MCC Module / Place Settings Module**: quick placement of MCC modules
 - **In game:** MCC users get **Zeus** (Ctrl+Delete or Y). Every MCC tool is in the Zeus **Modules** tab. Right-click an AI soldier for quick GAIA orders.
+
+## New in 5.1.1
+- Security and Performance Improvements
 
 ## New in 5.1.0
 - **No more lower graphics.** MCC no longer changes your terrain detail, grass or view distance when it loads. Before, it set a low terrain detail and a 5 km view distance for everyone, even with no MCC modules placed. Both settings now default to "keep your own game setting".

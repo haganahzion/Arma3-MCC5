@@ -125,7 +125,7 @@ private ["_counter","_totalShells","_startPos"];
 //Assets if succeed
 _totalShells = 0;
 _counter = if (_mission != "side") then {_succeedObjectives} else {_failedObjectives};
-_startPos = call compile format ["MCC_START_%1",_sidePlayer];
+_startPos = missionNamespace getVariable format ["MCC_START_%1",_sidePlayer];
 
 _CompleteText = _CompleteText + "<t align='center' size='1.2' color='#FFCF11'>Assets Gained:</t><br/>";
 for "_i" from 1 to _counter do {

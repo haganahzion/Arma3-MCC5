@@ -42,6 +42,7 @@ _totalPlayers = ((playersNumber _sidePlayer)+1);
 _AOSize = (missionNamespace getVariable ["MCC_campaignAOSize",300]) max 100;		//CBA setting
 
 if (!isServer) exitWith {diag_log "MCC_fnc_campaignInit : Error not running on server"};
+if !(["MCC_fnc_campaignInit"] call MCC_fnc_remoteTrusted) exitWith {};
 
 //Set campaign var
 missionNamespace setVariable ["MCC_isCampaignRuning",true];
@@ -416,7 +417,7 @@ while {true} do {
 
 if (_campaignWon) exitWith {
 	//Mission won outro
-	["everyonewon"] remoteExec ["BIS_fnc_endMissionServer", 2]
+	["everyonewon"] call BIS_fnc_endMissionServer
 };
 
 //Mission over

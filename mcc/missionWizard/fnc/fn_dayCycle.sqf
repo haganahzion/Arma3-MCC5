@@ -10,6 +10,9 @@ _factionEnemy = param [2,"",[""]];
 
 _sides = if (_sidePlayer2 in [west,east,resistance]) then {[_sidePlayer,_sidePlayer2]} else {[_sidePlayer]};
 
+// RTS commanders start it from their own machine, so a living player may start it (it only runs once).
+if (isRemoteExecuted && {!alive ([] call MCC_fnc_remoteSenderUnit)} && {!(["MCC_fnc_dayCycle"] call MCC_fnc_remoteTrusted)}) exitWith {};
+
 //Check if the functin already running
 if (missionNamespace getVariable ["MCC_fnc_dayCycle_isRunning",false] || !isServer) exitWith {};
 missionNamespace setVariable ["MCC_fnc_dayCycle_isRunning",true];

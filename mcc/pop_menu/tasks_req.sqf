@@ -127,7 +127,7 @@ switch (true) do {
 		if (MCC_capture_state) then
 		{
 			MCC_capture_var = MCC_capture_var + FORMAT ['
-							["everyonewon"] remoteExec ["BIS_fnc_endMissionServer", 2];
+							["everyonewon"] remoteExec ["MCC_fnc_rxEndMission", 2];
 							'
 							];
 		} else {
@@ -136,7 +136,7 @@ switch (true) do {
 			waituntil {!isnil "_answer"};
 
 			if (_answer) then {
-				["everyonewon"] remoteExec ["BIS_fnc_endMissionServer", 2];
+				["everyonewon"] remoteExec ["MCC_fnc_rxEndMission", 2];
 			};
 		};
 	};
@@ -146,7 +146,7 @@ switch (true) do {
 	{
 		if (MCC_capture_state) then {
 			MCC_capture_var = MCC_capture_var + FORMAT ['
-								["everyonelost"] remoteExec ["BIS_fnc_endMissionServer", 2];
+								["everyonelost"] remoteExec ["MCC_fnc_rxEndMission", 2];
 								'
 								];
 		} else {
@@ -155,7 +155,7 @@ switch (true) do {
 			waituntil {!isnil "_answer"};
 
 			if (_answer) then {
-				["everyonelost"] remoteExec ["BIS_fnc_endMissionServer", 2];
+				["everyonelost"] remoteExec ["MCC_fnc_rxEndMission", 2];
 			};
 		};
 	};

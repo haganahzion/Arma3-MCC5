@@ -825,12 +825,10 @@ if ( isServer ) then {
 		_names = [format ["%1_SERVER",missionName], "allowedPlayers", "MCC_allowedPlayers", "read",[],"DEFAULT_SERVER"] call MCC_fnc_handleDB;
 		if (count _names == 0) then 	{
 			_null = [format ["%1_SERVER",missionName], "allowedPlayers", "MCC_allowedPlayers", "write",missionNameSpace getVariable ["MCC_allowedPlayers",[]],"DEFAULT_SERVER"] call MCC_fnc_handleDB;
-			MCC_allowedPlayers = [];
+			[[]] call MCC_fnc_setAllowedPlayers;
 		} else {
-			MCC_allowedPlayers = _names;
+			[_names] call MCC_fnc_setAllowedPlayers;
 		};
-
-		publicVariable "MCC_allowedPlayers";;
 	} else {
 		MCC_iniDBenabled = false;
 	};
@@ -1030,8 +1028,7 @@ if (hasInterface) then {
 		[] spawn MCC_fnc_handleAddaction;
 
 		//Handle CP stuff
-		MCC_CPplayerLoop = compile preprocessFile format ["%1mcc\general_scripts\loops\mcc_CPplayerLoop.sqf",MCC_path];
-		[] spawn MCC_CPplayerLoop;
+		[] spawn MCC_fnc_s_mcc_CPplayerLoop;
 
 		//Add start locations script
 		//[] spawn MCC_fnc_startLocations;  --> moved to an option in MCC

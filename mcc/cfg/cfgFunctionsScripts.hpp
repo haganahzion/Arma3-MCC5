@@ -778,6 +778,14 @@ class scripts
 		file = "mcc\dialogs\mcc_PopupMenu.sqf";
 		#endif
 	};
+	class s_mcc_CPplayerLoop
+	{
+		#ifdef MCCMODE
+		file = "\mcc_sandbox_mod\mcc\general_scripts\loops\mcc_CPplayerLoop.sqf";
+		#else
+		file = "mcc\general_scripts\loops\mcc_CPplayerLoop.sqf";
+		#endif
+	};
 	class s_mcc_pv_handler
 	{
 		#ifdef MCCMODE

@@ -1165,7 +1165,7 @@ class MCC5S_Cat_MCC_General_Ambient_Fire
 		class MCC5S_MCC_ambientFireSettingIndex
 		{
 			displayName = "Ambient Fire";
-			tooltip = "Explosive may cause sporadic fires that will spread with the wind need a restart to disable\n(addon default: On)\nCBA setting: MCC_ambientFireSettingIndex";
+			tooltip = "Explosive may cause sporadic fires that will spread with the wind need a restart to disable\n(addon default: Off)\nCBA setting: MCC_ambientFireSettingIndex";
 			property = "MCC5S_MCC_ambientFireSettingIndex";
 			expression = "";
 			control = "Combo";
@@ -1594,7 +1594,7 @@ class MCC5S_Cat_MCC_Mechanics_Ammo_Type
 		class MCC5S_MCC_breacingAmmo
 		{
 			displayName = "Breaching Ammo";
-			tooltip = "Magazine classes. Shooting this ammo from less then 10 meters will unlock doors. ""auto"" = every shotgun slug magazine found in the loaded mods\nEmpty = use addon setting. Addon default: [""auto""]\nCBA setting: MCC_breacingAmmo";
+			tooltip = "Magazine classes. Shooting this ammo from less then 10 meters will unlock doors. ""auto"" = every shotgun slug magazine found in the loaded mods. Empty (default) = off\nEmpty = use addon setting. Addon default: []\nCBA setting: MCC_breacingAmmo";
 			property = "MCC5S_MCC_breacingAmmo";
 			expression = "";
 			control = "Edit";
@@ -1604,7 +1604,7 @@ class MCC5S_Cat_MCC_Mechanics_Ammo_Type
 		class MCC5S_MCC_nonLeathalAmmo
 		{
 			displayName = "Non Lethal Ammo";
-			tooltip = "Magazine classes. Shooting this ammo at a unit closer than 30 meters stuns it instead of killing it. ""auto"" = every shotgun slug magazine found in the loaded mods\nEmpty = use addon setting. Addon default: [""auto""]\nCBA setting: MCC_nonLeathalAmmo";
+			tooltip = "Magazine classes. Shooting this ammo at a unit closer than 30 meters stuns it instead of killing it. ""auto"" = every shotgun slug magazine found in the loaded mods. Empty (default) = off\nEmpty = use addon setting. Addon default: []\nCBA setting: MCC_nonLeathalAmmo";
 			property = "MCC5S_MCC_nonLeathalAmmo";
 			expression = "";
 			control = "Edit";

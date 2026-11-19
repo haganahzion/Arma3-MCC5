@@ -13,6 +13,8 @@
 private ["_ammount", "_spawnkind", "_pos", "_spawn", "_away", "_pilot1", "_pilotGroup1", "_wp", "_wp2", "_plane1", "_planepos","_missile", "_planeType", "_planeAltitude", "_target", "_fakeTarget", "_lasertargets", "_nukeType", "_bomb2", "_cas_name", "_poswp", "_distA","_distB", "_nul", "_loop","_x","_wp","_plane2","_pilot2","_pilotGroup2","_typeOfAircraft", "_distStart", "_distEngage", "_targetList", "_startTime", "_casMarker", "_casApproach","_isParachute","_planeClasss","_isHeliDLC","_object","_sling"];
 #define mcc_playerConsole_IDD 2993
 
+if !(["MCC_fnc_airDrop"] call MCC_fnc_remoteTrusted) exitWith {};
+
 _ammount				= _this select 0;
 _spawnkind				= _this select 1 select 0;
 _pos					= _this select 2;
@@ -512,7 +514,7 @@ if (tolower _planeType in ["west","east","guer","civ","logic"]) then  {
 
 			case "CBU-Mines":	//MCC_fnc_CBU-Mines
 			{
-				CBU_type = MCC_CBU_MINES;
+				CBU_type = "MCC_CBU_MINES";
 				waitUntil {((_plane1 distance [_pos select 0, _pos select 1, 200]) < 200) || (!alive _plane1)};
 				//Make the drop
 				for [{_x=1},{_x<=_ammount},{_x=_x+1}] do
@@ -529,7 +531,7 @@ if (tolower _planeType in ["west","east","guer","civ","logic"]) then  {
 
 			case "CBU-WP(ACE)":	//MCC_fnc_CBU-Mines
 			{
-				CBU_type = MCC_CBU_WP;
+				CBU_type = "MCC_CBU_WP";
 				waitUntil {((_plane1 distance [_pos select 0, _pos select 1, 200]) < 200) || (!alive _plane1)};
 				//Make the drop
 				for [{_x=1},{_x<=_ammount},{_x=_x+1}] do
@@ -546,7 +548,7 @@ if (tolower _planeType in ["west","east","guer","civ","logic"]) then  {
 
 			case "CBU-CS(ACE)":	//MCC_fnc_CBU-Mines
 			{
-				CBU_type = MCC_CBU_CS;
+				CBU_type = "MCC_CBU_CS";
 				waitUntil {((_plane1 distance [_pos select 0, _pos select 1, 200]) < 200) || (!alive _plane1)};
 				//Make the drop
 				for [{_x=1},{_x<=_ammount},{_x=_x+1}] do

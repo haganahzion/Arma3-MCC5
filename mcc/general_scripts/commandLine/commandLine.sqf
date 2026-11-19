@@ -14,7 +14,7 @@ if (mcc_missionmaker == (name player)) then {
 
 	   case 1:	//Global
 		{
-			[2, compile _string] remoteExec ["MCC_fnc_globalExecute", 0];
+			[2, compile _string] remoteExec ["MCC_fnc_requestGlobalExecute", 2];
 		};
 
 		case 2: // mcc load

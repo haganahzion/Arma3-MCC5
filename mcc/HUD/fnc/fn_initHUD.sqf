@@ -4,6 +4,11 @@
     Nothing
 */
 
+#define MCC_CREW_TEXT_INTERVAL 2
+#define MCC_CREW_TEXT_DURATION 2.2
+#define MCC_CREW_TEXT_CLEAR 0.01
+#define MCC_CREW_TEXT_LAYER 4
+
 //Not a client
 0 spawn {
     if (!hasInterface || isDedicated) exitWith {};
@@ -14,6 +19,8 @@
 
     //Init
     missionNamespace setVariable ["MCC_initNameTags",true];
+    MCC_crewTextLast = "";
+    MCC_crewTextNext = 0;
 
     //Name Tags
     MCC_fnc_NameTagsEVH = {
@@ -112,7 +119,17 @@
                 _string = _string + format ["<t font='puristaMedium' size='0.4' align='left' color='#a8e748'>Gunner: %1 </t><br/>",_gunner];
                 _string = _string + format ["<t font='puristaMedium' size='0.4' align='left' color='#a8e748'>Empty Spaces: %1 </t><br/>",_emptyPos];
 
-                [_string,1.2,0.8,0.01,0,0,4] spawn BIS_fnc_dynamicText;
+                if (_string != MCC_crewTextLast || {time >= MCC_crewTextNext}) then {
+                    MCC_crewTextLast = _string;
+                    MCC_crewTextNext = time + MCC_CREW_TEXT_INTERVAL;
+                    [_string,1.2,0.8,MCC_CREW_TEXT_DURATION,0,0,MCC_CREW_TEXT_LAYER] spawn BIS_fnc_dynamicText;
+                };
+            } else {
+                if (MCC_crewTextLast != "") then {
+                    MCC_crewTextLast = "";
+                    MCC_crewTextNext = 0;
+                    ["",1.2,0.8,MCC_CREW_TEXT_CLEAR,0,0,MCC_CREW_TEXT_LAYER] spawn BIS_fnc_dynamicText;
+                };
             };
         };
     };

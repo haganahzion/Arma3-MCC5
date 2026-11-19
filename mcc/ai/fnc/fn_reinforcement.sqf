@@ -17,9 +17,11 @@
 
 private ["_unitsArray","_endPos","_side","_size","_zoneMarker","_faction","_startPosDir","_vehiclesArray","_groupVehicles","_limit",
          "_counter","_vehicleClass","_nearRoads","_vehicle","_vehiclesTypesArray","_cargoyGroupArray"];
+if !(["MCC_fnc_reinforcement"] call MCC_fnc_remoteTrusted) exitWith {};
+
 _endPos 				= _this select 0;
 _side					= _this select 1;
-_size 					=  if (TypeName  (_this select 2) == "STRING") then {call compile (_this select 2)} else {(_this select 2)};
+_size 					=  if (TypeName  (_this select 2) == "STRING") then {parseNumber (_this select 2)} else {(_this select 2)};
 _zoneMarker 			=  if (TypeName  (_this select 3) == "STRING") then {(_this select 3)} else {str (_this select 3)};
 _faction				= _this select 4;
 _startPosDir			= _this select 5;

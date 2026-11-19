@@ -15,6 +15,8 @@
 private ["_pos", "_spawnName", "_side","_group","_iedMarkerName","_groupDir","_init","_isSpotter","_spotterArray","_spotter","_spotterClass","_targetSide"];
 disableSerialization;
 
+if !(["MCC_fnc_ambushSingle"] call MCC_fnc_remoteTrusted) exitWith {objNull};
+
 _pos 			= _this select 0;
 _spawnName 		= _this select 1;
 _side 			= _this select 2;
@@ -101,17 +103,13 @@ if (_isSpotter > 0) then
 }
 else
 {
-	_group=[_pos, _side, (call compile _spawnName)] call MCC_fnc_spawnGroup;
+	private _cfg = [_spawnName] call MCC_fnc_configFromString;
+	if (isNull _cfg) exitWith {};
+	_group=[_pos, _side, _cfg] call MCC_fnc_spawnGroup;
 };
 
 
-_init = format [";_this setVariable ['isIED',true,true];[_this,'%1',%2,%3,%4,'%5'] spawn MCC_fnc_manageAmbush;"
-				 ,_iedMarkerName
-				 ,_groupDir
-				 ,_pointB
-				 ,_isSpotter
-				 ,_targetSide
-				 ];
-
-[[[netid (leader _group), leader _group], _init], 2, false] remoteExec ["MCC_fnc_requestVehicleInit", 2];
+if (isNil "_group" || {isNull _group}) exitWith {objNull};
+(leader _group) setVariable ["isIED", true, true];
+[leader _group, _iedMarkerName, _groupDir, _pointB, _isSpotter, if (_targetSide isEqualType "") then {_targetSide} else {str _targetSide}] remoteExec ["MCC_fnc_manageAmbush", 2];
 (leader _group)

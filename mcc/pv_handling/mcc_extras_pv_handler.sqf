@@ -1,57 +1,7 @@
-//==============================================================================XEH================================================================================================
-MCC_3D_PLACER = compile preProcessFileLineNumbers format["%1mcc\pop_menu\3rd_placer.sqf",MCC_path];
+// MCC 3D placer, on every machine. Final, so another machine cannot replace it with publicVariable.
+// The server functions MCC_fnc_simpleSpawn, FPS, highCommand, boxGenerator, placeConvoy and startConvoy are in mcc\pv_handling\fnc.
+MCC_3D_PLACER = compileFinal preProcessFileLineNumbers format["%1mcc\pop_menu\3rd_placer.sqf",MCC_path];
 
-//------------------------------- SERVER FUNCTIONS------------------------------------------
 if ( (isServer) || (MCC_isLocalHC) ) then {
-	//mcc_patrol_switch = compile preProcessFileLineNumbers format["%1mcc\pop_menu\patrol_switch.sqf",MCC_path];
 	mcc_fps_running = false;
-	MCC_fnc_simpleSpawn = {if !(["MCC_fnc_simpleSpawn"] call MCC_fnc_remoteAllowed) exitWith {}; [(_this select 0), (_this select 1), (_this select 2), (_this select 3), (_this select 4), (_this select 5), (_this select 6), (_this select 7), (_this select 8)] spawn MCC_fnc_s_simple_spawn};
-	MCC_fnc_FPS = {if !(["MCC_fnc_FPS"] call MCC_fnc_remoteAllowed) exitWith {}; [(_this select 0)] spawn MCC_fnc_s_fps_benchmark;};
-};
-
-
-if (isServer) then {
-//===================================================================MCC_fnc_highCommand======================================================================================
-// Create a suiside bombers  that will randomly run ove and explode himself on target faction's units
-//Example:[[netID _commander,_commander],_action] remoteExec ["MCC_fnc_highCommand",0];
-// Params:
-// 	_commander: object, unit that is the commander
-// 	_action: integer, 0 - make new commander, 1 - remove all groups from the commander, 2 - add group to the commander
-//==============================================================================================================================================================================
-	MCC_fnc_highCommand = {if !(["MCC_fnc_highCommand"] call MCC_fnc_remoteAllowed) exitWith {}; [(_this select 0), (_this select 1)] spawn MCC_fnc_s_hc_server};
-
-//===================================================================MCC_fnc_boxGenerator======================================================================================
-// Create an empty box with the given weapons and items
-// Example: [_pos, _dir, _weapons, _magazines,_items,_rucks] remoteExec ["MCC_fnc_boxGenerator",0];
-// Params:
-// 	_pos: array position
-// 	_dir: number - direction
-//	_weapons: array 1st: weapon class 2nd: ammount [["weaponClass1","weaponClass2"],[1,5]]
-//	_magazines: array 1st: magazine class 2nd: ammount [["magazineClass1","magazineClass2"],[5,5]]
-// 	_items:  array 1st: item class 2nd: ammount [["itemClass1","itemClass2"],[5,5]]
-// 	_rucks: array 1st: ruck class 2nd: ammount [["ruckClass1","ruckClass2"],[5,5]]
-//==============================================================================================================================================================================
-	MCC_fnc_boxGenerator = {if !(["MCC_fnc_boxGenerator"] call MCC_fnc_remoteAllowed) exitWith {}; [(_this select 0), (_this select 1), (_this select 2), (_this select 3), (_this select 4)] spawn MCC_fnc_s_box_spawn;};
-
-//===================================================================MCC_fnc_placeConvoy======================================================================================
-// Place a convoy up to 5 cars facing the direction stated with ot without an HVT
-// Example:[vehicle1, vehicle2, vehicle3, vehicle4, vehicle5,start, heading, side,VIPcalss,VIPcar] remoteExec ['MCC_fnc_placeConvoy',0];
-// Params:
-// 	vehicle1, vehicle2, vehicle3, vehicle4, vehicle5: string, vehicle class leave "" to not spawn a vehicle
-// 	start: array, position, start location
-//	heading: array, position, where the convoy is heading
-//	side: string, convoy side "west", "east", "guer", "civ"
-// 	VIPcalss: string, vip class if none "0"
-//	VIPcar: string, vehicle class if VIPclass = "0" will be ignored
-//==============================================================================================================================================================================
-	MCC_fnc_placeConvoy = {if !(["MCC_fnc_placeConvoy"] call MCC_fnc_remoteAllowed) exitWith {}; [(_this select 0), (_this select 1), (_this select 2), (_this select 3) , (_this select 4), (_this select 5), (_this select 6), (_this select 7), (_this select 8), (_this select 9)] spawn MCC_fnc_s_place_convoy};
-
-//===================================================================MCC_fnc_startConvoy======================================================================================
-// Make the convoy drive through the specific waypoints
-// Example:[[wp1, wp2, wp3], isVIP] remoteExec ['MCC_fnc_startConvoy',0];
-// Params:
-// 	[wp1, wp2, wp3]: array, waypoints positions
-// 	isVIP: string, if = "0" no vip else there is a vip
-//==============================================================================================================================================================================
-	MCC_fnc_startConvoy = {if !(["MCC_fnc_startConvoy"] call MCC_fnc_remoteAllowed) exitWith {}; [(_this select 0), (_this select 1)] spawn MCC_fnc_s_start_convoy_execute};
 };

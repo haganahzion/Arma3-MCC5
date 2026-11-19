@@ -184,7 +184,7 @@ for "_i" from 0 to ((count _cond) - 1) step 1 do
 	private _cap = missionNamespace getVariable ["MCC_MW_maxEnemyAI", 0];
 	private _before = units _side select {alive _x};
 	if (_cap > 0 && {(_cap - count _before) < QRF_MIN_FREE_UNITS}) exitWith {};
-	_ar remoteExec ["mcc_setup", 2];
+	_ar remoteExec ["MCC_fnc_setupSpawn", 2];
 	if (_cap > 0) then {
 		sleep QRF_TRIM_DELAY;
 		private _new = (units _side select {alive _x}) - _before;

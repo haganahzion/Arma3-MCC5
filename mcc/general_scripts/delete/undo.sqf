@@ -8,7 +8,8 @@
 								];									
 			};
 */
-[] remoteExec ["MCC_fnc_rxUndoLastSpawn", 0];
+// Clients ask the server, which checks the sender and passes it on to everyone.
+[] remoteExec ["MCC_fnc_rxUndoLastSpawn", [2, 0] select isServer];
 	
  
  

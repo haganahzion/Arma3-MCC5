@@ -11,6 +11,8 @@ Delete objects/Markers in area radius.
 	 Return - nothing
 //================================================================================================================================================================*/
 
+if !(["MCC_fnc_deleteBrush"] call MCC_fnc_remoteTrusted) exitWith {};
+
 private ["_pos","_radius","_type","_nearObjects","_crew","_markers","_ignorePlayers"];
 
 _pos = param [0,[0,0,0],[[]]];

@@ -9,6 +9,8 @@
  private ["_arrayGroups","_arrayVehicles","_objectData","_side","_array","_pos","_newString","_finalString","_isKindofUnit","_vehicle","_unitData",
           "_allCuratorObjectives","_class","_group","_indecator","_tempArray","_arrayWeather","_arrayTime","_savedMissionSettings"];
 
+if !(["MCC_fnc_loadFromMCC"] call MCC_fnc_remoteTrusted) exitWith {};
+
  _input 				= _this;
 _allCuratorObjectives 	= _input select 0;
 _arrayGroups 			= _input select 1;
@@ -178,8 +180,9 @@ if ((count _allCuratorObjectives) > 0) then
 		_objectData = _x;
 		_pos = _objectData select 1;
 		_class = _objectData select 0;
-		_side = [_objectData select 3, "CIV", "civilian"] call MCC_fnc_replaceString;
-		_side = [_side, "GUER", "resistance"] call MCC_fnc_replaceString;
+		_side = _objectData select 3;
+		_side = if (_side isEqualType "") then {_side splitString "[], "} else {if (_side isEqualType []) then {_side} else {[]}};
+		_side = (_side apply {[_x] call MCC_fnc_sideFromString}) select {_x != sideUnknown};
 		_group = createGroup sidelogic;
 
 		switch (true) do
@@ -191,11 +194,11 @@ if ((count _allCuratorObjectives) > 0) then
 
 				if (_class == "ModuleObjectiveAttackDefend_F") then
 				{
-					_vehicle setvariable ["RscAttributeOwners2", call compile _side];
+					_vehicle setvariable ["RscAttributeOwners2", _side];
 				}
 				else
 				{
-					_vehicle setvariable ["RscAttributeOwners", call compile _side];
+					_vehicle setvariable ["RscAttributeOwners", _side];
 				};
 
 				_vehicle setvariable ["updated",true];
@@ -221,10 +224,10 @@ if ((count _allCuratorObjectives) > 0) then
 				if (typeName (_attachedUnit) == "STRING" ) then {waituntil {!(isnil _attachedUnit)}};
 
 				_vehicle =  _group createunit ["ModuleObjective_F", _pos,[],0.5,"NONE"];
-				_vehicle setvariable ["RscAttributeOwners",call compile _side];
+				_vehicle setvariable ["RscAttributeOwners",_side];
 
 				if (typeName _attachedUnit == "STRING" ) then {
-					_vehicle setvariable ["bis_fnc_curatorAttachObject_object",call compile _attachedUnit];
+					_vehicle setvariable ["bis_fnc_curatorAttachObject_object",(missionNamespace getVariable [_attachedUnit, objNull])];
 					_vehicle setvariable ["AttachObject_object",_attachedUnit];
 				};
 
@@ -240,11 +243,11 @@ if ((count _allCuratorObjectives) > 0) then
 				if (typeName (_attachedUnit) == "STRING" ) then {waituntil {!(isnil _attachedUnit)}};
 
 				_vehicle =  _group createunit ["MCC_ModuleObjective_FCurator", _pos,[],0.5,"NONE"];
-				_vehicle setvariable ["RscAttributeOwners",call compile _side];
+				_vehicle setvariable ["RscAttributeOwners",_side];
 
 				if (typeName _attachedUnit == "STRING" ) then {
-					_vehicle setvariable ["bis_fnc_curatorAttachObject_object",call compile _attachedUnit];
-					_vehicle setvariable ["AttachObject_object",call compile _attachedUnit];
+					_vehicle setvariable ["bis_fnc_curatorAttachObject_object",(missionNamespace getVariable [_attachedUnit, objNull])];
+					_vehicle setvariable ["AttachObject_object",(missionNamespace getVariable [_attachedUnit, objNull])];
 				};
 
 				_vehicle setvariable ["RscAttributeTaskDescription",(_objectData select 4)];
@@ -279,12 +282,12 @@ if ((count _allCuratorObjectives) > 0) then
 			{
 				_attachedUnit = _objectData select 2;
 				if (typeName _attachedUnit == "STRING" ) then {
-					_vehicle setvariable ["bis_fnc_curatorAttachObject_object",call compile _attachedUnit];
-					_vehicle setvariable ["AttachObject_object",call compile _attachedUnit];
+					_vehicle setvariable ["bis_fnc_curatorAttachObject_object",(missionNamespace getVariable [_attachedUnit, objNull])];
+					_vehicle setvariable ["AttachObject_object",(missionNamespace getVariable [_attachedUnit, objNull])];
 				};
 
 				_vehicle =  _group createunit [_class, _pos,[],0.5,"NONE"];
-				_vehicle setvariable ["RscAttributeOwners",call compile _side];
+				_vehicle setvariable ["RscAttributeOwners",_side];
 				[_vehicle,"RscAttributeTaskDescription",_objectData select 4] call bis_fnc_setServerVariable;
 			};
 		};

@@ -305,7 +305,7 @@ else
 
 				if ( (isServer) && ( (mcc_hc == 0) || !(MCC_isHC) ) ) then
 				{
-					_ar remoteExec ["mcc_setup",2];
+					_ar remoteExec ["MCC_fnc_setupSpawn", 2];
 
 					diag_log "MCC: attemping to spawn";
 
@@ -320,14 +320,14 @@ else
 					if ( ( mcc_hc == 0 ) || !(MCC_isHC) ) then
 					{
 						//_ar remoteExec ["mcc_setup",0];
-						_ar remoteExec ["mcc_setup",2];
+						_ar remoteExec ["MCC_fnc_setupSpawn", 2];
 						diag_log format ["Called 'mcc_setup' Remote Event on Server - isServer [%1] - isHC: [%2] - MCC_HC: [%3]", isServer, MCC_isHC, mcc_hc];
 					};
 
 					if (( mcc_hc == 1 ) && (MCC_isHC)) then
 					{
 						//_ar remoteExec ["mcc_setup_hc",0];
-						_ar remoteExec ["mcc_setup_hc",MCC_ownerHC];
+						_ar remoteExec ["MCC_fnc_setupSpawn", 2];
 						diag_log format ["Called 'mcc_setup_hc' Remote Event on Headless Client - isServer [%1] - isHC: [%2] - MCC_HC: [%3] - MCC_HC_Owner: [%4]", isServer, MCC_isHC, mcc_hc, MCC_ownerHC];
 					};
 				};

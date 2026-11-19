@@ -39,6 +39,7 @@ class GAIA
         class getClassInfo {};
         class getGroups {};
         class groupMaintenance {};
+        class groupSet {};
         class groupTick {};
         class hasLambsWaypoint {};
         class inZone {};
@@ -46,6 +47,7 @@ class GAIA
         class perFrame {};
         class registerGroup {};
         class registrySweep {};
+        class reportTargets {};
         class sideCycle {};
         class sideSuffix {};
         class unregisterGroup {};
@@ -68,6 +70,7 @@ class GAIA
         class uncache {};
         class uncacheFar {};
         class uncacheOriginalGroup {};
+        class respawnKey {};
         class respawnSet {};
     };
 
@@ -79,9 +82,6 @@ class GAIA
         file = "gaia\functions\general";
         #endif
 
-        class controlGroup {};
-        class findClosestPosition {};
-        class getDirectionalOffsetPosition {};
         class getMarkerShape {};
         class getMarkerVertices {};
         class isInCircle {};
@@ -89,10 +89,8 @@ class GAIA
         class isInRectangle {};
         class isPositionInMarker {};
         class isSamePosition {};
-        class randomPositionInCircleMarker {};
         class randomPositionInEllipseMarker {};
         class randomPositionInRectangleMarker {};
-        class randomPositionInSquareMarker {};
         class rotatePosition {};
         class startGaia {};
     };
@@ -112,8 +110,6 @@ class GAIA
         class analyzeTerrain {};
         class calculateOptimalPosition {};
         class classifySide {};
-        class doTask {};
-        class event {};
         class fireFlare {};
         class generateBuildingPatrolWaypoints {};
         class generateWaypoints {};
@@ -148,7 +144,6 @@ class GAIA
         class doAttackCar {};
         class doAttackHelicopter {};
         class doAttackInfantry {};
-        class doAttackMechanizedInfantry {};
         class doAttackMotorizeInfantry {};
         class doAttackMotorizedRecon {};
         class doAttackRecon {};
@@ -168,7 +163,6 @@ class GAIA
         class doPatrolInfantry {};
         class doPatrolMechanizedInfantry {};
         class doPatrolMotorizedInfantry {};
-        class doPatrolMotorizedRecon {};
         class doPatrolRecon {};
         class doPatrolShip {};
         class doSupport {};

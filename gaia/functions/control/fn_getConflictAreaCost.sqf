@@ -15,10 +15,12 @@ Author:
 	Spirit, 24-1-2014
 
 ---------------------------------------------------------------------------- */
+#include "..\gaiaDefines.hpp"
 
 private ["_side","_CA","_grp","_zns","_trg","_Zone","_CA","_TargetList"];
 
 _side 				= _this select 0;
+private _infoVar = GAIA_TARGET_INFO_VAR + ([_side] call GAIA_fnc_sideSuffix);
 _CA						=	_this select 1;
 _grp					= [];
 _zns					= [];
@@ -71,9 +73,9 @@ switch (_side) do
 	//Get the targets in the CA
 	{
 
-			if (count(_x getVariable ["GAIA_TargetInfo",[]])>0) then
+			if (count(_x getVariable [_infoVar,[]])>0) then
 			{
-				if ((((_x getVariable ["GAIA_TargetInfo",[]])select 1) distance _CA) < (missionNamespace getVariable ["MCC_GAIA_CA_SIZE", 200])) then
+				if ((((_x getVariable [_infoVar,[]])select 1) distance _CA) < (missionNamespace getVariable ["MCC_GAIA_CA_SIZE", 200])) then
 				 {
 				 		if (_x iskindof "CAMANBASE") then
 				 		{_TargetList	= _TargetList+ [_x];}

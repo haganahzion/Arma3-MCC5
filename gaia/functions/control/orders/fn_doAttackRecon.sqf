@@ -22,7 +22,7 @@ _count  = 0;
 if !(surfaceiswater _TargetPos ) then
 	{
 		//Set the recon unit in stealth
-		_group  setBehaviour	"STEALTH";
+		[_group, "setBehaviour", "STEALTH"] call GAIA_fnc_groupSet;
 
 		while {((_Pos distance _TargetPos)>200) and _count < 6} do
 		{

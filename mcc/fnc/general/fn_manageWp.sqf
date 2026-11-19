@@ -9,8 +9,9 @@
 			2.3		WPformation: string, ["NO CHANGE", "COLUMN", "STAG COLUMN", "WEDGE", "ECH LEFT", "ECH RIGHT", "VEE", "LINE", "FILE", "DIAMOND"]
 			2.4		WPspeed: string, ["UNCHANGED", "LIMITED", "NORMAL", "FULL"]
 			2.5		WPbehavior: string, ["UNCHANGED", "CARELESS", "SAFE", "AWARE", "COMBAT", "STEALTH"]
-			2.6		WPcondition: string, condition for WP to be complete
-			2.7		WPstatment: string, code will run after the WP is complete
+			2.6		WPcondition: string, "true" or "" (anything else is treated as "true")
+			2.7		WPstatment: "" for none, or ["fortify", [positions]] to send each unit to a building position
+				Waypoint code is never taken from the arguments, since this function can be called over the network.
 			2.8		WPtimeout: number, waiting time  between condition is made till the WP is set to complete
 	3 	SelectedGroups: Array containing all the groups to be effected
 //==========================================================================================================================================================*/
@@ -28,6 +29,30 @@ _WPTypeIndecator 	= _wpArray select 0;
 
 	_wpTypes = ["MOVE", "DESTROY", "GETIN", "SAD", "JOIN", "LEADER", "GETOUT", "CYCLE", "LOAD", "UNLOAD", "TR UNLOAD", "HOLD", "SENTRY","GUARD","SUPPORT","GETIN NEAREST","DISMISS","Helicopter - Land","Helicopter - Get in","Artillery - Fire Mission","Loiter"];
 	_wpType  = _wpTypes select _WPTypeIndecator;
+};
+
+// Waypoint condition and statement are built here from fixed values only.
+private _wpCond = if ((_wpArray param [5, ""]) isEqualTo "") then {""} else {"true"};
+private _wpStatement = "";
+private _statementData = _wpArray param [6, ""];
+if (_statementData isEqualType [] && {(_statementData param [0, ""]) isEqualTo "fortify"}) then {
+	private _positions = (_statementData param [1, [], [[]]]) select {
+		_x isEqualType [] && {count _x == 3} && {_x findIf {!(_x isEqualType 0) || {!finite _x}} < 0}
+	};
+	if (count _positions > 0) then {
+		_wpStatement = format ["{
+			private _unit = (thisList select _forEachIndex);
+			_unit doMove _x;
+			_unit setSpeedMode 'FULL';
+			_unit spawn {
+				sleep 5;
+				waitUntil {unitReady _this};
+				_this disableAI 'MOVE';
+				while {(unitReady leader _this)} do {sleep 1};
+				_this enableAI 'MOVE';
+			};
+		} forEach %1;", _positions];
+	};
 };
 
 
@@ -53,7 +78,7 @@ _WPTypeIndecator 	= _wpArray select 0;
 								_wp setWaypointFormation (_wpArray select 2);
 								_wp setWaypointSpeed (_wpArray select 3);
 								_wp setWaypointBehaviour (_wpArray select 4);
-								_wp setWaypointStatements [(_wpArray select 5),(_wpArray select 6)];
+								_wp setWaypointStatements [_wpCond,_wpStatement];
 								_wp setWaypointTimeout [_wpArray select 7,_wpArray select 7,_wpArray select 7];
 							};
 						//If transport isn't empty
@@ -73,7 +98,7 @@ _WPTypeIndecator 	= _wpArray select 0;
 								_wp setWaypointFormation (_wpArray select 2);
 								_wp setWaypointSpeed (_wpArray select 3);
 								_wp setWaypointBehaviour (_wpArray select 4);
-								_wp setWaypointStatements [(_wpArray select 5),(_wpArray select 6)];
+								_wp setWaypointStatements [_wpCond,_wpStatement];
 								_wp setWaypointTimeout [_wpArray select 7,_wpArray select 7,_wpArray select 7];
 								_wp2 = (group _wpObject) addWaypoint [_wpLoc, 0];
 								_wp2 setWaypointType "LOAD";
@@ -87,7 +112,7 @@ _WPTypeIndecator 	= _wpArray select 0;
 								_wp setWaypointFormation (_wpArray select 2);
 								_wp setWaypointSpeed (_wpArray select 3);
 								_wp setWaypointBehaviour (_wpArray select 4);
-								_wp setWaypointStatements [(_wpArray select 5),(_wpArray select 6)];
+								_wp setWaypointStatements [_wpCond,_wpStatement];
 								_wp setWaypointTimeout [_wpArray select 7,_wpArray select 7,_wpArray select 7];
 							};
 					};
@@ -108,7 +133,7 @@ _WPTypeIndecator 	= _wpArray select 0;
 								_wp setWaypointFormation (_wpArray select 2);
 								_wp setWaypointSpeed (_wpArray select 3);
 								_wp setWaypointBehaviour (_wpArray select 4);
-								_wp setWaypointStatements [(_wpArray select 5),(_wpArray select 6)];
+								_wp setWaypointStatements [_wpCond,_wpStatement];
 								_wp setWaypointTimeout [_wpArray select 7,_wpArray select 7,_wpArray select 7];
 							};
 
@@ -120,7 +145,7 @@ _WPTypeIndecator 	= _wpArray select 0;
 						_wp setWaypointFormation (_wpArray select 2);
 						_wp setWaypointSpeed (_wpArray select 3);
 						_wp setWaypointBehaviour (_wpArray select 4);
-						_wp setWaypointStatements [(_wpArray select 5),(_wpArray select 6)];
+						_wp setWaypointStatements [_wpCond,_wpStatement];
 						_wp setWaypointTimeout [_wpArray select 7,_wpArray select 7,_wpArray select 7];
 						_wp2 = _wpObject addWaypoint [_wpLoc, 0];
 						_wp2 setWaypointType "LEADER";
@@ -142,7 +167,7 @@ _WPTypeIndecator 	= _wpArray select 0;
 								_wp setWaypointFormation (_wpArray select 2);
 								_wp setWaypointSpeed (_wpArray select 3);
 								_wp setWaypointBehaviour (_wpArray select 4);
-								_wp setWaypointStatements [(_wpArray select 5),(_wpArray select 6)];
+								_wp setWaypointStatements [_wpCond,_wpStatement];
 								_wp setWaypointTimeout [_wpArray select 7,_wpArray select 7,_wpArray select 7];
 
 							};
@@ -154,7 +179,7 @@ _WPTypeIndecator 	= _wpArray select 0;
 						_wp setWaypointFormation (_wpArray select 2);
 						_wp setWaypointSpeed (_wpArray select 3);
 						_wp setWaypointBehaviour (_wpArray select 4);
-						_wp setWaypointStatements [(_wpArray select 5),(_wpArray select 6)];
+						_wp setWaypointStatements [_wpCond,_wpStatement];
 						_wp setWaypointTimeout [_wpArray select 7,_wpArray select 7,_wpArray select 7];
 						_wp2 = _wpObject addWaypoint [_wpLoc, 0];
 						_wp2 setWaypointType "JOIN";
@@ -176,7 +201,7 @@ _WPTypeIndecator 	= _wpArray select 0;
 							_wp setWaypointFormation (_wpArray select 2);
 							_wp setWaypointSpeed (_wpArray select 3);
 							_wp setWaypointBehaviour (_wpArray select 4);
-							_wp setWaypointStatements [(_wpArray select 5),(_wpArray select 6)];
+							_wp setWaypointStatements [_wpCond,_wpStatement];
 							_wp setWaypointTimeout [_wpArray select 7,_wpArray select 7,_wpArray select 7];
 
 						};
@@ -188,7 +213,7 @@ _WPTypeIndecator 	= _wpArray select 0;
 						_wp setWaypointFormation (_wpArray select 2);
 						_wp setWaypointSpeed (_wpArray select 3);
 						_wp setWaypointBehaviour (_wpArray select 4);
-						_wp setWaypointStatements [(_wpArray select 5),(_wpArray select 6)];
+						_wp setWaypointStatements [_wpCond,_wpStatement];
 						_wp setWaypointTimeout [_wpArray select 7,_wpArray select 7,_wpArray select 7];
 						_wp2 = _wpObject addWaypoint [_wpLoc, 0];
 						_wp2 setWaypointType "GETIN";
@@ -244,7 +269,7 @@ _WPTypeIndecator 	= _wpArray select 0;
 						_wp setWaypointFormation (_wpArray select 2);
 						_wp setWaypointSpeed (_wpArray select 3);
 						_wp setWaypointBehaviour (_wpArray select 4);
-						_wp setWaypointStatements [(_wpArray select 5),(_wpArray select 6)];
+						_wp setWaypointStatements [_wpCond,_wpStatement];
 						_wp setWaypointTimeout [_wpArray select 7,_wpArray select 7,_wpArray select 7];
 						if (_isShown) then {_wp showWaypoint "ALWAYS"};
 						if (_action != 0) then {{_x doMove _wpLoc} forEach units _x};

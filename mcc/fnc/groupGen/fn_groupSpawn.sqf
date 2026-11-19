@@ -14,22 +14,13 @@
 
 private ["_pos","_unitsArray","_side","_group","_loc","_isEmpty","_unitClass","_unitSim","_unit","_safePos","_waterSpawn","_cache"];
 
+// MCC_serverSpawn: set by server code (RTS missions) that spawns its own enemies while running for a player request.
+if (!(localNamespace getVariable ["MCC_serverSpawn", false]) && {!(["MCC_fnc_groupSpawn"] call MCC_fnc_remoteTrusted)}) exitWith {grpNull};
+
 _pos 		= _this select 0;
 _unitsArray = _this select 1;
 _loc 		= _this select 2;
-_side		= if (typeName (_this select 3) == "STRING") then
-				{
-					switch (tolower (_this select 3)) do
-					{
-						case "guer":{resistance};
-						case "civ":{civilian};
-						default {call compile (_this select 3)};
-					};
-				}
-				else
-				{
-					(_this select 3)
-				};
+_side		= [_this select 3, east] call MCC_fnc_sideFromString;
 
 _isEmpty	= _this select 4;
 _cache		= if (count _this > 5) then { _this select 5};
@@ -57,7 +48,9 @@ if ( ( (isServer) && ( (_loc == 0) || !(MCC_isHC) ) ) || ( (MCC_isLocalHC) && (_
 		//Cfg Group
 		if (typeName _unitsArray == "STRING") exitWith
 		{
-			_group = [_pos, _side, (call compile _unitsArray)] call MCC_fnc_spawnGroup;
+			private _cfg = [_unitsArray] call MCC_fnc_configFromString;
+			if (isNull _cfg) exitWith {};
+			_group = [_pos, _side, _cfg] call MCC_fnc_spawnGroup;
 			_group setVariable ["mcc_gaia_cache",_cache, true];
 
 		};

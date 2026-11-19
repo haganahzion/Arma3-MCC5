@@ -5,8 +5,31 @@
 */
 if (!isServer || {!isMultiplayer}) exitWith {};
 
+// Who may use MCC: the server keeps its own copy in localNamespace. MCC_fnc_setAllowedPlayers sets it directly.
+// Missions that set MCC_allowedPlayers / MCC_allowAdmin themselves on the server are followed by the copy below,
+// until MCC_fnc_setAllowedPlayers is used. A value broadcast by any other machine is put back at once.
+#define MCC_ACCESS_VARS [["MCC_allowedPlayers", ["all"]], ["MCC_allowAdmin", true]]
+localNamespace setVariable ["MCC_accessCopy", {
+	if (localNamespace getVariable ["MCC_accessFixed", false]) exitWith {};
+	{
+		_x params ["_name", "_default"];
+		localNamespace setVariable [_name + "_server", missionNamespace getVariable [_name, _default]];
+	} forEach MCC_ACCESS_VARS;
+}];
+call (localNamespace getVariable "MCC_accessCopy");
+{
+	(_x select 0) addPublicVariableEventHandler {
+		params ["_name"];
+		private _default = if (_name == "MCC_allowAdmin") then {true} else {["all"]};
+		missionNamespace setVariable [_name, localNamespace getVariable [_name + "_server", _default]];
+		publicVariable _name;
+		diag_log format ["MCC network security: a client changed %1; restored the server's value", _name];
+	};
+} forEach MCC_ACCESS_VARS;
+
 // Kept in localNamespace: a missionNamespace variable could be overwritten by any client with publicVariable.
 localNamespace setVariable ["MCC_securityRefresh", {
+	call (localNamespace getVariable "MCC_accessCopy");
 	private _owners = [];
 	{
 		private _owner = (getUserInfo _x) param [1, -1];

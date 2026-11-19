@@ -27,11 +27,19 @@ Author:
 
 ---------------------------------------------------------------------------- */
 
+#include "..\..\gaiaDefines.hpp"
+
+//Only the server may ask for it over the network (GAIA_fnc_doFortify for headless client groups)
+if (isRemoteExecuted && {remoteExecutedOwner != GAIA_SERVER_OWNER}) exitWith {};
+
 private ["_group","_position","_radius","_threshold"];
 _group = (_this select 0) ;
 _position = (_this select 1);
 _radius = if (count _this > 2) then {_this select 2} else {50};
 _threshold = 1;
+if (isNull _group || {!local _group}) exitWith {};
+_zone	 = (((_group) getVariable ["GAIA_zone_intend",[]])select 0);
+if (isNil "_zone") exitWith {};
 
 _group enableattack false;
 
@@ -40,7 +48,6 @@ private ["_count", "_list", "_list2", "_units", "_i"];
 _statics = [(nearestObjects [_position,["StaticWeapon"], _radius]), {(_x iskindof "StaticWeapon") && (isnull(assignedGunner (_x))) && {[(position _x),_zone] CALL GAIA_fnc_isPositionInMarker} && {(_x emptypositions "Gunner" > 0)}}] call BIS_fnc_conditionalSelect;
 //[(position PLAYER),"1"] CALL GAIA_fnc_isPositionInMarker
 //_buildings = _position nearObjects ["building",_radius];
-_zone	 = (((_group) getVariable ["GAIA_zone_intend",[]])select 0);
 
 _buildings = [(_position nearObjects ["building",_radius]), {[(position _x),_zone] CALL GAIA_fnc_isPositionInMarker}] call BIS_fnc_conditionalSelect;
 _units = units _group;

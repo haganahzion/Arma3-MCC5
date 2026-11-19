@@ -39,7 +39,7 @@ private _action = (_resualt select 1);
 		//Remove
 		case 1:
 		{
-			{[_x,[[_unit],true]] remoteExec ["removeCuratorEditableObjects",2]} foreach allCurators;
+			{["removeEditable", [_x, [_unit]]] remoteExec ["MCC_fnc_rxServerCommand", 2]} foreach allCurators;
 		};
 	};
 } forEach (nearestObjects [_pos, ["All"], (_resualt select 0)]);

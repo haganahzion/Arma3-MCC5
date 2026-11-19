@@ -11,7 +11,8 @@
 		- With an MCC Access Rights module: players whose UID is listed in the module, or whose unit
 		  is synced to it, plus logged-in admins if the module allows admins. These lists live in
 		  localNamespace, which clients cannot overwrite.
-		- Without the module: MCC_allowedPlayers (default ["all"] = everyone) and logged-in admins.
+		- Without the module: MCC_allowedPlayers (default ["all"] = everyone) and logged-in admins, read from
+		  the server's own copy in localNamespace (see MCC_fnc_setAllowedPlayers and MCC_fnc_securityInit).
 	The client-settable "MCC_allowed" unit variable is NOT trusted here.
 */
 params [["_owner", -1, [0]]];
@@ -31,8 +32,8 @@ private _uid = _info param [2, ""];
 private _unit = _info param [10, objNull];
 private _hasModule = !isNil {localNamespace getVariable "MCC_accessNames"};
 
-private _allowed = if (_hasModule) then {localNamespace getVariable ["MCC_accessNames", []]} else {missionNamespace getVariable ["MCC_allowedPlayers", ["all"]]};
-private _allowAdmin = if (_hasModule) then {localNamespace getVariable ["MCC_accessAdmin", true]} else {missionNamespace getVariable ["MCC_allowAdmin", true]};
+private _allowed = if (_hasModule) then {localNamespace getVariable ["MCC_accessNames", []]} else {localNamespace getVariable ["MCC_allowedPlayers_server", missionNamespace getVariable ["MCC_allowedPlayers", ["all"]]]};
+private _allowAdmin = if (_hasModule) then {localNamespace getVariable ["MCC_accessAdmin", true]} else {localNamespace getVariable ["MCC_allowAdmin_server", missionNamespace getVariable ["MCC_allowAdmin", true]]};
 
 if ("all" in _allowed) exitWith {true};
 if (_allowAdmin && {(admin _owner) > 0}) exitWith {true};

@@ -24,9 +24,15 @@ if !(missionNamespace getVariable ["MCC_isACE",false]) then {
 */
 if (!isnil "MCC_date") then {setDate MCC_date};
 
-if (!isnil "MCC_sync") then {
-	_ok = [] spawn compile MCC_sync;
-	waituntil {scriptdone _ok};
+// MCC_sync holds diary entries as data: [[title, text], ...]. It is never compiled.
+private _syncEntries = missionNamespace getVariable ["MCC_sync", []];
+if (_syncEntries isEqualType []) then {
+	{
+		// Diary text can hold clickable <execute> links, so entries with one are skipped.
+		if (_x isEqualTypeArray ["", ""] && {((toLower (_x select 1)) find "<execute") < 0}) then {
+			player createDiaryRecord ["diary", [_x select 0, _x select 1]];
+		};
+	} forEach _syncEntries;
 };
 
 //Sync Briefings
@@ -47,7 +53,6 @@ if ((missionNameSpace getVariable ["MCC_ppEffect",""])!= "") then {
 	[(missionNameSpace getVariable ["MCC_ppEffect","clear"]),true] spawn MCC_fnc_ppEffects;
 };
 
-publicvariable "MCC_sync";
 
 // finalyze sync
 mcc_sync_status = true;

@@ -34,7 +34,7 @@ if (mcc_missionmaker == (name player)) then {
 		if (MCC_capture_state) then {
 			hint "Ambush Captured.";
 			MCC_capture_var = MCC_capture_var
-					+ FORMAT ["[%1 , '%2' , '%3', %4, %5, %6, %7, %8] remoteExec ['MCC_fnc_ambushSingle',0];", MCC_pointA, IEDAmbushspawnname, mcc_sidename, IedName, IEDDir, MCC_pointB, MCC_IEDisSpotter, iedside];
+					+ FORMAT ["[%1 , '%2' , '%3', %4, %5, %6, %7, %8] remoteExec ['MCC_fnc_ambushSingle',2];", MCC_pointA, IEDAmbushspawnname, mcc_sidename, IedName, IEDDir, MCC_pointB, MCC_IEDisSpotter, iedside];
 		} else  {
 			hint "Ambush Placed.";
 			[MCC_pointA , IEDAmbushspawnname,mcc_sidename, IedName, IEDDir, MCC_pointB, MCC_IEDisSpotter, iedside] remoteExec ["MCC_fnc_ambushSingle",2];

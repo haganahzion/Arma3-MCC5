@@ -153,7 +153,12 @@ if (count _unitsArray > 0) then {
 			_maxUnits = _maxUnits -2;
 		};
 
-		_group = [_missionPos, _units, 1, _enemySide, false, false] call MCC_fnc_groupSpawn;
+		_group = grpNull;
+		isNil {
+			localNamespace setVariable ["MCC_serverSpawn", true];
+			_group = [_missionPos, _units, 1, _enemySide, false, false] call MCC_fnc_groupSpawn;
+			localNamespace setVariable ["MCC_serverSpawn", false];
+		};
 		{
 			_missionItems pushBack _x;
 		} forEach units _group;
@@ -179,7 +184,12 @@ if (count _unitsArray > 0) then {
 	    _units pushBack ((_unitsArray call bis_fnc_selectRandom) select 0);
 		_maxUnits = _maxUnits -1;
 
-		_group = [_missionPos, _units, 1, _enemySide, false, false] call MCC_fnc_groupSpawn;
+		_group = grpNull;
+		isNil {
+			localNamespace setVariable ["MCC_serverSpawn", true];
+			_group = [_missionPos, _units, 1, _enemySide, false, false] call MCC_fnc_groupSpawn;
+			localNamespace setVariable ["MCC_serverSpawn", false];
+		};
 		_missionItems pushBack (vehicle leader _group);
 
 		[_group, _missionPos, 250] call BIS_fnc_taskPatrol;

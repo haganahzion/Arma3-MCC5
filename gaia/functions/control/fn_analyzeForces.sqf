@@ -292,16 +292,15 @@ private _ZoneCenters = createHashMap;
 						//(currentWaypoint _x) setWaypointFormation 				(_ZoneBehave select 3);
 						if !([(position leader _x),((_x getVariable  ["GAIA_zone_intend",[]]) select 0)] call GAIA_fnc_inZone) then
 							 {
-							 		_x  setSpeedMode "NORMAL";
-							 		_x  setBehaviour "AWARE";
+							 		[_x, "setSpeedMode", "NORMAL"] call GAIA_fnc_groupSet;
+							 		[_x, "setBehaviour", "AWARE"] call GAIA_fnc_groupSet;
 							 }
 						else
 							 {
 
-							 	_x  setSpeedMode  (_ZoneBehave select 4);
-							  _x  setBehaviour	(_ZoneBehave select 1);
-								//_x  setCombatMode	(_ZoneBehave select 2);
-								_x  setFormation	(_ZoneBehave select 3);
+							 	[_x, "setSpeedMode", _ZoneBehave select 4] call GAIA_fnc_groupSet;
+							  [_x, "setBehaviour", _ZoneBehave select 1] call GAIA_fnc_groupSet;
+								[_x, "setFormation", _ZoneBehave select 3] call GAIA_fnc_groupSet;
 
 							 };
 

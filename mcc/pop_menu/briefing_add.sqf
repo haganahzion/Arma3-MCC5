@@ -3,28 +3,14 @@ private ["_type","_string"];
 _string = _this select 0;
 _type = _this select 1;
 
-switch (_type) do
-{
-   case 0:
-   {_exe = player createDiaryRecord ["diary", ["Situation",_string]];
-   MCC_sync = MCC_sync + FORMAT ["_string='%1';player createDiaryRecord ['diary', ['Situation',_string]];sleep 1;",_string];};
-   case 1:
-   {_exe = player createDiaryRecord ["diary", ["Enemy Forces",_string]];
-    MCC_sync=MCC_sync + FORMAT ["_string='%1';player createDiaryRecord ['diary', ['Enemy Forces',_string]];sleep 1;",_string];};
-   case 2:
-   {_exe = player createDiaryRecord ["diary", ["Friendly Forces",_string]];
-   MCC_sync=MCC_sync + FORMAT ["_string='%1';player createDiaryRecord ['diary', ['Friendly Forces',_string]];sleep 1;",_string];};
-   case 3:
-   {_exe = player createDiaryRecord ["diary", ["Mission",_string]];
-	MCC_sync=MCC_sync + FORMAT ["_string='%1';player createDiaryRecord ['diary', ['Mission',_string]];sleep 1;",_string];};
-   case 4:
-   {_exe = player createDiaryRecord ["diary", ["Special Tasks",_string]];
-	MCC_sync=MCC_sync + FORMAT ["_string='%1';player createDiaryRecord ['diary', ['SpecialTasks',_string]];sleep 1;",_string];};
-   case 5:
-   {_exe = player createDiaryRecord ["diary", ["Fire Support",_string]];
-	MCC_sync=MCC_sync + FORMAT ["_string='%1';player createDiaryRecord ['diary', ['Fire Support',_string]];sleep 1;",_string];};
-};
-publicvariable "MCC_sync"; 
+private _title = ["Situation","Enemy Forces","Friendly Forces","Mission","Special Tasks","Fire Support"] param [_type, ""];
+if (_title == "") exitWith {};
+player createDiaryRecord ["diary", [_title,_string]];
+
+// MCC_sync is a list of diary entries for players who join later (see MCC_fnc_sync).
+if !((missionNamespace getVariable ["MCC_sync", []]) isEqualType []) then {MCC_sync = []};
+MCC_sync pushBack [_title, _string];
+publicVariable "MCC_sync"; 
 
 
 

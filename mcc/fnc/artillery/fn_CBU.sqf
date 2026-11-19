@@ -2,9 +2,9 @@
 // drop a bomb that explode to some skeets with paracute the explode to some kind of CBU
 // Example: [_bomb, CBU_type] spawn MCC_fnc_CBU;
 // _bomb = position,  bomb position
-// CBU_type = string, MCC_CBU_MINES, MCC_CBU_WP, MCC_CBU_CS
+// CBU_type = string, "MCC_CBU_MINES", "MCC_CBU_WP", "MCC_CBU_CS" or "MCC_CBU_EXPLOSION"
 //==================================================================================================================================================================================			
-	MCC_CBU_EXPLOSION =
+	private _cbuExplosion =
 		{
 			private ["_skeet","_para", "_split","_pos","_x"];
 			_skeet = _this select 0;
@@ -22,7 +22,7 @@
 				};
 		};
 	
-	MCC_CBU_MINES =
+	private _cbuMines =
 		{
 			private ["_skeet","_para", "_split","_pos","_x","_mine"];
 			_skeet = _this select 0;
@@ -39,7 +39,7 @@
 				};
 		};
 	
-	MCC_CBU_WP =
+	private _cbuWP =
 		{
 			private ["_skeet","_para", "_split","_pos","_x","_mine"];
 			_skeet = _this select 0;
@@ -57,7 +57,7 @@
 				};
 		};
 	
-	MCC_CBU_CS =
+	private _cbuCS =
 		{
 			private ["_skeet","_para", "_split","_pos","_x","_mine"];
 			_skeet = _this select 0;
@@ -78,6 +78,14 @@
 private ["_bomb","_split", "_vel", "_x","_y","_type"];
 _bomb = _this select 0;
 _type = _this select 1;
+private _cbuCode = switch ([_type, ""] select !(_type isEqualType "")) do {
+	case "MCC_CBU_MINES": {_cbuMines};
+	case "MCC_CBU_WP": {_cbuWP};
+	case "MCC_CBU_CS": {_cbuCS};
+	case "MCC_CBU_EXPLOSION": {_cbuExplosion};
+	default {nil};
+};
+if (isNil "_cbuCode") exitWith {};
 _vel = velocity _bomb;
 for [{_x = 1},{_x <= 4},{_x = _x+1}] do 
 	{
@@ -91,7 +99,7 @@ for [{_x = 1},{_x <= 4},{_x = _x+1}] do
 						_para setVelocity [(_vel select 0)/2, (_vel select 1)/2,(_vel select 2)/2];
 						sleep 0.02;
 					};
-		[_skeet, _para] spawn call (compile _type);
+		[_skeet, _para] spawn _cbuCode;
 	};
 _split = "HelicopterExploBig" createvehicle getpos _bomb; 
 deletevehicle _bomb;

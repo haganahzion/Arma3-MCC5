@@ -6,15 +6,40 @@ on:
       - "ARMA3-MCC5*"
     branches:
       - "mcc5"
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Tool tests
+        run: |
+          python -m pip install -q pytest
+          python -m pytest tools/tests -q
+
+      - name: Project checks (function files, file paths, remoteExec whitelist)
+        run: python tools/check_project.py .
+
+      - name: Bracket balance of changed files
+        if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
+        run: |
+          git fetch --no-tags --depth=1 origin ${{ github.event.before }}
+          python tools/balance_check.py --rev ${{ github.event.before }}
+
   release:
+    needs: check
     # On a branch push, only release when the commit message contains [release]
-    if: github.event_name != 'push' || startsWith(github.ref, 'refs/tags/') || contains(github.event.head_commit.message, '[release]')
+    if: github.event_name != 'pull_request' && (github.event_name != 'push' || startsWith(github.ref, 'refs/tags/') || contains(github.event.head_commit.message, '[release]'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

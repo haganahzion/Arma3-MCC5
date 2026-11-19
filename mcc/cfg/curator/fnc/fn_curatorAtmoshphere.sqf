@@ -31,7 +31,7 @@ if (typeName (_module getVariable ["atmosphere",true]) == typeName 0) exitWith {
             MCC_date    = [(MCC_date select 0) + floor (random 10 - random 10), floor ((random 12)+1)  ,  floor ((random 28)+1), floor ((random 24)+1),  floor (random 60)];
             publicVariable "MCC_date";
 
-            [MCC_date] remoteExec ["MCC_fnc_setTime",0];
+            [MCC_date] remoteExec ["MCC_fnc_setTime", [2, 0] select isServer];
         };
 
         if (_effect == "random") then {
@@ -109,7 +109,7 @@ if (_changeTime) then {
     MCC_date    = [(MCC_date select 0) + floor (random 10 - random 10), floor ((random 12)+1)  ,  floor ((random 28)+1), floor ((random 24)+1),  floor (random 60)];
     publicVariable "MCC_date";
 
-    [MCC_date] remoteExec ["MCC_fnc_setTime",0];
+    [MCC_date] remoteExec ["MCC_fnc_setTime", [2, 0] select isServer];
 };
 
 if (_effect == "random") then {

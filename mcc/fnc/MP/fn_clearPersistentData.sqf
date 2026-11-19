@@ -13,6 +13,8 @@
 		Nothing
 
 //==============================================================================================================================================*/
+if !(["MCC_fnc_clearPersistentData"] call MCC_fnc_remoteTrusted) exitWith {};
+
 private ["_side","_fileName"];
 _fileName = "MCC_campaign";
 

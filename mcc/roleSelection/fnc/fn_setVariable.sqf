@@ -11,6 +11,17 @@ _varType	= toUpper (_this select 3);
 
 if(!isServer) exitWith {};
 if (isnil "_player") exitWith {};
+if !(_varName isEqualType "") exitWith {};
+
+// A remote sender may only write its own player's records; a [uid, name] pair needs a trusted sender.
+if (isRemoteExecuted) then {
+	if (_player isEqualType objNull) then {
+		if !([_player, "MCC_fnc_setVariable"] call MCC_fnc_remoteOwnsUnit) then {_player = nil};
+	} else {
+		if !(["MCC_fnc_setVariable"] call MCC_fnc_remoteTrusted) then {_player = nil};
+	};
+};
+if (isnil "_player") exitWith {};
 
 if (typeName _player == typeName []) then {
 	_id = _player select 0;

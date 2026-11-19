@@ -6,15 +6,16 @@
 //
 //	OUT <BOOLEAN>
 //==============================================================================================================================================================================
-private ["_side","_res","_resToCheck","_var","_level","_available"];
+#define MCC_RES_EMPTY [0,0,0,0,0]
 
-_side = param [0,missionnamespace,[missionnamespace,sideLogic]];
-_res = param [1,missionnamespace,[[]]];
+private ["_resToCheck","_var","_level","_available"];
+params [["_side", sideLogic, [sideLogic]], ["_res", [], [[]]]];
+if (count _res < 2) exitWith {false};
 
 _available = false;
 
 //Do we have the needed resources
-_resToCheck = call compile format ["MCC_res%1",_side];
+_resToCheck = missionNamespace getVariable [format ["MCC_res%1",_side], MCC_RES_EMPTY];
 
 _var   = _res select 0;
 _level = _res select 1;

@@ -46,7 +46,7 @@ _arti_cond_other = "true";
 /*************************************************************************************************************/
 /*************************************************************************************************************/
 
-arti_func_getLaser = compile (preprocessFileLineNumbers (BON_ARTI_PATH+"bon_arti_func_getlaser.sqf"));
+arti_func_getLaser = compileFinal (preprocessFileLineNumbers (BON_ARTI_PATH+"bon_arti_func_getlaser.sqf"));
 
 if (isServer || isDedicated) then {
 	//server globalchat "bon arti execution - on";
@@ -85,9 +85,9 @@ if(count _arti_cond_weapons > 0) then {
 
 bon_arti_condition = _arti_cond_weapon + " && " + _arti_cond_other;
 
-arti_dlgUpdate = compile (preprocessFileLineNumbers (BON_ARTI_PATH+"bon_arti_func_dlgUpdate.sqf"));
-arti_func_keyspressed = compile (preprocessFileLineNumbers (BON_ARTI_PATH+"bon_arti_func_keyspressed.sqf"));
-arti_func_getSplashPos = compile (preprocessFileLineNumbers (BON_ARTI_PATH+"bon_arti_func_getSplashPos.sqf"));
+arti_dlgUpdate = compileFinal (preprocessFileLineNumbers (BON_ARTI_PATH+"bon_arti_func_dlgUpdate.sqf"));
+arti_func_keyspressed = compileFinal (preprocessFileLineNumbers (BON_ARTI_PATH+"bon_arti_func_keyspressed.sqf"));
+arti_func_getSplashPos = compileFinal (preprocessFileLineNumbers (BON_ARTI_PATH+"bon_arti_func_getSplashPos.sqf"));
 sleep 0.1;
 
 /*

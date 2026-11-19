@@ -66,10 +66,10 @@ if (typeName (_module getVariable ["cover",true]) == typeName 0) exitWith {
 	player enableFatigue !(missionNamespace getVariable ["MCC_disableFatigue",false]);
 
 	//Breaching Ammo
-	MCC_breacingAmmo = call compile (_module getvariable ["breachingAmmo","[]"]);
+	MCC_breacingAmmo = [_module getvariable ["breachingAmmo","[]"]] call MCC_fnc_arrayFromString;
 
 	//Non Lethal Ammo
-	MCC_nonLeathalAmmo = call compile (_module getvariable ["nonLeathalAmmo","[]"]);
+	MCC_nonLeathalAmmo = [_module getvariable ["nonLeathalAmmo","[]"]] call MCC_fnc_arrayFromString;
 };
 
 //Not curator exit

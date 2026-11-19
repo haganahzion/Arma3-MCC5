@@ -36,13 +36,12 @@ if (_commander == "") then {
             _previousCommander = objectFromNetId (MCC_server getVariable [format ["CP_commander%1",(player getVariable ["CP_side",  playerside])],""]);
 
             MCC_server setVariable [format ["CP_commander%1_lastMutiny",(player getVariable ["CP_side",  playerside])],(time + 300), true];
-            CP_mutiny = 0;
-            publicVariable "CP_mutiny";
+            ["CP_mutiny", "start"] remoteExec ["MCC_fnc_rxVote", 2];
             sleep 1;
             [format ["%1 have started a mutiny. do you want to kick the commander - %2?", name player, _previousCommander], "MUTINY" , "CP_mutiny"] remoteExec ["MCC_fnc_vote", (player getVariable ["CP_side",  playerside])];
             sleep 30;
             _numberPlayers = (player getVariable ["CP_side",  playerside]) countSide allplayers;
-            "CP_mutiny" remoteExec ["publicVariable", 2];
+            ["CP_mutiny", "share"] remoteExec ["MCC_fnc_rxVote", 2];
             sleep 2;
 
             if (CP_mutiny > (_numberPlayers/2)) then {

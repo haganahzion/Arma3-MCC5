@@ -12,7 +12,8 @@
 */
 params [["_owner", -1, [0]]];
 
-if (_owner in [2, clientOwner]) exitWith {true};
+// remoteExecutedOwner is 0 in single player and for calls from a headless client.
+if (!isMultiplayer || {_owner in [0, 2, clientOwner]}) exitWith {true};
 if (!isServer) exitWith {false};
 if ((admin _owner) > 0) exitWith {true};
 if !([_owner] call MCC_fnc_isAuthorizedOwner) exitWith {false};

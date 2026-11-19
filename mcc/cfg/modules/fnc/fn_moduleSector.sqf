@@ -41,6 +41,9 @@ _logic = [_this,0,objnull] call bis_fnc_param;
 _units = [_this,1,[]] call bis_fnc_param;
 _activated = [_this,2,true,[true]] call bis_fnc_param;
 
+//Module code and settings come from the mission; remote calls only from the server, admins or MCC users who are Zeus
+if !(["MCC_fnc_moduleSector"] call MCC_fnc_remoteTrusted) exitWith {};
+
 //--- Return all sectors
 if (typename _logic == typename true) exitwith {
 	missionnamespace getvariable ["MCC_fnc_moduleSector_sectors",[]]

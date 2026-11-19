@@ -1060,18 +1060,7 @@ MCC_CONST_CAM_Handler =
 								_buildingPos = [(nearestBuilding _wpPos), count units _x] call BIS_fnc_buildingPositions;
 								_x setVariable ["MCC_rtsIsFortified",true,true];
 
-								_string = format ["{
-								                      _unit = (thislist select  _forEachIndex);
-								                      _unit domove _x;
-								                      _unit setSpeedMode 'FULL';
-								                      _unit spawn {
-								                      	sleep 5;
-								                      	waituntil {unitready _this};
-								                      	_this disableai 'move';
-								                      	while {(unitready leader _this)} do {sleep 1};
-								                      	_this enableai 'move';
-								                       };
-								                  } forEach %1;",_buildingPos];
+								_string = ["fortify", _buildingPos];
 							} else {
 								//Board empty vehicles
 								if ({count crew _x ==0} count _list > 0) then {

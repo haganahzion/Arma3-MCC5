@@ -1,4 +1,5 @@
 //==================================================================Conflict Area's===============================================================================================
+#include "..\gaiaDefines.hpp"
 //a=[WEST] call fnc_GAIA_ConflictAreas; PLAYER setPoS (A SELECT 1)
 //
 //
@@ -6,6 +7,7 @@
 private ["_units","_class","_TargetInfo"];
 
 _HQ_side 		= _this select 0;
+private _infoVar = GAIA_TARGET_INFO_VAR + ([_HQ_side] call GAIA_fnc_sideSuffix);
 _class			= "";
 _Targets		= [];
 _CA					= [];
@@ -42,7 +44,7 @@ switch (_HQ_side) do
 //Target positions are read once
 private _TargetPositions = [];
 {
-	_TargetInfo = (_x getVariable ["GAIA_TargetInfo",[]]);
+	_TargetInfo = (_x getVariable [_infoVar,[]]);
 	if (count(_TargetInfo)>0) then {_TargetPositions pushBack (_TargetInfo select 1)};
 }forEach (_Targets /*+_Spots*/);
 
@@ -53,7 +55,7 @@ _CA = _CA select {
 
 // Do create a CA on each position of a target that is not in range of 200 within the next the CA
 {
-	_TargetInfo = _x getVariable ["GAIA_TargetInfo",[]];
+	_TargetInfo = _x getVariable [_infoVar,[]];
 	private _TargetPos = _TargetInfo select 1;
 	if ((_CA findIf {(_x distance _TargetPos)<(MCC_GAIA_CA_SIZE*2)}) < 0)
 	then

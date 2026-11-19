@@ -4,7 +4,7 @@ _missileStart = _this select 1; //position where te missile will be spawned
 _missileType = _this select 2; //type of the missile
 _missileSpeed = _this select 3; //speed of the missile
 _light = _this select 4;
-_code = _this select 5;
+// Param 5 is not used.
 _targetIsHeliEmpty = false;
 
 _perSecondChecks = 25; //direction checks per second
@@ -25,9 +25,6 @@ if (typeName _missileType == typeName "") then {
 };
 
 _missile setPos [_missileStart select 0, _missileStart select 1,(_missileStart select 2)-5];
-
-//broadcast onwership
-[_missile,(owner player)] remoteExec ["setOwner", 2];
 
 //procedure for guiding the missile
 _homeMissile = {
@@ -68,4 +65,3 @@ while {alive _missile && ((_missile distance _target) > 10)} do {
 
 if (_light) then {deleteVehicle _fireLight}; //delete ligh source
 if (_targetIsHeliEmpty) then {deleteVehicle _target};
-if (_code != "") then {[_primaryTarget] call compile (_code)};

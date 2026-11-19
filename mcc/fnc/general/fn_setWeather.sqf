@@ -1,6 +1,6 @@
 //==================================================================MCC_fnc_setWeather======================================================================================
 // Sets weather  on all clients  - skip time by one hour to make the weather change
-// Example: [[ Overcast, WindForce, Waves, Rain, Lightnings,fog]] remoteExec ["MCC_fnc_setWeather",0];
+// Example: [[ Overcast, WindForce, Waves, Rain, Lightnings,fog]] remoteExec ["MCC_fnc_setWeather", [2, 0] select isServer];
 // Params:
 //	Overcast: number, 0-1
 //	WindForce: number, 0-1
@@ -11,6 +11,10 @@
 //	Time: integer, how long till effect
 //==============================================================================================================================================================================
 private ["_weather","_time"];
+
+if !(["MCC_fnc_setWeather"] call MCC_fnc_remoteTrusted) exitWith {};
+// An MCC user's client sends this to the server, which passes it on to every client.
+if (isServer && {isRemoteExecuted} && {!(remoteExecutedOwner in [2, clientOwner])}) then {_this remoteExec ["MCC_fnc_setWeather", -2]};
 
 _weather = _this select 0;
 _time = [_weather, 6, 0, [0]] call BIS_fnc_param;

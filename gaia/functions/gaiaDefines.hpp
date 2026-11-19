@@ -84,3 +84,20 @@
 // Not this much closer (meters) in this time (seconds) on foot: set the march again (new path)
 #define GAIA_MARCH_PROGRESS			50
 #define GAIA_MARCH_STUCK_TIME		120
+
+//------------------------------ Targets ------------------------------
+// Machine id of the server (remoteExecutedOwner / setVariable target)
+#define GAIA_SERVER_OWNER			2
+// Only targets known with a position accuracy below this count
+#define GAIA_TARGET_MAX_ACCURACY	18
+// A side counts as enemy below this friendship value
+#define GAIA_ENEMY_FRIENDSHIP		0.6
+// Headless client: seconds between two target reports of the same group to the server
+#define GAIA_HC_TARGET_INTERVAL		15
+// Group variable that holds the last target report of a headless client group
+#define GAIA_HC_TARGETS_VAR			"GAIA_HC_TARGETS"
+// Per side object variable with the target info [time, position, accuracy] (+ GAIA_fnc_sideSuffix)
+#define GAIA_TARGET_INFO_VAR		"GAIA_TargetInfo_"
+// Per side object flag and missionNamespace list of objects that hold target info (+ GAIA_fnc_sideSuffix)
+#define GAIA_KNOWN_TARGET_FLAG		"GAIA_isKnownTarget_"
+#define GAIA_KNOWN_TARGETS_VAR		"GAIA_KNOWN_TARGETS_"

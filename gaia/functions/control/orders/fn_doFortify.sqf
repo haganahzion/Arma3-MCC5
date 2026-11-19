@@ -3,6 +3,8 @@
 // Example: [_group,_zone] call fnc_DoFortify
 // spirit 11-2-2014
 //===========================================================================================================================================================================
+#define GAIA_FORTIFY_MAX_RADIUS 500
+
 private ["_group","_TargetPos","_zone"];
 
 
@@ -16,8 +18,10 @@ _zone	 = (((_group) getVariable ["GAIA_zone_intend",[]])select 0);
 if !(isnil("_Zone")) then
 {
 	[_group] call GAIA_fnc_removeWaypoints;
-	_group  setSpeedMode "FULL";
-	[_group,(getMarkerpos _zone),((((getMarkerSize _zone)select 0) max ((getMarkerSize _zone)select 1)) min 500)] call GAIA_fnc_taskDefend;
+	[_group, "setSpeedMode", "FULL"] call GAIA_fnc_groupSet;
+	//taskDefend moves, assigns and stops single units: it runs where the group is local (headless client)
+	private _defend = [_group,(getMarkerpos _zone),((((getMarkerSize _zone)select 0) max ((getMarkerSize _zone)select 1)) min GAIA_FORTIFY_MAX_RADIUS)];
+	if (local _group) then {_defend call GAIA_fnc_taskDefend} else {_defend remoteExecCall ["GAIA_fnc_taskDefend", groupOwner _group]};
 
 
 
