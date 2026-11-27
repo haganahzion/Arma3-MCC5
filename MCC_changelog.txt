@@ -1,7 +1,6 @@
 Changelog v5.1.2:
-	- Squad Switch: when you die you take over a squadmate (MCC Respawn settings, off by default), with Avoid Leadership Role; the ACE3 unconscious blur no longer stays after switching
-	- GAIA air support: GAIA's armed helicopters and planes attack the most dangerous fights their side has spotted
-	- GAIA handles big battles by priority: armor and outnumbered fights first, with more groups sent to them
+	- Major GAIA Improvements for AIR units
+	- New Squad Switch Feature
 
 Changelog v5.1.1:
 	- Security and Performance Improvements

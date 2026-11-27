@@ -1,5 +1,5 @@
 #define MCCPATH ""
-#define MCCVersion "(v5.1.1)"
+#define MCCVersion "(v5.1.2)"
 
 
 //--------------------------Dialogs----------------------------------------------------

@@ -3,6 +3,11 @@
 A short summary of what changed in MCC 5. The full list is in `MCC_changelog.txt` (sections R34 and R35) in the mod.
 
 
+## v5.1.2
+
+- Major GAIA Improvements for AIR units
+- New Squad Switch Feature
+
 ## v5.1.1
 
 - Security and Performance Improvements
