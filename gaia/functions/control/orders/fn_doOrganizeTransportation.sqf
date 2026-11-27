@@ -51,6 +51,9 @@ if ([_wpPos] call GAIA_fnc_isValidPos) then
 				   			//The transport vehicle must not be busy with an attack
 				   			((_x getVariable  ["GAIA_Order",""]) != "DoAttack")
 				   			and
+				   			//...or flying air support (GAIA_fnc_airSupport)
+				   			((_x getVariable  ["GAIA_Order",""]) != "DoAirSupport")
+				   			and
 				   			// He must be able to do transport
 				   			("DoTransport" in (_TransportGrp getVariable  ["GAIA_Portfolio",[]]))
 				   			and

@@ -283,3 +283,15 @@ class edenWizard
 	class edenWizardObjective {description = "Editor wizard: build one objective";};
 	class edenWizardPopulate {description = "Editor wizard: main zone forces and threats";};
 };
+
+class squadSwitch
+{
+	#ifdef MCCMODE
+	file = "\mcc_sandbox_mod\mcc\fnc\squadSwitch";
+	#else
+	file = "mcc\fnc\squadSwitch";
+	#endif
+
+	class squadSwitchInit {postInit = 1; description = "Players: take over a squadmate when you die (MCC_squadSwitch)";};
+	class squadSwitch {description = "Switch the dead player into the nearest squadmate or ally";};
+};

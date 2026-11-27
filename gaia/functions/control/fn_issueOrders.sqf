@@ -117,8 +117,9 @@ private _sideGroups		= [_side] call GAIA_fnc_getGroups;
 //Groups running LAMBS Danger task waypoints are left alone (treated like FORTIFY).
 //So are task-following groups still on their way to the task (GAIA_taskMarch, set by MCC_fnc_gaiaTaskTick):
 //they get no attack, clear, transport or timeout orders until they are there.
+//Aircraft flying air support (GAIA_fnc_airSupport) are left alone too; that function re-checks them every cycle.
 private _lambsGroups	= _allSideGroups select {
-	([_x] call GAIA_fnc_hasLambsWaypoint) || {_x getVariable ["GAIA_taskMarch", false]}
+	([_x] call GAIA_fnc_hasLambsWaypoint) || {_x getVariable ["GAIA_taskMarch", false]} || {(_x getVariable ["GAIA_Order", ""]) == GAIA_AIR_ORDER}
 };
 
 //Groups given to a CA in this call (see _GroupHasOrdersThisRound)
@@ -135,6 +136,13 @@ private _fnc_caCost = {
 	};
 	_cost
 };
+
+//Worst fights first: armor, numbers and our own groups pinned down move a CA up (GAIA_fnc_prioritizeCAs).
+//Every phase below walks _CA in this order.
+private _caPriority = createHashMap;
+([_side, _CA, _fnc_caCost, _sideGroups] call GAIA_fnc_prioritizeCAs) params ["_caSorted", "_caInfo"];
+_CA = _caSorted;
+_caPriority = _caInfo;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 //									CANCEL OBSOLETE ORDERS
@@ -274,6 +282,13 @@ private _fnc_caCost = {
 }forEach _sideGroups;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+//									AIR SUPPORT
+//									Armed helicopters and planes take the best fight in range
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+private _airTasked = [_side, _CA, _caPriority, _sideGroups] call GAIA_fnc_airSupport;
+_lambsGroups = _lambsGroups + _airTasked;
+
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 //									ORGANISE DEFENSIVE ORDERS (FOR NOW FORTIFY)
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 {
@@ -326,6 +341,15 @@ private _fnc_caCost = {
   		if (count GAIA_CA_MIN_RESPONSE > 500) then {GAIA_CA_MIN_RESPONSE = createHashMap};
   		GAIA_CA_MIN_RESPONSE set [_SelectCA, _MinimumResponse];
    	};
+
+	//Tanks or a fight where we're badly outnumbered get more groups
+	private _prioInfo = _caPriority getOrDefault [_SelectCA, []];
+	if (_prioInfo isNotEqualTo []) then {
+		_prioInfo params ["", "_prioClass", "_prioEnemy", "_prioOwn"];
+		if (_prioClass in GAIA_HEAVY_CLASSES) then {_MinimumResponse = _MinimumResponse + 1};
+		if (_prioOwn > 0 && {_prioEnemy > GAIA_PRIORITY_OUTNUMBERED * _prioOwn}) then {_MinimumResponse = _MinimumResponse + 1};
+		_MinimumResponse = _MinimumResponse min GAIA_PRIORITY_MAX_RESPONSE;
+	};
 
 
 

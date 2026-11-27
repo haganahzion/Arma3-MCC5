@@ -101,3 +101,36 @@
 // Per side object flag and missionNamespace list of objects that hold target info (+ GAIA_fnc_sideSuffix)
 #define GAIA_KNOWN_TARGET_FLAG		"GAIA_isKnownTarget_"
 #define GAIA_KNOWN_TARGETS_VAR		"GAIA_KNOWN_TARGETS_"
+
+//------------------------------ Fight priority (GAIA_fnc_prioritizeCAs) ------------------------------
+// Threat weight per CA class; a class not listed counts 1
+#define GAIA_THREAT_WEIGHTS			[["Tank",3],["MechanizedInfantry",2.5],["AA",2.2],["Artillery",2],["Helicopter",1.8],["Static",1.6],["MotorizedInfantry",1.5],["Car",1.5],["MotorizedRecon",1.4],["Ship",1.3],["ReconInfantry",1.2]]
+// Classes that count as heavy: one more ground group and a second aircraft may respond
+#define GAIA_HEAVY_CLASSES			["Tank","MechanizedInfantry","AA"]
+// Our groups already fighting there: base bonus, plus enemy / own points up to this cap
+#define GAIA_PRIORITY_CONTACT_BONUS	1.5
+#define GAIA_PRIORITY_OUTNUMBER_CAP	4
+// A fight this many meters from our closest zone scores half (the distance is capped)
+#define GAIA_PRIORITY_DISTANCE_SCALE	1000
+#define GAIA_PRIORITY_DISTANCE_CAP	5000
+// Enemy points above this many times ours in contact means badly outnumbered (enemy points carry the x2/x3 zone multiplier)
+#define GAIA_PRIORITY_OUTNUMBERED	4
+// Most ground groups GAIA sends to one fight
+#define GAIA_PRIORITY_MAX_RESPONSE	4
+
+//------------------------------ Air support (GAIA_fnc_airSupport) ------------------------------
+// Aircraft below this fuel are left to the normal orders
+#define GAIA_AIR_MIN_FUEL			0.15
+// Planes reach this many times the helicopter range
+#define GAIA_AIR_PLANE_RANGE_FACTOR	2.5
+// Aircraft score: fight score / (1 + distance / this)
+#define GAIA_AIR_DISTANCE_SCALE		2000
+// Keep the current fight unless another one scores this many times higher
+#define GAIA_AIR_STICKY				1.5
+// Aircraft per fight: normal and heavy (see GAIA_HEAVY_CLASSES / outnumbered)
+#define GAIA_AIR_PER_FIGHT			1
+#define GAIA_AIR_PER_HEAVY_FIGHT	2
+// reveal knowledge given to the crew, and how many known enemies are revealed per fight
+#define GAIA_AIR_REVEAL_LEVEL		4
+#define GAIA_AIR_REVEAL_MAX			12
+#define GAIA_AIR_ORDER				"DoAirSupport"

@@ -1020,6 +1020,41 @@ class MCC5S_Cat_MCC_GAIA_Support_Requests
 	};
 };
 
+class MCC5S_Cat_MCC_GAIA_Air_Support
+{
+	displayName = "MCC GAIA - Air Support";
+	collapsed = 1;
+	class Attributes
+	{
+		class MCC5S_MCC_GAIA_AIR_SUPPORT
+		{
+			displayName = "Air Support";
+			tooltip = "GAIA's armed helicopters and planes fly support for their side: they take the most dangerous fight in range (armor and outnumbered friendlies first) and attack the enemies their side has spotted there\n(addon default: On)\nCBA setting: MCC_GAIA_AIR_SUPPORT";
+			property = "MCC5S_MCC_GAIA_AIR_SUPPORT";
+			expression = "";
+			control = "Combo";
+			typeName = "NUMBER";
+			defaultValue = "-1";
+			class Values
+			{
+				class V0 {name = "Use addon setting"; value = -1;};
+				class V1 {name = "Off"; value = 0;};
+				class V2 {name = "On"; value = 1;};
+			};
+		};
+		class MCC5S_MCC_GAIA_AIR_RANGE
+		{
+			displayName = "Helicopter Range";
+			tooltip = "How far (meters) a GAIA helicopter goes to support a fight. Planes go 2.5 times as far\nEmpty = use addon setting. Number 1000 to 10000 (addon default: 4000).\nCBA setting: MCC_GAIA_AIR_RANGE";
+			property = "MCC5S_MCC_GAIA_AIR_RANGE";
+			expression = "";
+			control = "Edit";
+			typeName = "STRING";
+			defaultValue = """""";
+		};
+	};
+};
+
 class MCC5S_Cat_MCC_General
 {
 	displayName = "MCC General";
@@ -1923,6 +1958,47 @@ class MCC5S_Cat_MCC_Respawn_Respawn
 			displayName = "Respawn On Leader";
 			tooltip = "Allow player to select to respawn on team leader from the MCC respawn menu\n(addon default: Off)\nCBA setting: MCC_respawnOnGroupLeader";
 			property = "MCC5S_MCC_respawnOnGroupLeader";
+			expression = "";
+			control = "Combo";
+			typeName = "NUMBER";
+			defaultValue = "-1";
+			class Values
+			{
+				class V0 {name = "Use addon setting"; value = -1;};
+				class V1 {name = "Off"; value = 0;};
+				class V2 {name = "On"; value = 1;};
+			};
+		};
+	};
+};
+
+class MCC5S_Cat_MCC_Respawn_Squad_Switch
+{
+	displayName = "MCC Respawn - Squad Switch";
+	collapsed = 1;
+	class Attributes
+	{
+		class MCC5S_MCC_squadSwitch
+		{
+			displayName = "Squad Switch";
+			tooltip = "When you die you take over the nearest AI in your squad, or the nearest friendly AI if your squad is gone\n(addon default: Off)\nCBA setting: MCC_squadSwitch";
+			property = "MCC5S_MCC_squadSwitch";
+			expression = "";
+			control = "Combo";
+			typeName = "NUMBER";
+			defaultValue = "-1";
+			class Values
+			{
+				class V0 {name = "Use addon setting"; value = -1;};
+				class V1 {name = "Off"; value = 0;};
+				class V2 {name = "On"; value = 1;};
+			};
+		};
+		class MCC5S_MCC_squadSwitchAvoidLeader
+		{
+			displayName = "Avoid Leadership Role";
+			tooltip = "Squad Switch prefers soldiers who don't lead a group, and hands the lead to an AI when you would end up as leader\n(addon default: Off)\nCBA setting: MCC_squadSwitchAvoidLeader";
+			property = "MCC5S_MCC_squadSwitchAvoidLeader";
 			expression = "";
 			control = "Combo";
 			typeName = "NUMBER";

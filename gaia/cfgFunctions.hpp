@@ -39,6 +39,7 @@ class GAIA
         class getClassInfo {};
         class getGroups {};
         class groupMaintenance {};
+        class groupReveal {};
         class groupSet {};
         class groupTick {};
         class hasLambsWaypoint {};
@@ -181,6 +182,7 @@ class GAIA
         file = "gaia\functions\support";
         #endif
 
+        class airSupport {};
         class artyMayFire {};
         class assignRoles {};
         class dangerClose {};
@@ -191,6 +193,7 @@ class GAIA
         class findOverwatch {};
         class fireMission {};
         class hcBalance {};
+        class prioritizeCAs {};
         class requestSupport {};
         class unstick {};
     };

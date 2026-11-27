@@ -393,3 +393,22 @@
     true,
     true
 ] call CBA_fnc_addSetting;
+
+// ==================== Air Support ==========================================
+[
+    "MCC_GAIA_AIR_SUPPORT",
+    "CHECKBOX",
+    ["Air Support","GAIA's armed helicopters and planes fly support for their side: they take the most dangerous fight in range (armor and outnumbered friendlies first) and attack the enemies their side has spotted there"],
+    ["MCC GAIA", "Air Support"],
+    true,
+    true
+] call CBA_fnc_addSetting;
+
+[
+    "MCC_GAIA_AIR_RANGE",
+    "SLIDER",
+    ["Helicopter Range","How far (meters) a GAIA helicopter goes to support a fight. Planes go 2.5 times as far"],
+    ["MCC GAIA", "Air Support"],
+    [1000, 10000, 4000, 0],
+    true
+] call CBA_fnc_addSetting;

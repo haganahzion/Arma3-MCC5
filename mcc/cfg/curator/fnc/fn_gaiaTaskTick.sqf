@@ -123,6 +123,9 @@ if (_task != _current || {_intend isEqualTo []}) exitWith {
 	if (_debug) then {diag_log format ["GAIA tasks: %1 -> task %2, zone %3 at %4", _group, _task, _zone, _dest]};
 };
 
+// Flying air support (GAIA_fnc_airSupport): leave the waypoints alone, the march picks up again once it's released
+if ((_group getVariable ["GAIA_Order", ""]) == GAIA_AIR_ORDER) exitWith {};
+
 private _marching = _group getVariable ["GAIA_taskMarch", false];
 
 // Not marching: at the task, GAIA runs it in the zone. March back when it got pulled far away.

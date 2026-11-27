@@ -57,3 +57,22 @@
     false,
     true
 ] call CBA_fnc_addSetting;
+
+// ==================== Squad Switch ==========================================
+[
+    "MCC_squadSwitch",
+    "CHECKBOX",
+    ["Squad Switch","When you die you take over the nearest AI in your squad, or the nearest friendly AI if your squad is gone"],
+    ["MCC Respawn","Squad Switch"],
+    false,
+    true
+] call CBA_fnc_addSetting;
+
+[
+    "MCC_squadSwitchAvoidLeader",
+    "CHECKBOX",
+    ["Avoid Leadership Role","Squad Switch prefers soldiers who don't lead a group, and hands the lead to an AI when you would end up as leader"],
+    ["MCC Respawn","Squad Switch"],
+    false,
+    true
+] call CBA_fnc_addSetting;

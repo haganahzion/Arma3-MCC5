@@ -217,6 +217,13 @@ Long class list defaults are not repeated here. Hover over the setting in Eden o
 | Reinforcement Budget | Reinforcement calls per side for the whole mission. Range 0 to 20. | 2 | `MCC_GAIA_SUPPORT_REINF_BUDGET` |
 | Reinforcement Size | Number of vehicles: small 2, medium 3, large 4 | Small | `MCC_GAIA_SUPPORT_REINF_SIZE` |
 
+### MCC GAIA - Air Support
+
+| Setting | What it does | Default | CBA variable |
+|---|---|---|---|
+| Air Support | GAIA's armed helicopters and planes fly support for their side: they take the most dangerous fight in range (armor and outnumbered friendlies first) and attack the enemies their side has spotted there | On | `MCC_GAIA_AIR_SUPPORT` |
+| Helicopter Range | How far (meters) a GAIA helicopter goes to support a fight. Planes go 2.5 times as far. Range 1000 to 10000. | 4000 | `MCC_GAIA_AIR_RANGE` |
+
 ### MCC General
 
 | Setting | What it does | Default | CBA variable |
@@ -352,6 +359,13 @@ Long class list defaults are not repeated here. Hover over the setting in Eden o
 | Respawn Menu | Custom MCC respawn menu | On | `MCC_openRespawnMenu` |
 | Respawn Cinematic | Shows a cinematic when a player spawns. | On | `MCC_respawnCinematic` |
 | Respawn On Leader | Allow player to select to respawn on team leader from the MCC respawn menu | Off | `MCC_respawnOnGroupLeader` |
+
+### MCC Respawn - Squad Switch
+
+| Setting | What it does | Default | CBA variable |
+|---|---|---|---|
+| Squad Switch | When you die you take over the nearest AI in your squad, or the nearest friendly AI if your squad is gone. Works with ACE3 (the unconscious blur is cleared). | Off | `MCC_squadSwitch` |
+| Avoid Leadership Role | Squad Switch prefers soldiers who don't lead a group, and hands the lead to an AI when you would end up as leader | Off | `MCC_squadSwitchAvoidLeader` |
 
 ### MCC User Interface
 

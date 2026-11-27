@@ -394,6 +394,7 @@ class mcc_setup {allowedTargets=2;};
 class MCC_fnc_rxEjectUnconscious {allowedTargets=0;};
 class MCC_fnc_rxApplyFatigue {allowedTargets=0;};
 class GAIA_fnc_cache {allowedTargets=0;};
+class GAIA_fnc_groupReveal {allowedTargets=0;};
 class GAIA_fnc_groupSet {allowedTargets=0;};
 class GAIA_fnc_taskDefend {allowedTargets=0;};
 class GAIA_fnc_marchAI {allowedTargets=0;};

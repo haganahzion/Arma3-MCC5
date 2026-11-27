@@ -114,6 +114,14 @@ With **Coordinated Attacks** on (default), groups sent to the same enemy contact
 
 A single group, or the setting off, means a plain attack.
 
+## Fight priority
+
+In a big battle GAIA handles the most dangerous fights first. Each enemy contact gets a score from its strength and type (tanks and armored vehicles count most, then AA, artillery and motorized troops, then infantry), and it goes up when GAIA groups are already fighting there and are outnumbered. Ground attacks, mortars, artillery, support calls and air support all follow this order, and a tank fight or a fight where GAIA is badly outnumbered gets more groups sent to it.
+
+## Air support
+
+GAIA's own armed helicopters and planes (any aircraft in a GAIA group, for example ones placed in Zeus and given to GAIA) fly support for their side. Each one takes the highest priority fight in range (**Helicopter Range**, 4000 m; planes 2.5 times as far), attacks it, and gets told about every enemy its side has spotted there, so a squad's contact report turns into a gun run. A fight gets one aircraft, two when it is armor or friendlies are badly outnumbered. Helicopters stay away from AA. Aircraft with no ammo or low fuel, or with a player aboard, are left alone. Turn it off with **Air Support** in CBA settings.
+
 ## Support requests
 
 With **AI Support Requests** on (default), GAIA can call support when its groups fight a strong enemy contact. One response per contact.
