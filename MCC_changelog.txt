@@ -1,3 +1,6 @@
+Changelog v5.1.3:
+	- Fixed screen blur after Squad Switch
+
 Changelog v5.1.2:
 	- Major GAIA Improvements for AIR units
 	- New Squad Switch Feature

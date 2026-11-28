@@ -3,6 +3,10 @@
 A short summary of what changed in MCC 5. The full list is in `MCC_changelog.txt` (sections R34 and R35) in the mod.
 
 
+## v5.1.3
+
+- Fixed screen blur after Squad Switch
+
 ## v5.1.2
 
 - Major GAIA Improvements for AIR units
