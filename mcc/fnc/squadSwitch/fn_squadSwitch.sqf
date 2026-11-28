@@ -16,6 +16,9 @@
 #define MCC_SWITCH_MAX_DAMAGE		0.9
 #define MCC_SWITCH_ACE_TIMEOUT		5
 #define MCC_SWITCH_LEADER_WAIT		10
+// Post process handles cleared after a switch (0 to this), and the delay of the second pass without ACE
+#define MCC_SWITCH_PP_LAST_HANDLE	5000
+#define MCC_SWITCH_CLEAR_DELAY		1
 
 params [["_dead", objNull, [objNull]], ["_grp", grpNull, [grpNull]], ["_side", sideUnknown, [sideUnknown]], ["_pos", [0,0,0], [[]]]];
 
@@ -64,6 +67,37 @@ if (isNull _pick) exitWith {systemChat "No friendlies left to switch to"};
 selectPlayer _pick;
 systemChat format ["%1: %2", _msg, name _pick];
 
+// Whatever screen effect the dead body left behind (ACE unconscious blur, MCC medic bleeding, the death
+// blur), switch every post process effect off. ACE turns its own pain and bleeding effects back on from
+// the new unit's state right after.
+private _fnc_clearScreen = {
+	for "_i" from 0 to MCC_SWITCH_PP_LAST_HANDLE do {
+		_i ppEffectEnable false;
+		_i ppEffectCommit 0;
+	};
+};
+call _fnc_clearScreen;
+
+// ACE: when you die while unconscious its blur and input lock stay with you, and its own player-changed
+// handler only fades them. Clear the screen again once ACE has the new unit, then let ACE redo its effects.
+if (!isNil "ace_medical_feedback_fnc_effectUnconscious") then {
+	[{
+		!isNil "ACE_player" && {ACE_player isEqualTo player}
+	}, {
+		params ["_fnc_clearScreen"];
+		call _fnc_clearScreen;
+		[false, 0] call ace_medical_feedback_fnc_effectUnconscious;
+		["unconscious", false] call ace_common_fnc_setDisableUserInputStatus;
+		[true, player] call ace_common_fnc_setVolume;
+		["ace_medical_feedback", 1, false] call ace_common_fnc_setHearingCapability;
+		[true] call ace_medical_feedback_fnc_handleEffects;
+	}, [_fnc_clearScreen], MCC_SWITCH_ACE_TIMEOUT] call CBA_fnc_waitUntilAndExecute;
+} else {
+	// Without ACE, one more pass in case the death effect was still fading in
+	uiSleep MCC_SWITCH_CLEAR_DELAY;
+	call _fnc_clearScreen;
+};
+
 // Landed as the leader of a group with AI in it: give the lead to the next AI.
 // When the dead player led the group the engine needs a few seconds to pick the new leader first.
 if (_avoidLead) then {
@@ -76,27 +110,4 @@ if (_avoidLead && {leader group player == player} && {local group player}) then 
 		(group player) selectLeader (_others select 0);
 		systemChat format ["%1 has the lead", name (_others select 0)];
 	};
-};
-
-// MCC medic: the bleeding blur of the dead body stays on, its handler stopped when the body died
-{
-	private _fx = missionNamespace getVariable [_x, -1];
-	if (_fx isEqualType 0 && {_fx >= 0}) then {_fx ppEffectEnable false};
-} forEach ["MCC_medicBleedingPPEffectColor", "MCC_medicBleedingPPEffectBlur"];
-
-// ACE: when you die while unconscious its fade-in blur and input lock stay with you. Its own
-// player-changed handler only fades the effect, so turn it off at once when ACE sees the new unit.
-if (!isNil "ace_medical_feedback_fnc_effectUnconscious") then {
-	[{
-		!isNil "ACE_player" && {ACE_player isEqualTo player}
-	}, {
-		private _uncon = player getVariable ["ACE_isUnconscious", false];
-		if (!_uncon) then {
-			[false, 0] call ace_medical_feedback_fnc_effectUnconscious;
-			["unconscious", false] call ace_common_fnc_setDisableUserInputStatus;
-			[true, player] call ace_common_fnc_setVolume;
-			["ace_medical_feedback", 1, false] call ace_common_fnc_setHearingCapability;
-		};
-		[true] call ace_medical_feedback_fnc_handleEffects;
-	}, [], MCC_SWITCH_ACE_TIMEOUT] call CBA_fnc_waitUntilAndExecute;
 };
